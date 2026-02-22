@@ -58,17 +58,21 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Determine VM type based on call count
+# Based on real stress test benchmarks:
+#   CCX33 (8 cores, 32GB, €37/mo) → safe up to ~200 rooms
+#   CCX43 (16 cores, 64GB, €60/mo) → safe up to ~600 rooms (sweet spot)
+#   CCX53 (32 cores, 128GB, €110/mo) → 1000+ rooms
 get_vm_type() {
     local calls=$1
     
     if [ "$calls" -le 50 ]; then
-        echo "cpx21"  # 3 vCPU, 4GB RAM
-    elif [ "$calls" -le 300 ]; then
-        echo "cpx22"  # 3 vCPU, 8GB RAM
-    elif [ "$calls" -le 1000 ]; then
-        echo "cpx32"  # 4 vCPU, 8GB RAM (dedicated CPU)
+        echo "cpx21"   # 2 vCPU, 4GB — dev/small tests
+    elif [ "$calls" -le 200 ]; then
+        echo "ccx33"   # 8 dedicated cores, 32GB — up to 200 rooms @ 100%
+    elif [ "$calls" -le 600 ]; then
+        echo "ccx43"   # 16 dedicated cores, 64GB — up to 600 rooms @ 100%
     else
-        echo "cpx42"  # 8 vCPU, 16GB RAM
+        echo "ccx53"   # 32 dedicated cores, 128GB — 1000+ rooms
     fi
 }
 
