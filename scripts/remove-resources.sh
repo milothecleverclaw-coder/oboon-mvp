@@ -3,12 +3,13 @@
 # Cleans up all resources created by create-resources.sh
 #
 # Usage:
-#   ./remove-resources.sh [--all] [--vm] [--modal]
+#   ./remove-resources.sh [--all] [--vm] [--modal] [--name <vm_name>]
 #
 # Options:
-#   --all     Remove everything (default)
-#   --vm      Remove Hetzner VM only
-#   --modal   Remove Modal resources only
+#   --all         Remove everything (default)
+#   --vm          Remove Hetzner VM only
+#   --modal       Remove Modal resources only
+#   --name        Delete specific VM by name (e.g., --name livekit-mvp)
 
 set -e
 
@@ -22,6 +23,7 @@ NC='\033[0m' # No Color
 REMOVE_ALL=true
 REMOVE_VM=false
 REMOVE_MODAL=false
+VM_NAME=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -38,6 +40,10 @@ while [[ $# -gt 0 ]]; do
             REMOVE_MODAL=true
             REMOVE_ALL=false
             shift
+            ;;
+        --name)
+            VM_NAME="$2"
+            shift 2
             ;;
         *)
             echo "Unknown option: $1"
@@ -73,19 +79,31 @@ check_tools() {
 remove_hetzner_vm() {
     echo -e "${YELLOW}Removing Hetzner VM...${NC}"
     
-    # Find VMs with oboon prefix
-    VMS=$(hcloud server list -o noheader -o columns=name | grep "^oboon-" || true)
-    
-    if [ -z "$VMS" ]; then
-        echo -e "${YELLOW}No Oboon VMs found${NC}"
-        return 0
+    if [ -n "$VM_NAME" ]; then
+        # Delete specific VM by name
+        if hcloud server describe "$VM_NAME" &>/dev/null; then
+            echo -e "${YELLOW}Deleting VM: $VM_NAME${NC}"
+            hcloud server delete "$VM_NAME"
+            echo -e "${GREEN}✓ Deleted: $VM_NAME${NC}"
+        else
+            echo -e "${RED}VM '$VM_NAME' not found${NC}"
+            exit 1
+        fi
+    else
+        # Find VMs with oboon prefix
+        VMS=$(hcloud server list -o noheader -o columns=name | grep "^oboon-" || true)
+        
+        if [ -z "$VMS" ]; then
+            echo -e "${YELLOW}No Oboon VMs found${NC}"
+            return 0
+        fi
+        
+        for vm in $VMS; do
+            echo -e "${YELLOW}Deleting VM: $vm${NC}"
+            hcloud server delete "$vm"
+            echo -e "${GREEN}✓ Deleted: $vm${NC}"
+        done
     fi
-    
-    for vm in $VMS; do
-        echo -e "${YELLOW}Deleting VM: $vm${NC}"
-        hcloud server delete "$vm"
-        echo -e "${GREEN}✓ Deleted: $vm${NC}"
-    done
     
     echo -e "${GREEN}Hetzner VM cleanup complete${NC}"
 }
