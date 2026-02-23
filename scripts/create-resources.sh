@@ -66,7 +66,7 @@ get_vm_type() {
     local calls=$1
     
     if [ "$calls" -le 50 ]; then
-        echo "cpx21"   # 2 vCPU, 4GB — dev/small tests
+        echo "cax11"   # 2 vCPU, 4GB — dev/small tests
     elif [ "$calls" -le 200 ]; then
         echo "ccx33"   # 8 dedicated cores, 32GB — up to 200 rooms @ 100%
     elif [ "$calls" -le 600 ]; then
@@ -97,7 +97,7 @@ check_tools() {
 
 # Check Hetzner context
 check_hetzner_context() {
-    if ! hcloud context list 2>/dev/null | grep -q "oobon"; then
+    if ! hcloud context list 2>/dev/null | grep -q "oboon"; then
         echo -e "${YELLOW}Setting up Hetzner context...${NC}"
         # Check for API token in env or prompt
         if [ -z "$HCLOUD_TOKEN" ]; then
@@ -140,7 +140,7 @@ create_hetzner_vm() {
         --type "$vm_type" \
         --image ubuntu-24.04 \
         --location fsn1 \
-        --ssh-key "milo@openclaw" \
+        --ssh-key "milo-openclaw" \
         --label "app=oboon" \
         --label "purpose=livekit" \
         --label "calls=$calls"
@@ -166,7 +166,7 @@ create_hetzner_vm() {
     
     # Install LiveKit and dependencies
     echo -e "${BLUE}Installing LiveKit and dependencies...${NC}"
-    ssh root@${VM_IP} << 'ENDSSH'
+    ssh -o StrictHostKeyChecking=no root@${VM_IP} << 'ENDSSH'
         set -e
         
         # Update system
@@ -175,35 +175,58 @@ create_hetzner_vm() {
         # Install dependencies
         apt-get install -y curl wget gnupg2 ca-certificates
         
+        # Determine architecture
+        ARCH=$(uname -m)
+        if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+            LIVEKIT_ARCH="arm64"
+        elif [ "$ARCH" = "x86_64" ] || [ "$ARCH" = "amd64" ]; then
+            LIVEKIT_ARCH="amd64"
+        else
+            echo "Unsupported architecture: $ARCH"
+            exit 1
+        fi
+        
         # Install LiveKit server
-        curl -sSL https://github.com/livekit/livekit/releases/latest/download/livekit-server-linux-arm64.tar.gz | tar xz -C /usr/local/bin
+        echo "Downloading LiveKit server ($LIVEKIT_ARCH)..."
+        curl -sSL -o /tmp/livekit-server.tar.gz "https://github.com/livekit/livekit/releases/download/v1.9.11/livekit_1.9.11_linux_${LIVEKIT_ARCH}.tar.gz"
+        tar xz -f /tmp/livekit-server.tar.gz -C /usr/local/bin
         chmod +x /usr/local/bin/livekit-server
         
         # Install LiveKit CLI
-        curl -sSL https://github.com/livekit/livekit-cli/releases/latest/download/livekit-cli-linux-arm64.tar.gz | tar xz -C /usr/local/bin lk
+        echo "Downloading LiveKit CLI ($LIVEKIT_ARCH)..."
+        curl -sSL -o /tmp/livekit-cli.tar.gz "https://github.com/livekit/livekit-cli/releases/download/v2.13.2/lk_2.13.2_linux_${LIVEKIT_ARCH}.tar.gz"
+        tar xz -f /tmp/livekit-cli.tar.gz -C /usr/local/bin lk
         chmod +x /usr/local/bin/lk
         
         # Create LiveKit config
         mkdir -p /etc/livekit
-        cat > /etc/livekit/config.yaml << 'EOF'
-port: 7880
-rtc:
-    port_range_start: 50000
-    port_range_end: 60000
-    use_external_ip: true
-room:
-    auto_create: true
-    max_participants: 100
-logging:
-    level: info
-EOF
         
         # Generate API keys
         LIVEKIT_API_KEY=$(openssl rand -hex 16)
         LIVEKIT_API_SECRET=$(openssl rand -hex 32)
         
+        # Create credentials file
         echo "API_KEY=$LIVEKIT_API_KEY" > /etc/livekit/credentials
         echo "API_SECRET=$LIVEKIT_API_SECRET" >> /etc/livekit/credentials
+        
+        # Get public IP dynamically in case $VM_IP wasn't passed into ENDSSH correctly
+        PUBLIC_IP=$(curl -s ifconfig.me)
+        
+        cat > /etc/livekit/config.yaml << EOF
+port: 7880
+rtc:
+    port_range_start: 50000
+    port_range_end: 60000
+    use_external_ip: false
+    node_ip: ${PUBLIC_IP}
+room:
+    auto_create: true
+    max_participants: 100
+logging:
+    level: info
+keys:
+    ${LIVEKIT_API_KEY}: ${LIVEKIT_API_SECRET}
+EOF
         
         # Create systemd service
         cat > /etc/systemd/system/livekit.service << EOF
