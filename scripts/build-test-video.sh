@@ -66,14 +66,14 @@ download_datasets() {
     
     log "Extracting images..."
     # Avengers images
-    find "${work_dir}/kaggle" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) | head -n "$IMAGE_COUNT" | \
-        while read -r img; do cp "$img" "${work_dir}/safe/$(basename "$img")" 2>/dev/null || true; done
+    find "${work_dir}/kaggle" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) > "${work_dir}/safe.list"
+    head -n "$IMAGE_COUNT" "${work_dir}/safe.list" | while read -r img; do cp "$img" "${work_dir}/safe/$(basename "$img")" 2>/dev/null || true; done
     
     # NSFW images (extract zip first)
     if ls "${work_dir}/hf"/*.zip 1> /dev/null 2>&1; then
         unzip -q "${work_dir}/hf"/*.zip -d "${work_dir}/hf_tmp" 2>/dev/null || true
-        find "${work_dir}/hf_tmp" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) | head -n "$IMAGE_COUNT" | \
-            while read -r img; do cp "$img" "${work_dir}/nsfw/$(basename "$img")" 2>/dev/null || true; done
+        find "${work_dir}/hf_tmp" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) > "${work_dir}/nsfw.list"
+        head -n "$IMAGE_COUNT" "${work_dir}/nsfw.list" | while read -r img; do cp "$img" "${work_dir}/nsfw/$(basename "$img")" 2>/dev/null || true; done
     fi
     
     local s_cnt=$(ls "${work_dir}/safe" | wc -l)
@@ -108,7 +108,9 @@ create_video() {
         ffmpeg -y -f lavfi -i testsrc=duration=20:size=640x480:rate=30 -c:v libx264 -pix_fmt yuv420p "$output" 2>/dev/null
     else
         log "Stitching $total_frames frames into real-time video..."
-        ffmpeg -y -framerate 1 -i "${work_dir}/frames/%03d.jpg" -c:v libx264 -preset fast -vf "fps=30" -pix_fmt yuv420p "$output" 2>/dev/null
+        # -framerate 1/1 reads 1 image per second.
+        # -r 30 duplicates frames to output a true 30 FPS video.
+        ffmpeg -y -framerate 1/1 -i "${work_dir}/frames/%03d.jpg" -c:v libx264 -r 30 -pix_fmt yuv420p "$output" 2>/dev/null
     fi
 }
 
