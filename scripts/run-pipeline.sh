@@ -259,19 +259,31 @@ run_test() {
 
         sleep 5
 
-        echo "Converting video to H264 bitstream for LiveKit CLI..."
-        ffmpeg -y -i test_video.mp4 -vcodec copy -bsf:v h264_mp4toannexb test_stream.h264 2>/dev/null
-
-        echo "Publishing test video..."
-        lk room join "\$LIVEKIT_URL" \\
-            --api-key "\$LIVEKIT_API_KEY" \\
-            --api-secret "\$LIVEKIT_API_SECRET" \\
-            --room nsfw-test \\
-            --identity clean-publisher \\
-            --publish test_stream.h264 \\
-            > publish.log 2>&1 &
-        
-        PUBLISH_PID=\$!
+        if [[ -f "test_video.mp4" ]]; then
+            echo "Converting custom video to H264 bitstream..."
+            ffmpeg -y -i test_video.mp4 -vcodec copy -bsf:v h264_mp4toannexb test_stream.h264 2>/dev/null
+            
+            echo "Publishing custom test video..."
+            lk room join "\$LIVEKIT_URL" \\
+                --api-key "\$LIVEKIT_API_KEY" \\
+                --api-secret "\$LIVEKIT_API_SECRET" \\
+                --room nsfw-test \\
+                --identity clean-publisher \\
+                --publish test_stream.h264 \\
+                > publish.log 2>&1 &
+            PUBLISH_PID=\$!
+        else
+            echo "No custom video found, publishing synthetic test stream..."
+            lk load-test \\
+                --url "\$LIVEKIT_URL" \\
+                --api-key "\$LIVEKIT_API_KEY" \\
+                --api-secret "\$LIVEKIT_API_SECRET" \\
+                --room nsfw-test \\
+                --video-publishers 1 \\
+                --duration "\${TEST_DURATION}s" \\
+                > publish.log 2>&1 &
+            PUBLISH_PID=\$!
+        fi
 
         echo "Waiting for agent to process video (\${TEST_DURATION}s)..."
         sleep "\$TEST_DURATION"
