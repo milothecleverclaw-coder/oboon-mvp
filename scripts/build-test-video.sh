@@ -127,8 +127,8 @@ create_segment() {
     
     if [[ "$img_count" -lt 3 ]]; then
         warn "Not enough images in $source_dir, generating synthetic segment"
-        ffmpeg -y -f lavfi -i "color=c=${label}:duration=${IMAGE_COUNT}:size=${WIDTH}x${HEIGHT}:rate=${FPS}" \
-            -vf "drawtext=text='${label}':fontsize=48:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2" \
+        ffmpeg -y -f lavfi -i "color=c=${label}:duration=${IMAGE_COUNT}:size=${WIDTH}x${HEIGHT}:rate=1" \
+            -vf "drawtext=text='${label}':fontsize=48:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2,fps=30" \
             -c:v libx264 -preset fast -pix_fmt yuv420p "$output" 2>/dev/null
         return
     fi
@@ -143,8 +143,8 @@ create_segment() {
         i=$((i + 1))
     done < /tmp/img_list.txt
     
-    # Create video from sequential images (1 FPS input, 30 FPS output)
-    ffmpeg -y -framerate 1 -i "$tmp_frames/%03d.jpg" -c:v libx264 -preset fast -r 30 -pix_fmt yuv420p "$output" 2>/dev/null
+    # Create video from sequential images (1 FPS input, 30 FPS output with duplicated frames)
+    ffmpeg -y -framerate 1 -i "$tmp_frames/%03d.jpg" -c:v libx264 -preset fast -vf "fps=30" -pix_fmt yuv420p "$output" 2>/dev/null
     
     success "Segment created: $output ($(ls "$tmp_frames" | wc -l) frames)"
 }
