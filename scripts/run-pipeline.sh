@@ -242,6 +242,11 @@ run_test() {
         export MODAL_TOKEN_SECRET="$modal_token_secret"
         export TEST_DURATION="${TEST_DURATION}"
 
+        echo "Cleaning up old processes..."
+        pkill -f "agent_server.py" 2>/dev/null || true
+        fuser -k 8081/tcp 2>/dev/null || true
+        sleep 2
+
         echo "Starting agent server..."
         python agent_server.py start \\
             --url "\$LIVEKIT_URL" \\
