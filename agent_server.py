@@ -37,10 +37,13 @@ async def process_video_track(ctx, track, participant):
                 rgb = cv2.cvtColor(arr, cv2.COLOR_RGBA2RGB)
                 
             _, buf = cv2.imencode(".jpg", rgb, [cv2.IMWRITE_JPEG_QUALITY, 70])
+            import time
+            start_t = time.time()
             result = await detect_fn.remote.aio(buf.tobytes())
-            result.update({"frame": frame_count, "user": participant.identity, "room_id": ctx.room.name})
+            latency = time.time() - start_t
+            result.update({"frame": frame_count, "user": participant.identity, "room_id": ctx.room.name, "latency_ms": round(latency * 1000)})
             
-            logger.info(f"  → NSFW: {result.get('is_nsfw')} | score: {result.get('score'):.3f}")
+            logger.info(f"  → [{ctx.room.name}] NSFW: {result.get('is_nsfw')} | score: {result.get('score'):.3f} | latency: {result.get('latency_ms')}ms")
             write_result(result)
         except Exception as e:
             logger.error(f"Error: {e}")

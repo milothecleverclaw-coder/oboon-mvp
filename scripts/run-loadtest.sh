@@ -64,6 +64,15 @@ load_state() {
     success "VM IP: $VM_IP"
 }
 
+# ── Check VM connectivity ─────────────────────────────────────────────────────
+check_vm() {
+    log "Checking VM connectivity..."
+    if ! ssh_vm "echo ok" &>/dev/null; then
+        fatal "Cannot SSH to VM at $VM_IP"
+    fi
+    success "VM reachable"
+}
+
 # ── Run Load Test ─────────────────────────────────────────────────────────────
 run_load_test() {
     log "Preparing Load Test for $CALLS concurrent calls..."
@@ -162,9 +171,8 @@ fetch_results() {
     echo ""
     echo -e "${BOLD}=== Load Test Summary ===${NC}"
     echo -e "Target Calls:      ${CALLS}"
-    echo -e "Rooms Processed:   ${rooms_processed}"
-    echo -e "Total Frames:      ${total_count}"
-    echo -e "NSFW Detections:   ${nsfw_count}"
+    
+    python3 scripts/analyze_results.py
     
     if [[ "$rooms_processed" -lt "$CALLS" ]]; then
         warn "Only $rooms_processed out of $CALLS rooms logged results!"
