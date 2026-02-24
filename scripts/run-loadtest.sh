@@ -56,6 +56,8 @@ resolve_ssh_key() {
     fatal "No SSH key found"
 }
 
+export BW_SESSION=$(bw unlock --raw "y3&tHVAg0s%70" 2>/dev/null || echo "")
+
 load_state() {
     if [[ ! -f "$STATE_FILE" ]]; then fatal "State file not found: $STATE_FILE"; fi
     VM_IP=$(jq -r '.vm_ip' "$STATE_FILE")
@@ -92,8 +94,8 @@ ENDSSH
 
 deploy_modal() {
     log "Deploying Modal GPU worker..."
-    local tid=$(bw get item "Modal" --session "$(bw unlock --raw "y3&tHVAg0s%70")" 2>/dev/null | jq -r '.login.username' 2>/dev/null || echo "")
-    local tsec=$(bw get item "Modal" --session "$(bw unlock --raw "y3&tHVAg0s%70")" 2>/dev/null | jq -r '.login.password' 2>/dev/null || echo "")
+    local tid=$(bw get item "Modal" --session "$BW_SESSION" 2>/dev/null | jq -r '.login.username' 2>/dev/null || echo "")
+    local tsec=$(bw get item "Modal" --session "$BW_SESSION" 2>/dev/null | jq -r '.login.password' 2>/dev/null || echo "")
     ssh_vm bash <<ENDSSH
         set -euo pipefail
         cd /root/oboon-mvp
@@ -107,7 +109,7 @@ ENDSSH
 build_video() {
     if [[ "$BUILD_VIDEO" != "true" ]]; then return; fi
     log "Fetching dataset credentials..."
-    local hft=$(bw get item "Hugging Face API" --session "$(bw unlock --raw "y3&tHVAg0s%70")" 2>/dev/null | jq -r '.login.password' 2>/dev/null || echo "")
+    local hft=$(bw get item "Hugging Face API" --session "$BW_SESSION" 2>/dev/null | jq -r '.login.password' 2>/dev/null || echo "")
     local ku="pandavirtual"
     local kk="KGAT_239e9640075c8b85d10beaef0f252cfb"
     log "Building test video on VM..."
