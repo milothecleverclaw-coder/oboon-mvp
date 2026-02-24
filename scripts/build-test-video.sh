@@ -81,32 +81,39 @@ download_datasets() {
     local work_dir="$1"
     
     log "Downloading Avengers dataset from Kaggle (yasserh/avengers-faces-dataset)..."
-    mkdir -p "${work_dir}/avengers"
-    cd "${work_dir}/avengers"
+    mkdir -p "${work_dir}/avengers_raw"
+    cd "${work_dir}/avengers_raw"
     kaggle datasets download -d yasserh/avengers-faces-dataset --unzip > /dev/null 2>&1 || {
-        warn "Kaggle download failed, using synthetic content"
-        return 1
+        warn "Kaggle download failed"
     }
     cd - >/dev/null
-    success "Avengers dataset downloaded"
     
     log "Downloading NSFW dataset from Hugging Face (x1101/nsfw-full)..."
-    mkdir -p "${work_dir}/nsfw"
+    mkdir -p "${work_dir}/nsfw_raw"
     HF_TOKEN="${HF_TOKEN}" hf download x1101/nsfw-full \
         --repo-type dataset \
-        --local-dir "${work_dir}/nsfw" > /dev/null 2>&1 || {
-        warn "HF download failed, using synthetic content"
-        return 1
+        --local-dir "${work_dir}/nsfw_raw" > /dev/null 2>&1 || {
+        warn "HF download failed"
     }
     
-    # Unzip HF dataset if needed
-    if ls "${work_dir}/nsfw"/*.zip 1> /dev/null 2>&1; then
-        unzip -q "${work_dir}/nsfw"/*.zip -d "${work_dir}/nsfw_extracted" 2>/dev/null || true
+    log "Extracting datasets..."
+    # Find the actual image folders (they might be nested)
+    mkdir -p "${work_dir}/safe_images"
+    mkdir -p "${work_dir}/nsfw_images"
+    
+    find "${work_dir}/avengers_raw" -type f \( -iname \*.jpg -o -iname \*.png \) -exec cp {} "${work_dir}/safe_images/" \; 2>/dev/null || true
+    
+    if ls "${work_dir}/nsfw_raw"/*.zip 1> /dev/null 2>&1; then
+        unzip -q "${work_dir}/nsfw_raw"/*.zip -d "${work_dir}/nsfw_tmp" 2>/dev/null || true
+        find "${work_dir}/nsfw_tmp" -type f \( -iname \*.jpg -o -iname \*.png \) -exec cp {} "${work_dir}/nsfw_images/" \; 2>/dev/null || true
     else
-        mkdir -p "${work_dir}/nsfw_extracted"
-        cp -r "${work_dir}/nsfw"/* "${work_dir}/nsfw_extracted/" 2>/dev/null || true
+        find "${work_dir}/nsfw_raw" -type f \( -iname \*.jpg -o -iname \*.png \) -exec cp {} "${work_dir}/nsfw_images/" \; 2>/dev/null || true
     fi
-    success "NSFW dataset downloaded"
+    
+    local safe_count=$(ls "${work_dir}/safe_images" | wc -l)
+    local nsfw_count=$(ls "${work_dir}/nsfw_images" | wc -l)
+    
+    log "Found ${safe_count} safe images and ${nsfw_count} NSFW images"
 }
 
 # ── Create Video from Images ──────────────────────────────────────────────────
@@ -115,38 +122,36 @@ create_segment() {
     local output="$2"
     local label="$3"
     
-    log "Creating ${label} video segment from ${source_dir}..."
+    log "Creating ${label} video segment..."
     
-    # Create temp dir for scaled images
-    local tmp_frames="${source_dir}/frames"
-    mkdir -p "$tmp_frames"
-    
-    # Find all images, take random ones, resize/pad to exactly 640x480
-    local img_count
-    img_count=$(find "$source_dir" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) 2>/dev/null | wc -l)
-    
-    if [[ "$img_count" -lt 3 ]]; then
-        warn "Not enough images in $source_dir, generating synthetic segment"
-        ffmpeg -y -f lavfi -i "color=c=${label}:duration=${IMAGE_COUNT}:size=${WIDTH}x${HEIGHT}:rate=1" \
-            -vf "drawtext=text='${label}':fontsize=48:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2,fps=30" \
+    local img_count=$(ls "$source_dir" | wc -l)
+    if [[ "$img_count" -lt 2 ]]; then
+        warn "Not enough images in $source_dir, using synthetic fallback"
+        ffmpeg -y -f lavfi -i "color=c=blue:duration=${IMAGE_COUNT}:size=${WIDTH}x${HEIGHT}:rate=1" \
+            -vf "drawtext=text='${label} FALLBACK':fontsize=48:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2,fps=30" \
             -c:v libx264 -preset fast -pix_fmt yuv420p "$output" 2>/dev/null
         return
     fi
+
+    # Create temp dir for scaled images
+    local tmp_frames="${source_dir}_frames"
+    mkdir -p "$tmp_frames"
     
-    find "$source_dir" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) 2>/dev/null | \
-        shuf | head -n "$IMAGE_COUNT" > /tmp/img_list.txt
+    # Pick random images and scale them
+    ls "$source_dir" | shuf | head -n "$IMAGE_COUNT" > /tmp/img_list.txt
     
     local i=1
-    while read -r img; do
+    while read -r img_name; do
         local out_frame=$(printf "%s/%03d.jpg" "$tmp_frames" "$i")
-        ffmpeg -y -i "$img" -vf "scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=decrease,pad=${WIDTH}:${HEIGHT}:(ow-iw)/2:(oh-ih)/2:color=black" "$out_frame" 2>/dev/null || true
+        ffmpeg -y -i "${source_dir}/${img_name}" -vf "scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=decrease,pad=${WIDTH}:${HEIGHT}:(ow-iw)/2:(oh-ih)/2:color=black" "$out_frame" 2>/dev/null || true
         i=$((i + 1))
     done < /tmp/img_list.txt
     
-    # Create video from sequential images (1 FPS input, 30 FPS output with duplicated frames)
+    # Create video (1 FPS input, 30 FPS output)
+    local actual_frames=$(ls "$tmp_frames" | wc -l)
     ffmpeg -y -framerate 1 -i "$tmp_frames/%03d.jpg" -c:v libx264 -preset fast -vf "fps=30" -pix_fmt yuv420p "$output" 2>/dev/null
     
-    success "Segment created: $output ($(ls "$tmp_frames" | wc -l) frames)"
+    success "Segment created: $output (${actual_frames} seconds)"
 }
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -157,19 +162,15 @@ main() {
     check_creds
     setup_env
     
-    local tmp_dir
-    tmp_dir=$(mktemp -d)
+    local tmp_dir=$(mktemp -d)
     
-    download_datasets "$tmp_dir" || true
+    download_datasets "$tmp_dir"
     
     local safe_seg="${tmp_dir}/safe.mp4"
     local nsfw_seg="${tmp_dir}/nsfw.mp4"
     
-    # Create safe segment (Avengers)
-    create_segment "${tmp_dir}/avengers" "$safe_seg" "SAFE"
-    
-    # Create NSFW segment
-    create_segment "${tmp_dir}/nsfw_extracted" "$nsfw_seg" "NSFW"
+    create_segment "${tmp_dir}/safe_images" "$safe_seg" "SAFE"
+    create_segment "${tmp_dir}/nsfw_images" "$nsfw_seg" "NSFW"
     
     log "Stitching segments together..."
     cat > /tmp/concat_list.txt <<EOF
@@ -188,8 +189,10 @@ EOF
     
     echo ""
     echo -e "${BOLD}${GREEN}=== Test Video Ready ===${NC}"
-    echo -e "  MP4:  ${OUTPUT_FILE}"
-    echo -e "  H264: ${h264_file}"
+    local duration=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$OUTPUT_FILE")
+    echo -e "  Duration: ${duration}s"
+    echo -e "  MP4:      ${OUTPUT_FILE}"
+    echo -e "  H264:     ${h264_file}"
 }
 
 main
