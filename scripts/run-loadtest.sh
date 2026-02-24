@@ -92,6 +92,8 @@ run_load_test() {
     ssh_vm bash << ENDSSH
         set -euo pipefail
         cd /root/oboon-mvp
+        git fetch --all >/dev/null 2>&1 || true
+        git reset --hard origin/main >/dev/null 2>&1 || true
         source venv/bin/activate
         export PATH="\$HOME/.local/bin:\$PATH"
         export LIVEKIT_URL="$lk_url"
