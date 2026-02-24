@@ -173,12 +173,7 @@ main() {
     create_segment "${tmp_dir}/nsfw_images" "$nsfw_seg" "NSFW"
     
     log "Stitching segments together..."
-    cat > /tmp/concat_list.txt <<EOF
-file '$safe_seg'
-file '$nsfw_seg'
-EOF
-    
-    ffmpeg -y -f concat -safe 0 -i /tmp/concat_list.txt -c copy "$OUTPUT_FILE" 2>/dev/null
+    ffmpeg -y -i "$safe_seg" -i "$nsfw_seg" -filter_complex "[0:v][1:v]concat=n=2:v=1:a=0[v]" -map "[v]" "$OUTPUT_FILE" 2>/dev/null
     
     log "Converting to H264 bitstream for LiveKit CLI..."
     local h264_file="${OUTPUT_FILE%.mp4}.h264"
