@@ -1,87 +1,106 @@
+import sys
+import os
+
+# Ensure venv packages are on path (handles livekit-agents subprocess spawning)
+_venv = os.path.join(os.path.dirname(os.path.abspath(__file__)), "venv/lib/python3.11/site-packages")
+if os.path.exists(_venv) and _venv not in sys.path:
+    sys.path.insert(0, _venv)
+
 import asyncio
 import logging
-import os
 import io
 import json
 from PIL import Image
 from livekit import agents, rtc
 import modal
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("nudity-agent")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger("nsfw-agent")
 
-# Modal setup
-# We'll use Function.lookup to connect to the deployed app
-MODAL_APP_NAME = "oboon-face-recognition"
-MODAL_FUNCTION_NAME = "detect_nudity"
+MODAL_APP = "oboon-nsfw-detector"
+MODAL_FN = "detect_nsfw"
+SAMPLE_EVERY = 30       # 1 frame per second at 30fps
+RESULTS_FILE = os.environ.get("RESULTS_FILE", "/tmp/nsfw_results.jsonl")
 
-async def entrypoint(ctx: agents.JobContext):
-    logger.info(f"Connecting to room {ctx.room.name}")
-    await ctx.connect()
-    logger.info(f"Connected to room {ctx.room.name}")
 
-    # Listen for new participants and their tracks
-    @ctx.room.on("track_subscribed")
-    def on_track_subscribed(track: rtc.Track, publication: rtc.TrackPublication, participant: rtc.RemoteParticipant):
-        if track.kind == rtc.TrackKind.KIND_VIDEO:
-            logger.info(f"Subscribed to video track from {participant.identity}")
-            asyncio.create_task(process_video_track(ctx, track, participant))
+def write_result(data: dict):
+    with open(RESULTS_FILE, "a") as f:
+        f.write(json.dumps(data) + "\n")
 
-    @ctx.room.on("participant_connected")
-    def on_participant_connected(participant: rtc.RemoteParticipant):
-        logger.info(f"Participant connected: {participant.identity}")
 
 async def process_video_track(ctx: agents.JobContext, track: rtc.VideoTrack, participant: rtc.RemoteParticipant):
+    logger.info(f"Processing video from: {participant.identity}")
+
+    # Look up Modal function
+    try:
+        detect_fn = modal.Function.lookup(MODAL_APP, MODAL_FN)
+    except Exception as e:
+        logger.error(f"Cannot find Modal function {MODAL_APP}/{MODAL_FN}: {e}")
+        logger.error("Make sure to run: modal deploy modal_gpu_worker.py")
+        return
+
     video_stream = rtc.VideoStream(track)
     frame_count = 0
-    SAMPLE_RATE = 30  # Process one frame every 30 frames (~1 fps)
-
-    # Look up the Modal function once
-    try:
-        detect_fn = modal.Function.lookup(MODAL_APP_NAME, MODAL_FUNCTION_NAME)
-    except Exception as e:
-        logger.error(f"Failed to lookup Modal function: {e}")
-        return
 
     async for frame_event in video_stream:
         frame_count += 1
-        if frame_count % SAMPLE_RATE != 0:
+        if frame_count % SAMPLE_EVERY != 0:
             continue
 
         frame = frame_event.frame
-        logger.info(f"Processing frame {frame_count} from {participant.identity}")
+        logger.info(f"Analyzing frame #{frame_count} from {participant.identity} ({frame.width}x{frame.height})")
 
-        # Convert frame to JPEG for transmission to Modal
-        # LiveKit frames are often in YUV format, PIL handles various modes
         try:
-            # Note: In a real production environment, you'd handle YUV -> RGB conversion more robustly
-            # For this MVP, we assume the frame can be converted to an image
+            # Convert raw frame → JPEG
             img = Image.frombytes("RGBA", (frame.width, frame.height), frame.data)
             buf = io.BytesIO()
-            img.save(buf, format="JPEG", quality=70)
-            jpeg_data = buf.getvalue()
+            img.convert("RGB").save(buf, format="JPEG", quality=70)
+            jpeg_bytes = buf.getvalue()
 
-            # Call Modal GPU worker
-            # remote.aio allows async calling
-            result = await detect_fn.remote.aio(jpeg_data)
-            
-            logger.info(f"Detection result for {participant.identity}: {result}")
+            # Call Modal GPU
+            result = await detect_fn.remote.aio(jpeg_bytes)
+            result["frame_num"] = frame_count
+            result["participant"] = participant.identity
 
-            if result.get("potentially_inappropriate"):
-                logger.warning(f"🚨 POTENTIAL NUDITY DETECTED for participant {participant.identity} (Ratio: {result.get('skin_ratio')})")
-                # Example action: send data message to room
+            logger.info(f"  → NSFW: {result.get('is_nsfw')} | score: {result.get('score'):.3f}")
+            write_result(result)
+
+            # If NSFW — send data message to room
+            if result.get("is_nsfw"):
+                logger.warning(f"🚨 NSFW DETECTED from {participant.identity} (score={result.get('score'):.3f})")
                 await ctx.room.local_participant.publish_data(
                     json.dumps({
                         "type": "violation",
                         "participant": participant.identity,
-                        "score": result.get("skin_ratio")
+                        "score": result.get("score"),
+                        "frame": frame_count,
                     }).encode(),
-                    reliable=True
+                    reliable=True,
                 )
 
         except Exception as e:
-            logger.error(f"Error processing frame: {e}")
+            logger.error(f"Frame processing error: {e}")
+
+
+async def entrypoint(ctx: agents.JobContext):
+    logger.info(f"Agent joining room: {ctx.room.name}")
+    await ctx.connect()
+    logger.info(f"Connected to room: {ctx.room.name}")
+
+    @ctx.room.on("track_subscribed")
+    def on_track(track: rtc.Track, pub: rtc.TrackPublication, participant: rtc.RemoteParticipant):
+        if track.kind == rtc.TrackKind.KIND_VIDEO:
+            asyncio.create_task(process_video_track(ctx, track, participant))
+
+    @ctx.room.on("participant_connected")
+    def on_join(participant: rtc.RemoteParticipant):
+        logger.info(f"Participant joined: {participant.identity}")
+
+    @ctx.room.on("participant_disconnected")
+    def on_leave(participant: rtc.RemoteParticipant):
+        logger.info(f"Participant left: {participant.identity}")
+
 
 if __name__ == "__main__":
-    cli.run_app(agents.WorkerOptions(entrypoint_fnc=entrypoint))
+    from livekit.agents import cli as lk_cli
+    lk_cli.run_app(agents.WorkerOptions(entrypoint_fnc=entrypoint))
