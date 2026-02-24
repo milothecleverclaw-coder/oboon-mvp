@@ -23,7 +23,7 @@ BLUE='\033[0;34m'; BOLD='\033[1m'; NC='\033[0m'
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 OUTPUT_FILE="test_video.mp4"
-FPS=1
+FPS=30
 WIDTH=640
 HEIGHT=480
 IMAGE_COUNT=20
@@ -143,8 +143,8 @@ create_segment() {
         i=$((i + 1))
     done < /tmp/img_list.txt
     
-    # Create video from sequential images
-    ffmpeg -y -framerate $FPS -i "$tmp_frames/%03d.jpg" -c:v libx264 -preset fast -pix_fmt yuv420p "$output" 2>/dev/null
+    # Create video from sequential images (1 FPS input, 30 FPS output)
+    ffmpeg -y -framerate 1 -i "$tmp_frames/%03d.jpg" -c:v libx264 -preset fast -r 30 -pix_fmt yuv420p "$output" 2>/dev/null
     
     success "Segment created: $output ($(ls "$tmp_frames" | wc -l) frames)"
 }

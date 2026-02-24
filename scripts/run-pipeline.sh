@@ -96,7 +96,7 @@ setup_vm() {
         export PATH="$HOME/.local/bin:$PATH"
 
         if [[ -d "oboon-mvp" ]]; then
-            cd oboon-mvp && git pull
+            cd oboon-mvp && git fetch --all && git reset --hard origin/main
         else
             git clone https://github.com/milothecleverclaw-coder/oboon-mvp.git
             cd oboon-mvp
@@ -208,8 +208,8 @@ run_test() {
         if [[ -f "test_video.mp4" ]]; then
             echo "Converting custom video to H264..."
             ffmpeg -y -i test_video.mp4 -vcodec copy -bsf:v h264_mp4toannexb test_stream.h264 2>/dev/null
-            echo "Publishing custom test video..."
-            lk room join "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" --room nsfw-test --identity clean-publisher --publish test_stream.h264 > publish.log 2>&1 &
+            echo "Publishing custom test video (30 FPS)..."
+            lk room join "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" --room nsfw-test --identity clean-publisher --publish test_stream.h264 --fps 30 > publish.log 2>&1 &
             PUBLISH_PID=\$!
         else
             echo "No custom video found, using load-test..."
