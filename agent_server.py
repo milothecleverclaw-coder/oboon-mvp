@@ -38,7 +38,7 @@ async def process_video_track(ctx, track, participant):
                 
             _, buf = cv2.imencode(".jpg", rgb, [cv2.IMWRITE_JPEG_QUALITY, 70])
             result = await detect_fn.remote.aio(buf.tobytes())
-            result.update({"frame": frame_count, "user": participant.identity})
+            result.update({"frame": frame_count, "user": participant.identity, "room_id": ctx.room.name})
             
             logger.info(f"  → NSFW: {result.get('is_nsfw')} | score: {result.get('score'):.3f}")
             write_result(result)
