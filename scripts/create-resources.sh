@@ -176,6 +176,7 @@ EOF
         --type "$vm_type" \
         --image ubuntu-24.04 \
         --location "$LOCATION" \
+        --ssh-key "milo-openclaw" \
         --user-data-from-file /tmp/livekit-cloud-init.yaml \
         --firewall livekit-firewall \
         --label "app=oboon" \
@@ -229,7 +230,7 @@ install_livekit() {
 
         echo "==> Updating packages..."
         apt-get update -qq
-        apt-get install -y -qq --no-install-recommends curl jq ca-certificates
+        apt-get install -y -qq --no-install-recommends curl jq ca-certificates python3-pip python3-venv git ffmpeg libgl1-mesa-glx libglib2.0-0
 
         echo "==> Detecting architecture..."
         ARCH=$(uname -m)
