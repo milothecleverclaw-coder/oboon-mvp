@@ -57,4 +57,5 @@ async def entrypoint(ctx: agents.JobContext):
 
 if __name__ == "__main__":
     from livekit.agents import cli
-    cli.run_app(agents.WorkerOptions(entrypoint_fnc=entrypoint))
+    port = int(os.environ.get("AGENT_PORT", "8081"))
+    cli.run_app(agents.WorkerOptions(entrypoint_fnc=entrypoint, port=port))

@@ -128,6 +128,8 @@ run_load_test() {
         
         echo "Starting \$AGENT_COUNT Agent Worker processes..."
         for i in \$(seq 1 \$AGENT_COUNT); do
+            PORT=\$((8080 + i))
+            export AGENT_PORT="\$PORT"
             python agent_server.py start --url "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" > "agent_\$i.log" 2>&1 &
         done
         sleep 5
