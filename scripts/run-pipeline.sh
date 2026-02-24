@@ -207,6 +207,7 @@ run_test() {
         export LIVEKIT_API_SECRET="$lk_secret"
         export MODAL_TOKEN_ID="$modal_token_id"
         export MODAL_TOKEN_SECRET="$modal_token_secret"
+        export TEST_DURATION="${TEST_DURATION}"
 
         echo "Starting agent server..."
         python agent_server.py start \\
