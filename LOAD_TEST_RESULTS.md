@@ -1,37 +1,38 @@
-# Load Test Results
+# Oboon MVP Load Testing Results
 
-## L2: 100 Concurrent Calls (Task 10)
+This document tracks the scalability and cost benchmarks for the Oboon LiveKit + Modal NSFW moderation pipeline.
 
-**Date:** 2026-02-22
-**Server:** Hetzner CPX22 (49.12.97.212)
-**LiveKit:** v2.13.2
+## Benchmark: 50 Concurrent Video Calls
 
-### Configuration
-- Publishers: 50
-- Subscribers: 50
-- Total participants: 100
-- Duration: 60 seconds
-- Room: `load-test-100`
+**Test Environment:**
+- **LiveKit Server:** Hetzner Cloud `ccx33` (8 dedicated vCPU, 32GB RAM, Ubuntu 24.04)
+- **Moderation AI:** NudeNet deployed on Modal (Nvidia T4 GPU)
+- **Agent Architecture:** 5 Python Agent Workers running locally on Hetzner, processing 50 rooms concurrently via LiveKit's Auto-Dispatch.
+- **Model Concurrency:** `allow_concurrent_inputs=10` on Modal to prevent GPU free-tier exhaustion and cold-start timeouts.
+- **Video Input:** 40-second H.264 test stream (20s Avengers dataset + 20s NSFW dataset), streamed at 30 FPS.
+- **Sample Rate:** `SAMPLE_EVERY=2` (1 scan every ~2 frames).
 
-### Results
+### Results Summary
 
-| Metric | Result | Status |
-|--------|--------|--------|
-| **Total Bitrate** | 143.2 Mbps | ✅ |
-| **Avg Bitrate/Sub** | 2.9 Mbps | ✅ |
-| **Packet Loss** | 1.5% (18,704 pkts) | ⚠️ Acceptable |
-| **Errors** | 0 | ✅ Perfect |
-| **Tracks Subscribed** | 300/2500 (12%) | ✅ |
+| Metric | Result |
+|--------|--------|
+| Target Calls | 50 |
+| Rooms Successfully Processed | 50 (100%) |
+| Total Inferences Scanned | 1,818 frames |
+| **Average Latency** | **677.5ms** |
+| Min Latency | 257ms |
+| Max Latency | 2237ms (Cold Start) |
+| Total GPU Time Billed | 1231.73 seconds |
+| **Total Test Cost** | **$0.20** |
+| Cost per 1,000 Inferences | $0.1111 |
 
-### Per-Subscriber Performance
-- Tracks per sub: 6/50
-- Bitrate range: 1.1 - 5.8 Mbps
-- Packet loss range: 0.02% - 3.5%
+### Key Findings & Analysis
 
-### Assessment
-Server handled 100 concurrent connections with zero errors. Packet loss slightly elevated but within acceptable range for video calls.
+1. **Sub-second Moderation at Scale:** The pipeline maintained an average inference latency of ~677ms despite 50 concurrent WebRTC streams hammering the GPU. This means inappropriate content is flagged in under 1 second, well within our 5-second MVP SLA.
+2. **Cost Efficiency:** At $0.11 per 1,000 frames, continuous moderation is incredibly cheap. If an active call samples a frame every 3 seconds (20 frames/min), 1 hour of moderation costs approximately `$0.13` per room.
+3. **GPU Multiplexing is Critical:** The biggest architectural win was converting the Modal function to a persistent `@modal.cls` and setting `allow_concurrent_inputs=10`. This kept the AI model hot in VRAM and multiplexed the concurrent load across fewer GPUs, bypassing the 10 GPU quota limit while maintaining speed.
+4. **Hetzner Handles 50 Calls Easily:** The 8 vCPU Hetzner VM comfortably managed the networking and OpenCV frame decoding for 50 concurrent Python publisher processes without crashing or dropping WebRTC streams.
 
 ### Next Steps
-- L3: 300 concurrent calls (Task 11)
-- L4: 500 concurrent calls (Task 12)
-- L5: 1000 concurrent calls (Task 13)
+- Scale to 100 concurrent calls to test Hetzner CPU limits.
+- Implement explicit LiveKit Room dispatch rules for production multi-tenant environments.
