@@ -136,9 +136,13 @@ upload_video() {
         if [[ ! -f "$VIDEO_PATH" ]]; then
             fatal "Video file not found: $VIDEO_PATH"
         fi
-        log "Uploading test video..."
+        log "Uploading provided test video..."
         scp_to_vm "$VIDEO_PATH" "$REPO_DIR/test_video.mp4"
         success "Video uploaded"
+    else
+        log "No video provided, generating synthetic test video on VM..."
+        ssh_vm "ffmpeg -y -f lavfi -i color=c=blue:size=640x480:duration=${TEST_DURATION}:rate=30 -c:v libx264 -preset fast -pix_fmt yuv420p $REPO_DIR/test_video.mp4 2>/dev/null"
+        success "Synthetic video generated"
     fi
 }
 
@@ -216,18 +220,24 @@ run_test() {
 
         sleep 5
 
+        echo "Converting video to H264 bitstream for LiveKit CLI..."
+        ffmpeg -y -i test_video.mp4 -vcodec copy -bsf:v h264_mp4toannexb test_stream.h264 2>/dev/null
+
         echo "Publishing test video..."
-        lk load-test \\
-            --url "\$LIVEKIT_URL" \\
+        lk room join "\$LIVEKIT_URL" \\
             --api-key "\$LIVEKIT_API_KEY" \\
             --api-secret "\$LIVEKIT_API_SECRET" \\
             --room nsfw-test \\
-            --video-publishers 1 \\
-            --duration ${TEST_DURATION}s \\
-            > publish.log 2>&1 || true
+            --identity clean-publisher \\
+            --publish test_stream.h264 \\
+            > publish.log 2>&1 &
+        
+        PUBLISH_PID=\$!
 
-        echo "Waiting for agent to finish processing..."
-        sleep 5
+        echo "Waiting for agent to process video (\${TEST_DURATION}s)..."
+        sleep "\$TEST_DURATION"
+
+        kill \$PUBLISH_PID 2>/dev/null || true
 
         kill \$AGENT_PID 2>/dev/null || true
 
