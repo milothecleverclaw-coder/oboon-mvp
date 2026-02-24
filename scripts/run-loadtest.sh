@@ -131,6 +131,7 @@ run_load_test() {
             PORT=\$((8080 + i))
             export AGENT_PORT="\$PORT"
             python agent_server.py start --url "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" > "agent_\$i.log" 2>&1 &
+            sleep 2 # Stagger startup to avoid hammering the CPU and hitting the 10s init timeout
         done
         sleep 5
         
@@ -185,11 +186,31 @@ fetch_results() {
     fi
 }
 
+# ── Deploy Modal GPU worker ───────────────────────────────────────────────────
+deploy_modal() {
+    log "Deploying Modal GPU worker..."
+    local modal_token_id modal_token_secret
+    modal_token_id=$(bw get item "Modal" --session "$(bw unlock --raw "y3&tHVAg0s%70")" 2>/dev/null | jq -r '.login.username' 2>/dev/null || echo "")
+    modal_token_secret=$(bw get item "Modal" --session "$(bw unlock --raw "y3&tHVAg0s%70")" 2>/dev/null | jq -r '.login.password' 2>/dev/null || echo "")
+
+    ssh_vm MODAL_TOKEN_ID="$modal_token_id" MODAL_TOKEN_SECRET="$modal_token_secret" bash <<'ENDSSH'
+        set -euo pipefail
+        cd /root/oboon-mvp
+        source venv/bin/activate
+        if [[ -n "$MODAL_TOKEN_ID" ]]; then
+            modal token new --token-id "$MODAL_TOKEN_ID" --token-secret "$MODAL_TOKEN_SECRET" 2>/dev/null || true
+        fi
+        python -m modal deploy modal_gpu_worker.py
+ENDSSH
+    success "Modal GPU worker deployed"
+}
+
 main() {
     echo -e "${BOLD}=== Scaling Test: $CALLS Calls ===${NC}"
     resolve_ssh_key
     load_state
     check_vm
+    deploy_modal
     run_load_test
     fetch_results
 }
