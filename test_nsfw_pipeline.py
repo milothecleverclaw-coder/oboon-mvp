@@ -120,9 +120,46 @@ def start_agent(lk_url: str, api_key: str, api_secret: str) -> subprocess.Popen:
     return proc
 
 
-# ── Step 4: Publish video ─────────────────────────────────────────────────────
+# ── Step 4: Dispatch agent + Publish video ────────────────────────────────────
+async def dispatch_and_wait(lk_url: str, api_key: str, api_secret: str):
+    """Dispatch agent and wait until it appears in the room"""
+    from livekit import api
+    lk_api = api.LiveKitAPI(lk_url, api_key, api_secret)
+    try:
+        dispatch = await lk_api.agent_dispatch.create_dispatch(
+            api.CreateAgentDispatchRequest(
+                agent_name="nsfw-detector",
+                room=ROOM_NAME,
+            )
+        )
+        log.info(f"✓ Agent dispatched: {dispatch.agent_name}")
+
+        # Wait until agent participant appears in room (max 15s)
+        log.info("Waiting for agent to join room...")
+        for _ in range(15):
+            await asyncio.sleep(1)
+            parts = await lk_api.room.list_participants(
+                api.ListParticipantsRequest(room=ROOM_NAME)
+            )
+            agent_parts = [p for p in parts.participants if p.identity.startswith("agent-")]
+            if agent_parts:
+                log.info(f"✓ Agent in room: {agent_parts[0].identity}")
+                break
+        else:
+            log.warning("Agent did not appear in room within 15s")
+
+    except Exception as e:
+        log.warning(f"Dispatch error: {e}")
+    finally:
+        await lk_api.aclose()
+
+
 def publish_video(lk_url: str, api_key: str, api_secret: str, video_path: str):
     log.info(f"Publishing video to room '{ROOM_NAME}'...")
+
+    # Dispatch agent and wait for it to be ready in room
+    asyncio.run(dispatch_and_wait(lk_url, api_key, api_secret))
+    time.sleep(1)
 
     # Use lk load-test with video
     cmd = [
