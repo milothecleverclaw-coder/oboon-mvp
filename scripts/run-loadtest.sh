@@ -100,7 +100,7 @@ deploy_modal() {
         set -euo pipefail
         cd /root/oboon-mvp
         source venv/bin/activate
-        if [[ -n "$tid" ]]; then modal token new --token-id "$tid" --token-secret "$tsec" 2>/dev/null || true; fi
+        if [[ -n "$tid" ]]; then python -m modal token set --token-id "$tid" --token-secret "$tsec" >/dev/null 2>&1 || true; fi
         python -m modal deploy modal_gpu_worker.py
 ENDSSH
     success "Modal GPU worker deployed"
