@@ -18,60 +18,57 @@ image = (
 )
 
 
-@app.function(
+@app.cls(
     image=image,
-    gpu="T4",        # Cheapest GPU, enough for inference
+    gpu="T4",
     timeout=60,
     memory=4096,
-    keep_warm=1,     # Keep 1 container warm to avoid cold starts
+    min_containers=1,
+    allow_concurrent_inputs=10, # 10 requests per GPU container to stay under free tier
 )
-def detect_nsfw(jpeg_bytes: bytes) -> dict:
-    """
-    Detect NSFW content in a JPEG frame.
-    Returns detections with labels and confidence scores.
-    """
-    import tempfile
-    import os
-    import numpy as np
-    import cv2
-    from nudenet import NudeDetector
+class NudeNetWorker:
+    @modal.enter()
+    def load_model(self):
+        """Loads the model into GPU memory once when the container starts."""
+        from nudenet import NudeDetector
+        self.detector = NudeDetector()
 
-    # Decode JPEG bytes → OpenCV frame
-    nparr = np.frombuffer(jpeg_bytes, np.uint8)
-    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    @modal.method()
+    def detect_nsfw(self, jpeg_bytes: bytes) -> dict:
+        """
+        Detect NSFW content in a JPEG frame.
+        """
+        import tempfile
+        import os
 
-    if frame is None:
-        return {"error": "Failed to decode frame", "is_nsfw": False, "score": 0.0}
+        # NudeDetector currently requires a file path
+        with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as f:
+            f.write(jpeg_bytes)
+            tmp_path = f.name
 
-    # Write to temp file (NudeDetector needs a file path)
-    with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as f:
-        f.write(jpeg_bytes)
-        tmp_path = f.name
+        try:
+            detections = self.detector.detect(tmp_path)
+        finally:
+            os.unlink(tmp_path)
 
-    try:
-        detector = NudeDetector()
-        detections = detector.detect(tmp_path)
-    finally:
-        os.unlink(tmp_path)
+        # NSFW labels from NudeNet
+        NSFW_LABELS = {
+            "FEMALE_BREAST_EXPOSED",
+            "FEMALE_GENITALIA_EXPOSED",
+            "MALE_GENITALIA_EXPOSED",
+            "BUTTOCKS_EXPOSED",
+            "ANUS_EXPOSED",
+        }
 
-    # NSFW labels from NudeNet
-    NSFW_LABELS = {
-        "FEMALE_BREAST_EXPOSED",
-        "FEMALE_GENITALIA_EXPOSED",
-        "MALE_GENITALIA_EXPOSED",
-        "BUTTOCKS_EXPOSED",
-        "ANUS_EXPOSED",
-    }
+        nsfw_hits = [d for d in detections if d["class"] in NSFW_LABELS]
+        max_score = max((d["score"] for d in nsfw_hits), default=0.0)
 
-    nsfw_hits = [d for d in detections if d["class"] in NSFW_LABELS]
-    max_score = max((d["score"] for d in nsfw_hits), default=0.0)
-
-    return {
-        "is_nsfw": len(nsfw_hits) > 0,
-        "score": round(max_score, 3),
-        "detections": detections,
-        "nsfw_count": len(nsfw_hits),
-    }
+        return {
+            "is_nsfw": len(nsfw_hits) > 0,
+            "score": round(max_score, 3),
+            "detections": detections,
+            "nsfw_count": len(nsfw_hits),
+        }
 
 
 @app.local_entrypoint()

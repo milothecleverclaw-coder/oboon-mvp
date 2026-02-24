@@ -15,7 +15,8 @@ def write_result(data: dict):
 
 async def process_video_track(ctx, track, participant):
     logger.info(f"Processing video from: {participant.identity}")
-    detect_fn = modal.Function.from_name(MODAL_APP, MODAL_FN)
+    worker_cls = modal.Cls.from_name(MODAL_APP, "NudeNetWorker")
+    worker = worker_cls()
     
     stream = rtc.VideoStream(track)
     frame_count = 0
@@ -39,7 +40,7 @@ async def process_video_track(ctx, track, participant):
             _, buf = cv2.imencode(".jpg", rgb, [cv2.IMWRITE_JPEG_QUALITY, 70])
             import time
             start_t = time.time()
-            result = await detect_fn.remote.aio(buf.tobytes())
+            result = await worker.detect_nsfw.remote.aio(buf.tobytes())
             latency = time.time() - start_t
             result.update({"frame": frame_count, "user": participant.identity, "room_id": ctx.room.name, "latency_ms": round(latency * 1000)})
             
