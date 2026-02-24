@@ -65,11 +65,11 @@ trap 'cleanup_on_failure' ERR
 # ── VM sizing ─────────────────────────────────────────────────────────────────
 get_vm_type() {
     local c=$1
-    if   [ "$c" -le 50   ]; then echo "ccx13"
-    elif [ "$c" -le 200  ]; then echo "ccx23"
-    elif [ "$c" -le 600  ]; then echo "ccx33"
-    elif [ "$c" -le 1000 ]; then echo "ccx43"
-    else                         echo "ccx53"
+    if   [ "$c" -le 10   ]; then echo "ccx13"  # 2 vCPU
+    elif [ "$c" -le 50   ]; then echo "ccx33"  # 8 vCPU (Need power for 50 concurrent decodes)
+    elif [ "$c" -le 200  ]; then echo "ccx43"  # 16 vCPU
+    elif [ "$c" -le 500  ]; then echo "ccx53"  # 32 vCPU
+    else                         echo "ccx63"  # 48 vCPU
     fi
 }
 
