@@ -31,12 +31,14 @@ SSH_KEY=""
 VM_IP=""
 VIDEO_PATH=""
 TEST_DURATION=20
+BUILD_VIDEO=false
 
 # ── Parse args ────────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case $1 in
         --video) VIDEO_PATH="$2"; shift 2 ;;
         --duration) TEST_DURATION="$2"; shift 2 ;;
+        --build-video) BUILD_VIDEO=true; shift ;;
         *) echo -e "${RED}Unknown option: $1${NC}"; exit 1 ;;
     esac
 done
@@ -130,17 +132,48 @@ ENDSSH
     success "VM environment set up"
 }
 
+# ── Build test video on VM ────────────────────────────────────────────────────
+build_video() {
+    if [[ "$BUILD_VIDEO" != "true" ]]; then
+        return
+    fi
+    
+    log "Building test video on VM..."
+    ssh_vm bash <<'ENDSSH'
+        set -euo pipefail
+        cd /root/oboon-mvp
+        
+        # Run build-test-video.sh if it exists
+        if [[ -f "scripts/build-test-video.sh" ]]; then
+            bash scripts/build-test-video.sh --output test_video.mp4 --duration 10
+        else
+            echo "build-test-video.sh not found, generating synthetic video..."
+            ffmpeg -y -f lavfi -i "testsrc=duration=10:size=640x480:rate=30" \
+                -c:v libx264 -preset fast -pix_fmt yuv420p test_video.mp4 2>/dev/null
+        fi
+ENDSSH
+    
+    success "Test video built"
+}
+
 # ── Upload test video (if provided) ───────────────────────────────────────────
 upload_video() {
     if [[ -n "$VIDEO_PATH" ]]; then
+        # Option 1: User provided a video file
         if [[ ! -f "$VIDEO_PATH" ]]; then
             fatal "Video file not found: $VIDEO_PATH"
         fi
         log "Uploading provided test video..."
         scp_to_vm "$VIDEO_PATH" "$REPO_DIR/test_video.mp4"
         success "Video uploaded"
+    elif ssh_vm "test -f $REPO_DIR/test_video.mp4" 2>/dev/null; then
+        # Option 2: Pre-built test video exists on VM (from build-test-video.sh)
+        log "Using pre-built test video on VM..."
+        success "Found: $REPO_DIR/test_video.mp4"
     else
-        log "No video provided, generating synthetic test video on VM..."
+        # Option 3: Generate synthetic safe video (no NSFW detection will trigger)
+        warn "No test video found, generating synthetic BLUE video (no NSFW content)..."
+        warn "Run './scripts/build-test-video.sh' on VM first for proper testing"
         ssh_vm "ffmpeg -y -f lavfi -i color=c=blue:size=640x480:duration=${TEST_DURATION}:rate=30 -c:v libx264 -preset fast -pix_fmt yuv420p $REPO_DIR/test_video.mp4 2>/dev/null"
         success "Synthetic video generated"
     fi
@@ -289,6 +322,7 @@ main() {
     load_state
     check_vm
     setup_vm
+    build_video
     upload_video
     deploy_modal
     run_test
