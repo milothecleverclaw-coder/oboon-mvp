@@ -1,17 +1,19 @@
 #!/bin/bash
 # build-test-video.sh
-# Generates a test video with safe + NSFW content for pipeline testing
+# Generates a test video by downloading real datasets from Hugging Face & Kaggle
 #
 # Usage:
-#   ./build-test-video.sh [--output <path>] [--duration <seconds>]
+#   HF_TOKEN=xxx KAGGLE_USER=xxx KAGGLE_KEY=xxx ./build-test-video.sh
+#
+# Required environment variables:
+#   HF_TOKEN     - Hugging Face API token
+#   KAGGLE_USER  - Kaggle username
+#   KAGGLE_KEY   - Kaggle API key
 #
 # This script creates:
-#   1. A "safe" video segment (synthetic color pattern)
-#   2. An NSFW video segment (from public test images)
-#   3. Stitches them together into test_stream.mp4
-#
-# The resulting video is suitable for testing the NSFW detection pipeline
-# without needing any local files.
+#   1. A "safe" video segment (from Avengers Kaggle dataset)
+#   2. An NSFW video segment (from Hugging Face NSFW dataset)
+#   3. Stitches them together into test_video.mp4 and converts to .h264
 
 set -euo pipefail
 
@@ -20,21 +22,17 @@ RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
 BLUE='\033[0;34m'; BOLD='\033[1m'; NC='\033[0m'
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
-OUTPUT_DIR="${OUTPUT_DIR:-.}"
-OUTPUT_FILE="${OUTPUT_DIR}/test_video.mp4"
-SAFE_DURATION=10
-NSFW_DURATION=10
-FPS=30
+OUTPUT_FILE="test_video.mp4"
+FPS=1
 WIDTH=640
 HEIGHT=480
+IMAGE_COUNT=20
 
 # ── Parse args ────────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case $1 in
         --output)   OUTPUT_FILE="$2"; shift 2 ;;
-        --duration) SAFE_DURATION="$2"; NSFW_DURATION="$2"; shift 2 ;;
-        --safe-duration) SAFE_DURATION="$2"; shift 2 ;;
-        --nsfw-duration) NSFW_DURATION="$2"; shift 2 ;;
+        --count)    IMAGE_COUNT="$2"; shift 2 ;;
         *) echo -e "${RED}Unknown option: $1${NC}"; exit 1 ;;
     esac
 done
@@ -45,112 +43,153 @@ success() { echo -e "${GREEN}✓ $*${NC}"; }
 warn()    { echo -e "${YELLOW}⚠ $*${NC}"; }
 error()   { echo -e "${RED}✗ $*${NC}"; }
 
-# ── Check dependencies ────────────────────────────────────────────────────────
-check_deps() {
-    local missing=()
-    for cmd in ffmpeg; do
-        command -v "$cmd" &>/dev/null || missing+=("$cmd")
-    done
-    if [[ ${#missing[@]} -gt 0 ]]; then
-        error "Missing dependencies: ${missing[*]}"
+# ── Check credentials ─────────────────────────────────────────────────────────
+check_creds() {
+    if [[ -z "${HF_TOKEN:-}" ]]; then
+        error "HF_TOKEN environment variable not set"
+        exit 1
+    fi
+    if [[ -z "${KAGGLE_USER:-}" || -z "${KAGGLE_KEY:-}" ]]; then
+        error "KAGGLE_USER and KAGGLE_KEY environment variables not set"
         exit 1
     fi
 }
 
-# ── Generate safe video segment ───────────────────────────────────────────────
-generate_safe_segment() {
-    local output="$1"
-    log "Generating safe video segment (${SAFE_DURATION}s)..."
+# ── Setup Environment ─────────────────────────────────────────────────────────
+setup_env() {
+    # Source venv if available (for kaggle/hf CLIs)
+    if [[ -f "/root/oboon-mvp/venv/bin/activate" ]]; then
+        source /root/oboon-mvp/venv/bin/activate
+    elif [[ -f "venv/bin/activate" ]]; then
+        source venv/bin/activate
+    fi
     
-    # Create a test pattern with text overlay (simulates "normal" video call)
-    ffmpeg -y -f lavfi -i "testsrc=duration=${SAFE_DURATION}:size=${WIDTH}x${HEIGHT}:rate=${FPS}" \
-        -vf "drawtext=text='SAFE CONTENT - Frame %{frame_num}':fontsize=24:fontcolor=white:x=(w-text_w)/2:y=h-50" \
-        -c:v libx264 -preset fast -pix_fmt yuv420p \
-        "$output" 2>/dev/null
+    log "Installing dataset download tools..."
+    pip install -q huggingface_hub kaggle 2>/dev/null || true
     
-    success "Safe segment: $output"
+    # Configure Kaggle
+    mkdir -p ~/.kaggle
+    cat > ~/.kaggle/kaggle.json <<EOF
+{"username":"${KAGGLE_USER}","key":"${KAGGLE_KEY}"}
+EOF
+    chmod 600 ~/.kaggle/kaggle.json
+    success "Kaggle configured"
 }
 
-# ── Generate NSFW video segment ───────────────────────────────────────────────
-generate_nsfw_segment() {
-    local output="$1"
-    log "Generating NSFW video segment (${NSFW_DURATION}s)..."
+# ── Download Datasets ─────────────────────────────────────────────────────────
+download_datasets() {
+    local work_dir="$1"
     
-    # Create a test pattern with red tint and NSFW label
-    # (In production, this would be actual NSFW content)
-    # Using synthetic content to avoid hosting actual NSFW material
-    ffmpeg -y -f lavfi -i "color=c=pink:duration=${NSFW_DURATION}:size=${WIDTH}x${HEIGHT}:rate=${FPS}" \
-        -vf "drawtext=text='NSFW TEST CONTENT':fontsize=32:fontcolor=red:x=(w-text_w)/2:y=(h-text_h)/2" \
-        -c:v libx264 -preset fast -pix_fmt yuv420p \
-        "$output" 2>/dev/null
+    log "Downloading Avengers dataset from Kaggle (yasserh/avengers-faces-dataset)..."
+    mkdir -p "${work_dir}/avengers"
+    cd "${work_dir}/avengers"
+    kaggle datasets download -d yasserh/avengers-faces-dataset --unzip > /dev/null 2>&1 || {
+        warn "Kaggle download failed, using synthetic content"
+        return 1
+    }
+    cd - >/dev/null
+    success "Avengers dataset downloaded"
     
-    success "NSFW segment: $output"
+    log "Downloading NSFW dataset from Hugging Face (x1101/nsfw-full)..."
+    mkdir -p "${work_dir}/nsfw"
+    HF_TOKEN="${HF_TOKEN}" hf download x1101/nsfw-full \
+        --repo-type dataset \
+        --local-dir "${work_dir}/nsfw" > /dev/null 2>&1 || {
+        warn "HF download failed, using synthetic content"
+        return 1
+    }
+    
+    # Unzip HF dataset if needed
+    if ls "${work_dir}/nsfw"/*.zip 1> /dev/null 2>&1; then
+        unzip -q "${work_dir}/nsfw"/*.zip -d "${work_dir}/nsfw_extracted" 2>/dev/null || true
+    else
+        mkdir -p "${work_dir}/nsfw_extracted"
+        cp -r "${work_dir}/nsfw"/* "${work_dir}/nsfw_extracted/" 2>/dev/null || true
+    fi
+    success "NSFW dataset downloaded"
 }
 
-# ── Stitch segments together ──────────────────────────────────────────────────
-stitch_video() {
-    local safe_seg="$1"
-    local nsfw_seg="$2"
-    local output="$3"
+# ── Create Video from Images ──────────────────────────────────────────────────
+create_segment() {
+    local source_dir="$1"
+    local output="$2"
+    local label="$3"
+    
+    log "Creating ${label} video segment from ${source_dir}..."
+    
+    # Create temp dir for scaled images
+    local tmp_frames="${source_dir}/frames"
+    mkdir -p "$tmp_frames"
+    
+    # Find all images, take random ones, resize/pad to exactly 640x480
+    local img_count
+    img_count=$(find "$source_dir" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) 2>/dev/null | wc -l)
+    
+    if [[ "$img_count" -lt 3 ]]; then
+        warn "Not enough images in $source_dir, generating synthetic segment"
+        ffmpeg -y -f lavfi -i "color=c=${label}:duration=${IMAGE_COUNT}:size=${WIDTH}x${HEIGHT}:rate=${FPS}" \
+            -vf "drawtext=text='${label}':fontsize=48:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2" \
+            -c:v libx264 -preset fast -pix_fmt yuv420p "$output" 2>/dev/null
+        return
+    fi
+    
+    find "$source_dir" -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) 2>/dev/null | \
+        shuf | head -n "$IMAGE_COUNT" > /tmp/img_list.txt
+    
+    local i=1
+    while read -r img; do
+        local out_frame=$(printf "%s/%03d.jpg" "$tmp_frames" "$i")
+        ffmpeg -y -i "$img" -vf "scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=decrease,pad=${WIDTH}:${HEIGHT}:(ow-iw)/2:(oh-ih)/2:color=black" "$out_frame" 2>/dev/null || true
+        i=$((i + 1))
+    done < /tmp/img_list.txt
+    
+    # Create video from sequential images
+    ffmpeg -y -framerate $FPS -i "$tmp_frames/%03d.jpg" -c:v libx264 -preset fast -pix_fmt yuv420p "$output" 2>/dev/null
+    
+    success "Segment created: $output ($(ls "$tmp_frames" | wc -l) frames)"
+}
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+main() {
+    echo -e "${BOLD}=== Building Real Test Video ===${NC}"
+    echo ""
+    
+    check_creds
+    setup_env
+    
+    local tmp_dir
+    tmp_dir=$(mktemp -d)
+    
+    download_datasets "$tmp_dir" || true
+    
+    local safe_seg="${tmp_dir}/safe.mp4"
+    local nsfw_seg="${tmp_dir}/nsfw.mp4"
+    
+    # Create safe segment (Avengers)
+    create_segment "${tmp_dir}/avengers" "$safe_seg" "SAFE"
+    
+    # Create NSFW segment
+    create_segment "${tmp_dir}/nsfw_extracted" "$nsfw_seg" "NSFW"
     
     log "Stitching segments together..."
-    
-    # Create concat file
     cat > /tmp/concat_list.txt <<EOF
 file '$safe_seg'
 file '$nsfw_seg'
 EOF
     
-    ffmpeg -y -f concat -safe 0 -i /tmp/concat_list.txt \
-        -c copy "$output" 2>/dev/null
-    
-    rm -f /tmp/concat_list.txt "$safe_seg" "$nsfw_seg"
-    
-    success "Final video: $output"
-}
-
-# ── Convert to H264 bitstream for LiveKit ─────────────────────────────────────
-convert_to_h264() {
-    local input="$1"
-    local output="${input%.mp4}.h264"
+    ffmpeg -y -f concat -safe 0 -i /tmp/concat_list.txt -c copy "$OUTPUT_FILE" 2>/dev/null
     
     log "Converting to H264 bitstream for LiveKit CLI..."
+    local h264_file="${OUTPUT_FILE%.mp4}.h264"
+    ffmpeg -y -i "$OUTPUT_FILE" -vcodec copy -bsf:v h264_mp4toannexb "$h264_file" 2>/dev/null
     
-    ffmpeg -y -i "$input" -vcodec copy -bsf:v h264_mp4toannexb "$output" 2>/dev/null
-    
-    success "H264 bitstream: $output"
-    echo "$output"
-}
-
-# ── Main ──────────────────────────────────────────────────────────────────────
-main() {
-    echo -e "${BOLD}=== Building Test Video ===${NC}"
-    echo -e "  Safe duration: ${SAFE_DURATION}s"
-    echo -e "  NSFW duration: ${NSFW_DURATION}s"
-    echo -e "  Output: ${OUTPUT_FILE}"
-    echo ""
-    
-    check_deps
-    
-    local tmp_dir
-    tmp_dir=$(mktemp -d)
-    local safe_seg="${tmp_dir}/safe.mp4"
-    local nsfw_seg="${tmp_dir}/nsfw.mp4"
-    
-    generate_safe_segment "$safe_seg"
-    generate_nsfw_segment "$nsfw_seg"
-    stitch_video "$safe_seg" "$nsfw_seg" "$OUTPUT_FILE"
-    
-    local h264_file
-    h264_file=$(convert_to_h264 "$OUTPUT_FILE")
+    # Clean up
+    rm -rf "$tmp_dir" /tmp/concat_list.txt /tmp/img_list.txt 2>/dev/null || true
     
     echo ""
     echo -e "${BOLD}${GREEN}=== Test Video Ready ===${NC}"
     echo -e "  MP4:  ${OUTPUT_FILE}"
     echo -e "  H264: ${h264_file}"
-    echo ""
-    echo -e "Use with run-pipeline.sh:"
-    echo -e "  ${BLUE}./scripts/run-pipeline.sh --video ${OUTPUT_FILE}${NC}"
 }
 
 main

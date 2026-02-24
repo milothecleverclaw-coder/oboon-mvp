@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger("nsfw-agent")
 
 MODAL_APP, MODAL_FN = "oboon-nsfw-detector", "detect_nsfw"
-SAMPLE_EVERY = 30
+SAMPLE_EVERY = int(os.environ.get("SAMPLE_EVERY", "30"))
 RESULTS_FILE = os.environ.get("RESULTS_FILE", "/tmp/nsfw_results.jsonl")
 
 def write_result(data: dict):
