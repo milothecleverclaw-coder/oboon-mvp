@@ -25,12 +25,15 @@ TEST_DURATION=60
 SAMPLE_EVERY=2
 VIDEO_PATH=""
 
+BUILD_VIDEO=false
+
 # ── Parse args ────────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case $1 in
         --calls)    CALLS="$2"; shift 2 ;;
         --duration) TEST_DURATION="$2"; shift 2 ;;
         --video)    VIDEO_PATH="$2"; shift 2 ;;
+        --build-video) BUILD_VIDEO=true; shift ;;
         *) echo -e "${RED}Unknown option: $1${NC}"; exit 1 ;;
     esac
 done
@@ -73,9 +76,32 @@ check_vm() {
     success "VM reachable"
 }
 
+# ── Build test video on VM ────────────────────────────────────────────────────
+build_video() {
+    if [[ "$BUILD_VIDEO" != "true" ]]; then
+        return
+    fi
+    
+    log "Fetching dataset credentials..."
+    local hf_token kaggle_user kaggle_key
+    hf_token=$(bw get item "Hugging Face API" --session "$(bw unlock --raw "y3&tHVAg0s%70")" 2>/dev/null | jq -r '.login.password' 2>/dev/null || echo "")
+    kaggle_user="pandavirtual"
+    kaggle_key="KGAT_239e9640075c8b85d10beaef0f252cfb"
+    
+    log "Building test video on VM (this takes time)..."
+    ssh_vm HF_TOKEN="$hf_token" KAGGLE_USER="$kaggle_user" KAGGLE_KEY="$kaggle_key" bash <<'ENDSSH'
+        set -euo pipefail
+        cd /root/oboon-mvp
+        bash scripts/build-test-video.sh --output test_video.mp4 --count 20
+ENDSSH
+    success "Test video built"
+}
+
 # ── Run Load Test ─────────────────────────────────────────────────────────────
 run_load_test() {
     log "Preparing Load Test for $CALLS concurrent calls..."
+    build_video
+    
     local lk_url=$(jq -r '.livekit_url' "$STATE_FILE")
     local lk_key=$(jq -r '.api_key' "$STATE_FILE")
     local lk_secret=$(jq -r '.api_secret' "$STATE_FILE")
