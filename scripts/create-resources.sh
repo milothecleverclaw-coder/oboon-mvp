@@ -304,7 +304,7 @@ SERVICE
         systemctl start livekit
 
         echo "==> Waiting for LiveKit to bind..."
-        for i in $(seq 1 10); do
+        for i in $(seq 1 30); do
             sleep 1
             if curl -sf http://127.0.0.1:7880 &>/dev/null; then
                 echo "==> LiveKit responding on port 7880 ✓"

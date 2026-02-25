@@ -161,7 +161,7 @@ run_load_test() {
         sleep 5
         echo "Starting $CALLS concurrent video publishers..."
         for i in \$(seq 1 $CALLS); do
-            lk room join "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" --room "nsfw-loadtest-\$i" --identity "publisher-\$i" --publish test_video.h264 --fps 30 > /dev/null 2>&1 &
+            lk room join "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" --room "nsfw-loadtest-\$i" --identity "publisher-\$i" --publish test_video.h264 --fps 30 > "pub_\$i.log" 2>&1 &
         done
         echo "Waiting for processing ($TEST_DURATION seconds)..."
         sleep "$TEST_DURATION"
