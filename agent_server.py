@@ -9,14 +9,17 @@ logger = logging.getLogger("nsfw-agent")
 MODAL_APP, MODAL_FN = "oboon-nsfw-detector", "detect_nsfw"
 SAMPLE_EVERY = int(os.environ.get("SAMPLE_EVERY", "30"))
 RESULTS_FILE = os.environ.get("RESULTS_FILE", "/tmp/nsfw_results.jsonl")
+MOCK_MODAL = os.environ.get("MOCK_MODAL", "false").lower() == "true"
 
 def write_result(data: dict):
     with open(RESULTS_FILE, "a") as f: f.write(json.dumps(data) + "\n")
 
 async def process_video_track(ctx, track, participant):
     logger.info(f"Processing video from: {participant.identity}")
-    worker_cls = modal.Cls.from_name(MODAL_APP, "NudeNetWorker")
-    worker = worker_cls()
+    
+    if not MOCK_MODAL:
+        worker_cls = modal.Cls.from_name(MODAL_APP, "NudeNetWorker")
+        worker = worker_cls()
     
     stream = rtc.VideoStream(track)
     frame_count = 0
@@ -40,7 +43,13 @@ async def process_video_track(ctx, track, participant):
             _, buf = cv2.imencode(".jpg", rgb, [cv2.IMWRITE_JPEG_QUALITY, 70])
             import time
             start_t = time.time()
-            result = await worker.detect_nsfw.remote.aio(buf.tobytes())
+            
+            if MOCK_MODAL:
+                await asyncio.sleep(0.5)
+                result = {"is_nsfw": False, "score": 0.0, "detections": [], "nsfw_count": 0}
+            else:
+                result = await worker.detect_nsfw.remote.aio(buf.tobytes())
+                
             latency = time.time() - start_t
             result.update({"frame": frame_count, "user": participant.identity, "room_id": ctx.room.name, "latency_ms": round(latency * 1000)})
             
@@ -59,6 +68,7 @@ async def entrypoint(ctx: agents.JobContext):
 if __name__ == "__main__":
     from livekit.agents import cli
     port = int(os.environ.get("AGENT_PORT", "8081"))
+    idle_procs = int(os.environ.get("AGENT_IDLE_PROCS", "40"))
     
     # Disable CPU-based load shedding for stress testing
     options = agents.WorkerOptions(
@@ -66,6 +76,7 @@ if __name__ == "__main__":
         port=port,
         load_fnc=lambda: 0.0, # Always pretend load is 0
         load_threshold=1.0,   # Never mark as unavailable
-        num_idle_processes=10 # Pre-fork 10 idle processes to handle sudden traffic spikes
+        num_idle_processes=idle_procs, # Pre-fork processes based on env var
+        initialize_process_timeout=60.0 # Give subprocesses 60s to boot under heavy load
     )
     cli.run_app(options)

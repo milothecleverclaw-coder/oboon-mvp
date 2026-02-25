@@ -131,6 +131,8 @@ run_load_test() {
         export LIVEKIT_API_SECRET="$lk_secret"
         export SAMPLE_EVERY="$SAMPLE_EVERY"
         
+        export MOCK_MODAL="true"
+        
         echo "Cleaning up old processes on Client..."
         pkill -f "agent_server.py" 2>/dev/null || true
         pkill -f "lk room join" 2>/dev/null || true
@@ -141,9 +143,16 @@ run_load_test() {
             ffmpeg -y -i test_video.mp4 -vcodec copy -bsf:v h264_mp4toannexb test_video.h264 2>/dev/null
         fi
         
-        # 1 Agent server can handle infinite jobs, the SDK spawns subprocesses natively
-        echo "Starting Agent Worker server..."
-        python agent_server.py start --url "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" > "agent.log" 2>&1 &
+        # To perfectly scale to 200 calls, we use 10 parent agents each with 25 idle processes = 250 capacity
+        AGENT_COUNT=10
+        export AGENT_IDLE_PROCS="25"
+        
+        echo "Starting \$AGENT_COUNT Agent Worker processes on Client..."
+        for i in \$(seq 1 \$AGENT_COUNT); do
+            export AGENT_PORT="\$((8080 + i))"
+            python agent_server.py start --url "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" > "agent_\$i.log" 2>&1 &
+            sleep 1
+        done
         sleep 5
         
         echo "Starting $CALLS concurrent video publishers on Client..."
