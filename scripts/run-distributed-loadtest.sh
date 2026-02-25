@@ -141,16 +141,9 @@ run_load_test() {
             ffmpeg -y -i test_video.mp4 -vcodec copy -bsf:v h264_mp4toannexb test_video.h264 2>/dev/null
         fi
         
-        # 1 Agent per 10 calls
-        AGENT_COUNT=\$(( ($CALLS + 9) / 10 ))
-        if [[ \$AGENT_COUNT -gt 50 ]]; then AGENT_COUNT=50; fi
-        
-        echo "Starting \$AGENT_COUNT Agent Worker processes on Client..."
-        for i in \$(seq 1 \$AGENT_COUNT); do
-            export AGENT_PORT="\$((8080 + i))"
-            python agent_server.py start --url "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" > "agent_\$i.log" 2>&1 &
-            sleep 1
-        done
+        # 1 Agent server can handle infinite jobs, the SDK spawns subprocesses natively
+        echo "Starting Agent Worker server..."
+        python agent_server.py start --url "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" > "agent.log" 2>&1 &
         sleep 5
         
         echo "Starting $CALLS concurrent video publishers on Client..."

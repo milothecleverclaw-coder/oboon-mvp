@@ -66,7 +66,6 @@ if __name__ == "__main__":
         port=port,
         load_fnc=lambda: 0.0, # Always pretend load is 0
         load_threshold=1.0,   # Never mark as unavailable
-        num_idle_processes=10, # Each worker handles up to 10 concurrent rooms
-        initialize_process_timeout=60.0 # Give subprocesses 60s to boot under heavy load
+        num_idle_processes=10 # Pre-fork 10 idle processes to handle sudden traffic spikes
     )
     cli.run_app(options)
