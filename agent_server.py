@@ -59,4 +59,12 @@ async def entrypoint(ctx: agents.JobContext):
 if __name__ == "__main__":
     from livekit.agents import cli
     port = int(os.environ.get("AGENT_PORT", "8081"))
-    cli.run_app(agents.WorkerOptions(entrypoint_fnc=entrypoint, port=port))
+    
+    # Disable CPU-based load shedding for stress testing
+    options = agents.WorkerOptions(
+        entrypoint_fnc=entrypoint,
+        port=port,
+        load_fnc=lambda: 0.0, # Always pretend load is 0
+        load_threshold=1.0    # Never mark as unavailable
+    )
+    cli.run_app(options)
