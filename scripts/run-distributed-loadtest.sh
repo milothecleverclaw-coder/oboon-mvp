@@ -153,7 +153,8 @@ run_load_test() {
             python agent_server.py start --url "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" > "agent_\$i.log" 2>&1 &
             sleep 1
         done
-        sleep 5
+        echo "Waiting 30 seconds for all 250 Agent idle subprocesses to boot and register..."
+        sleep 30
         
         echo "Starting $CALLS concurrent video publishers on Client..."
         for i in \$(seq 1 $CALLS); do
