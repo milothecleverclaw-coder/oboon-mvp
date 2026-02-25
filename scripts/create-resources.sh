@@ -258,6 +258,7 @@ install_livekit() {
 port: 7880
 bind_addresses:
   - "0.0.0.0"
+prometheus_port: 6789
 rtc:
   port_range_start: 50000
   port_range_end: 60000
