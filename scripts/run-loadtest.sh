@@ -146,8 +146,12 @@ run_load_test() {
         if [[ ! -f "test_video.h264" ]]; then
             ffmpeg -y -i test_video.mp4 -vcodec copy -bsf:v h264_mp4toannexb test_video.h264 2>/dev/null
         fi
+        # 3. Calculate how many agent processes to spawn (1 agent per 10 calls to spread CPU load for cv2 decode)
         AGENT_COUNT=\$(( ($CALLS + 9) / 10 ))
-        if [[ \$AGENT_COUNT -gt 8 ]]; then AGENT_COUNT=8; fi
+        
+        # Prevent runaway processes on massive tests, but allow up to 50 workers for 500 calls
+        if [[ \$AGENT_COUNT -gt 50 ]]; then AGENT_COUNT=50; fi
+        
         echo "Starting \$AGENT_COUNT Agent Worker processes..."
         for i in \$(seq 1 \$AGENT_COUNT); do
             export AGENT_PORT="\$((8080 + i))"
