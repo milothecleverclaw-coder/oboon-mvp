@@ -143,17 +143,22 @@ run_load_test() {
             ffmpeg -y -i test_video.mp4 -vcodec copy -bsf:v h264_mp4toannexb test_video.h264 2>/dev/null
         fi
         
-        # To perfectly scale to 200 calls, we use 10 parent agents each with 25 idle processes = 250 capacity
-        AGENT_COUNT=10
-        export AGENT_IDLE_PROCS="25"
+        # Scale parent agents and idle procs dynamically based on target calls
+        # 1 parent per 20 calls. Max 30 parents to avoid OS thrashing.
+        AGENT_COUNT=\$(( ($CALLS + 19) / 20 ))
+        if [[ \$AGENT_COUNT -gt 30 ]]; then AGENT_COUNT=30; fi
         
-        echo "Starting \$AGENT_COUNT Agent Worker processes on Client..."
+        # Idle procs per agent. E.g., for 400 calls and 20 agents -> 20 procs each (400 total) + buffer
+        IDLE_PROCS=\$(( ($CALLS / \$AGENT_COUNT) + 5 ))
+        export AGENT_IDLE_PROCS="\$IDLE_PROCS"
+        
+        echo "Starting \$AGENT_COUNT Agent Worker processes (with \$IDLE_PROCS idle procs each = \$((AGENT_COUNT * IDLE_PROCS)) capacity)..."
         for i in \$(seq 1 \$AGENT_COUNT); do
             export AGENT_PORT="\$((8080 + i))"
             python agent_server.py start --url "\$LIVEKIT_URL" --api-key "\$LIVEKIT_API_KEY" --api-secret "\$LIVEKIT_API_SECRET" > "agent_\$i.log" 2>&1 &
             sleep 1
         done
-        echo "Waiting 30 seconds for all 250 Agent idle subprocesses to boot and register..."
+        echo "Waiting 30 seconds for all \$((AGENT_COUNT * IDLE_PROCS)) Agent idle subprocesses to boot and register..."
         sleep 30
         
         echo "Starting $CALLS concurrent video publishers on Client..."

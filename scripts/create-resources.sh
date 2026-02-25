@@ -67,7 +67,7 @@ get_vm_type() {
     local c=$1
     if   [ "$c" -le 10   ]; then echo "ccx13"  # 2 vCPU
     elif [ "$c" -le 50   ]; then echo "ccx33"  # 8 vCPU (Need power for 50 concurrent decodes)
-    elif [ "$c" -le 200  ]; then echo "ccx43"  # 16 vCPU
+    elif [ "$c" -le 400  ]; then echo "ccx43"  # 16 vCPU (Forcing 16 vCPU for 400 calls test)
     elif [ "$c" -le 500  ]; then echo "ccx53"  # 32 vCPU
     else                         echo "ccx63"  # 48 vCPU
     fi
