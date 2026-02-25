@@ -131,7 +131,7 @@ run_load_test() {
         export LIVEKIT_API_SECRET="$lk_secret"
         export SAMPLE_EVERY="$SAMPLE_EVERY"
         
-        export MOCK_MODAL="true"
+        export MOCK_MODAL="false"
         
         echo "Cleaning up old processes on Client..."
         pkill -f "agent_server.py" 2>/dev/null || true
