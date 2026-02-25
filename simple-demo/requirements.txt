@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+modal
+deepface
+opencv-python-headless
+livekit
+livekit-agents
+livekit-api

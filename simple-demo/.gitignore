@@ -1,0 +1,9 @@
+node_modules/
+venv/
+dist/
+data/users.json
+*.log
+__pycache__/
+.env
+.modal/
+.git/
