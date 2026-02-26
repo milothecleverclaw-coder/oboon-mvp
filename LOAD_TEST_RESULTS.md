@@ -192,3 +192,73 @@ This is the ultimate stress test. We utilized the decoupled 2-VM architecture to
 2. **Modal's Massive Scale:** We sent nearly **8,000 images** to Modal over the course of 60 seconds. Modal's serverless router dynamically spun up T4 GPUs and multiplexed the requests perfectly, keeping the average latency well under 1 second (856ms).
 3. **Stream Stability:** The FFmpeg `filter_complex` video generation logic resulted in highly stable streams. Almost every single room correctly identified 10 to 12 NSFW frames inside the designated "NSFW" segment of the test video, proving the video pacing and network delivery were rock solid across the board.
 4. **Final Cost Math:** Processing 200 active, simultaneous video calls with a 1-second interval AI scan costs roughly **$1.00 per minute** on Modal. Tuning the scan rate to every 5 seconds would drop this to roughly `$12.00 per hour` for 200 concurrent users.
+
+---
+
+## Benchmark 7: 400 Concurrent Calls (Distributed 2-VM, Modal GPU Enabled)
+
+To test the absolute maximum limits of the architecture, we scaled the infrastructure to massive proportions and ran 400 concurrent streams.
+
+**Test Environment:**
+- **LiveKit Server VM:** Hetzner Cloud `ccx53` (32 dedicated vCPU)
+- **Client/Agent VM:** Hetzner Cloud `ccx63` (48 dedicated vCPU)
+- **Agent Architecture:** 20 Master Python Processes running `livekit-agents`.
+- **Agent Configuration:** `num_idle_processes=25` (500 total capacity), `initialize_process_timeout=60.0`, load-shedding disabled.
+- **Modal:** **Enabled.** `allow_concurrent_inputs=10` on Nvidia T4.
+
+### Results Summary
+
+| Metric | Result |
+|--------|--------|
+| Target Calls | 400 |
+| **Rooms Successfully Processed** | **400 (100% Success!)** |
+| Total Inferences Scanned | 15,043 frames |
+| **Average Latency** | **1,894.5ms** |
+| Min Latency | 253ms |
+| Max Latency | 8,040ms (Queue / Cold Start) |
+| Stream Stability (Frames Scanned) | Avg: 37.6, Min: 31, Max: 41 |
+| Stream Stability (NSFW Caught) | Avg: 12.0, Min: 11, Max: 12 |
+| Total GPU Time Billed | 28,499.19 seconds |
+| **Total Test Cost** | **$4.67** |
+| Cost per 1,000 Inferences | $0.3107 |
+
+### Key Findings & Analysis
+
+1. **Networking and Extraction are Solved:** The Hetzner infrastructure and Python multiprocessing setup handled 400 concurrent video decodes flawlessly. The 48 vCPU Client VM managed 500 idle subprocesses and routed 15,000+ frames without dropping a single room.
+2. **The "Thundering Herd" Bottleneck:** The average latency spiked to ~1.9 seconds, with max latencies reaching 8 seconds. This is because 400 publishers joined simultaneously, creating a massive queue on Modal before it could spin up enough T4 GPUs to handle the spike.
+3. **Cost Increase:** Because the GPU workers were kept alive longer to process the backlog queue, the cost per 1,000 inferences roughly doubled compared to the 200-call test.
+
+---
+
+## Benchmark 8: 300 Concurrent Calls (Distributed 2-VM, Modal GPU Enabled)
+
+To find the sweet spot between the flawless 200-call test and the queue-bottlenecked 400-call test, we dialed the load back to 300 concurrent streams.
+
+**Test Environment:**
+- **LiveKit Server VM:** Hetzner Cloud `ccx53` (32 dedicated vCPU)
+- **Client/Agent VM:** Hetzner Cloud `ccx63` (48 dedicated vCPU)
+- **Agent Architecture:** 15 Master Python Processes.
+- **Agent Configuration:** `num_idle_processes=25` (375 total capacity), `initialize_process_timeout=60.0`.
+- **Modal:** **Enabled.** `allow_concurrent_inputs=10` on Nvidia T4.
+
+### Results Summary
+
+| Metric | Result |
+|--------|--------|
+| Target Calls | 300 |
+| **Rooms Successfully Processed** | **296 (98.6%)** |
+| Total Inferences Scanned | 11,238 frames |
+| **Average Latency** | **1,211.4ms** |
+| Min Latency | 255ms |
+| Max Latency | 14,324ms (Queue Spike) |
+| Stream Stability (Frames Scanned) | Avg: 38.0, Min: 15, Max: 41 |
+| Stream Stability (NSFW Caught) | Avg: 11.9, Min: 6, Max: 12 |
+| Total GPU Time Billed | 13,613.58 seconds |
+| **Total Test Cost** | **$2.23** |
+| Cost per 1,000 Inferences | $0.1987 |
+
+### Key Findings & Analysis
+
+1. **The Serverless Ceiling:** At 300 instantaneous calls, the average latency sits at ~1.2 seconds. This confirms that the current architecture's "sub-second sweet spot" lies somewhere around 200-250 simultaneous bursts.
+2. **Real-world vs. Load Test:** It is important to note that these load tests simulate 300 users joining *at the exact same millisecond*. In a real-world production environment, users join gradually, allowing Modal to keep GPUs "warm" and scale smoothly. Therefore, this architecture can likely support 400+ concurrent calls in production, provided they do not all connect instantaneously.
+3. **Future Scaling:** To push beyond 400 concurrent users with strict sub-second latency SLA, we will either need a quota increase from Modal to keep more GPUs warm, or migrate the inference endpoint to a dedicated bare-metal GPU server (e.g., RTX 4090).
