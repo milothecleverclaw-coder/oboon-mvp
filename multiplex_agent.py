@@ -15,6 +15,9 @@ START_ID = int(os.environ.get("START_ID", "1"))
 END_ID = int(os.environ.get("END_ID", "50"))
 NODE_ID = os.environ.get("NODE_ID", "1")
 
+# Use an asyncio queue for synchronized writing
+result_queue = asyncio.Queue()
+
 try:
     if not MOCK_MODAL:
         worker_cls = modal.Cls.from_name(MODAL_APP, "NudeNetWorker")
@@ -25,11 +28,18 @@ except Exception as e:
     logger.error(f"Failed to initialize Modal worker globally: {e}")
     global_worker = None
 
-def write_result(data: dict):
+async def result_writer_worker():
+    """Background task to write results from queue to file, avoiding file limits."""
+    # Open the file once in append mode and keep it open
     with open(RESULTS_FILE, "a") as f:
-        f.write(json.dumps(data) + "\n")
-        f.flush()
-        os.fsync(f.fileno())
+        while True:
+            data = await result_queue.get()
+            if data is None: # Sentinel value to stop
+                break
+            f.write(json.dumps(data) + "\n")
+            f.flush()
+            # os.fsync(f.fileno()) # Removing fsync to improve throughput
+            result_queue.task_done()
 
 async def process_video_track(room, track, participant):
     logger.info(f"[{room.name}] Processing video from: {participant.identity}")
@@ -73,7 +83,8 @@ async def process_video_track(room, track, participant):
                 latency = time.time() - start_t
                 result.update({"frame": frame_count, "user": participant.identity, "room_id": room.name, "latency_ms": round(latency * 1000)})
                 
-                write_result(result)
+                # Put result in queue instead of opening file directly
+                await result_queue.put(result)
                 
             except Exception as e:
                 logger.error(f"Error processing frame in {room.name}: {e}")
@@ -110,6 +121,9 @@ async def main():
 
     logger.info(f"Starting multiplex agent for Node {NODE_ID}, Rooms {START_ID} to {END_ID}")
     
+    # Start the background writer task
+    writer_task = asyncio.create_task(result_writer_worker())
+    
     rooms = []
     # Join rooms slightly staggered to avoid hammering LiveKit auth
     for i in range(START_ID, END_ID + 1):
@@ -129,6 +143,9 @@ async def main():
     finally:
         for r in rooms:
             await r.disconnect()
+        # Shutdown writer gently if possible
+        await result_queue.put(None)
+        await writer_task
 
 if __name__ == "__main__":
     try:
