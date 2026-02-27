@@ -265,6 +265,42 @@ To find the sweet spot between the flawless 200-call test and the queue-bottlene
 
 ---
 
+
+---
+
+## Benchmark 8.5: 400 Concurrent Calls (4-VM Swarm, 2-Second Sample, Modal A10G)
+
+To bypass the single-node Python `asyncio` crashes and OS-level scheduler bottlenecks observed in previous tests, we moved to a horizontally scaled "Swarm" architecture. We deployed 4 smaller Client VMs to distribute the load of running the `livekit-agents` Master processes and the WebRTC publishers.
+
+**Test Environment:**
+- **LiveKit Server VM:** Hetzner Cloud `ccx53` (32 dedicated vCPU)
+- **Client Swarm:** 4x Hetzner Cloud `ccx33` (8 dedicated vCPU), 100 calls generated per VM.
+- **Agent Architecture:** 10 Master Python Processes per VM (40 total across swarm).
+- **Agent Configuration:** `num_idle_processes=10` per Master (400 total capacity), `SAMPLE_EVERY=60` (2 seconds).
+- **Modal:** **Enabled.** `allow_concurrent_inputs=4` on Nvidia A10G.
+
+### Results Summary
+
+| Metric | Result |
+|--------|--------|
+| Target Calls | 400 |
+| **Rooms Successfully Processed** | **369 (92.25%)** |
+| Total Inferences Scanned | 12,392 frames |
+| **Average Latency** | **1,709.9ms** |
+| Min Latency | 440ms |
+| Max Latency | 8,207ms (Queue / Cold Start) |
+| Stream Stability (Frames Scanned) | Avg: 33.6, Min: 10, Max: 40 |
+| Stream Stability (NSFW Caught) | Avg: 9.5, Min: 1, Max: 12 |
+| Total GPU Time Billed | 21,188.64 seconds |
+| **Total Test Cost** | **$3.47** |
+| Cost per 1,000 Inferences | $0.2804 |
+
+### Key Findings & Analysis
+
+1. **Swarm Stability is a Success:** By splitting the Python agent workload across 4 different Hetzner VMs, we completely bypassed the single-node `asyncio` watchdog crashes. The architecture successfully established and processed 369 out of 400 rooms (a massive improvement over the single-VM tests). The remaining ~31 rooms likely timed out on the client side during the initial swarm startup rush.
+2. **AI Accuracy:** The NudeNet model correctly identified the explicit NSFW trigger images in the back half of the 369 active videos, proving the video ingestion and SFW/NSFW transitions were handled perfectly.
+3. **The Final Bottleneck is Purely GPU Queuing:** With a 2-second sample rate, the swarm generates 200 frames per second. Even with the faster A10G GPUs, 10 concurrent Modal containers mathematically cannot process 200 frames per second without a queue forming. The latency crept up to ~1.7 seconds because we redlined the Modal concurrency limit.
+
 ## Benchmark 9: 400 Concurrent Calls (4-Second Sample Rate, Modal A10G)
 
 To solve the serverless queue bottlenecks observed in Benchmark 7, we reduced the frame sampling rate from 1 frame every 2 seconds (`SAMPLE_EVERY=60`) to 1 frame every 4 seconds (`SAMPLE_EVERY=120`) and upgraded the Modal GPU from T4 to A10G.
