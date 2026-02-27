@@ -31,6 +31,9 @@ for i in $(seq 1 $SWARM_SIZE); do
         export MOCK_MODAL="false"
         export NODE_ID="$i"
         
+        # Increase open file descriptor limit for high-concurrency WebRTC
+        ulimit -n 65535
+        
         pkill -f "multiplex_agent.py" 2>/dev/null || true
         pkill -f "agent_server.py" 2>/dev/null || true
         pkill -f "lk room join" 2>/dev/null || true
