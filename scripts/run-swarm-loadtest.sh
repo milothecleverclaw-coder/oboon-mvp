@@ -3,7 +3,7 @@ set -euo pipefail
 
 SWARM_SIZE=4
 CALLS_PER_VM=100
-DURATION=60
+DURATION=80
 
 SERVER_STATE_FILE="$HOME/.openclaw/workspace/oboon/.vm-state.json"
 LK_URL=$(jq -r '.livekit_url' "$SERVER_STATE_FILE")
