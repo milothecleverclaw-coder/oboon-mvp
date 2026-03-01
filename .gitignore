@@ -25,3 +25,8 @@ livekit-credentials.md
 # OS
 .DS_Store
 Thumbs.db
+-e 
+# Virtual environments
+venv/
+test_venv/
+*.venv/
