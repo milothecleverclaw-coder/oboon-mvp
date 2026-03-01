@@ -1,7 +1,7 @@
 # Oboon MVP - Cashflow & Spending Breakdown
 
 > **Based on:** 6 prisons, 10,000 prisoners  
-> **Currency:** GBP (£)  
+> **Currency:** Thai Baht (฿)  
 > **Last Updated:** March 2026
 
 ---
@@ -17,7 +17,7 @@
 | Total AIOs | 62 |
 | Family Accounts (est.) | 50,000 |
 | Peak Concurrent Calls | ~100 |
-| **Total 5-Year Spend** | **~£120,000** |
+| **Total 5-Year Spend** | **~฿4,700,000** |
 
 ---
 
@@ -68,21 +68,21 @@ Deploy and validate the complete Oboon system in a single prison to prove techni
 | Item | Cost | Notes |
 |------|------|-------|
 | **Hardware** | | |
-| Prisoner AIOs (9 units) | £2,070 | 9 × 10,000 THB |
-| Officer AIOs (2 units) | £460 | 2 × 10,000 THB |
+| Prisoner AIOs (9 units) | ฿90,000 | 9 × ฿10,000 |
+| Officer AIOs (2 units) | ฿20,000 | 2 × ฿10,000 |
 | **VMs (3 months)** | | |
-| LiveKit Server (32 vCPU) | £939 | £313 × 3 |
-| Agent VM (48 vCPU) | £1,881 | £627 × 3 |
+| LiveKit Server (32 vCPU) | ฿40,800 | ฿13,600 × 3 |
+| Agent VM (48 vCPU) | ฿81,600 | ฿27,200 × 3 |
 | **GPU (3 months)** | | |
-| Modal/Runpod inference | £150 | Light testing |
+| Modal/Runpod inference | ฿6,000 | Light testing |
 | **Egress (3 months)** | | |
-| International (to GPU) | £190 | Light load |
+| International (to GPU) | ฿8,000 | Light load |
 | **Storage** | | |
-| Object storage | £15 | Minimal |
+| Object storage | ฿600 | Minimal |
 | **Setup/Misc** | | |
-| Travel, deployment, testing | £1,500 | |
-| Contingency (10%) | £800 | |
-| **Phase 1 Total** | **£8,005** | |
+| Travel, deployment, testing | ฿60,000 | |
+| Contingency (10%) | ฿31,000 | |
+| **Phase 1 Total** | **฿338,000** | |
 
 ---
 
@@ -133,18 +133,18 @@ Refine the system based on pilot feedback, optimize performance, and prepare inf
 | Item | Cost | Notes |
 |------|------|-------|
 | **VMs (3 months)** | | |
-| LiveKit Server | £939 | £313 × 3 |
-| Agent VM | £1,881 | £627 × 3 |
+| LiveKit Server | ฿40,800 | ฿13,600 × 3 |
+| Agent VM | ฿81,600 | ฿27,200 × 3 |
 | **GPU (3 months)** | | |
-| Modal/Runpod | £300 | More testing |
+| Modal/Runpod | ฿12,000 | More testing |
 | **Egress (3 months)** | | |
-| International | £380 | Increased load |
+| International | ฿16,000 | Increased load |
 | **Storage** | | |
-| Object storage | £30 | Growing |
+| Object storage | ฿1,200 | Growing |
 | **Optimization/Testing** | | |
-| Load testing, tuning | £500 | |
-| Contingency (10%) | £350 | |
-| **Phase 2 Total** | **£4,380** | |
+| Load testing, tuning | ฿20,000 | |
+| Contingency (10%) | ฿15,000 | |
+| **Phase 2 Total** | **฿187,000** | |
 
 ---
 
@@ -208,22 +208,22 @@ Deploy Oboon to all 6 prisons, train staff at each location, and achieve full op
 | Item | Cost | Notes |
 |------|------|-------|
 | **Hardware** | | |
-| Prisoner AIOs (41 units) | £9,430 | 41 × 10,000 THB |
-| Officer AIOs (10 units) | £2,300 | 10 × 10,000 THB |
+| Prisoner AIOs (41 units) | ฿410,000 | 41 × ฿10,000 |
+| Officer AIOs (10 units) | ฿100,000 | 10 × ฿10,000 |
 | **VMs (6 months)** | | |
-| LiveKit Server | £1,878 | £313 × 6 |
-| Agent VM | £3,762 | £627 × 6 |
+| LiveKit Server | ฿81,600 | ฿13,600 × 6 |
+| Agent VM | ฿163,200 | ฿27,200 × 6 |
 | **GPU (6 months)** | | |
-| Modal/Runpod | £600 | Production load |
+| Modal/Runpod | ฿24,000 | Production load |
 | **Egress (6 months)** | | |
-| International | £760 | Full scale |
+| International | ฿32,000 | Full scale |
 | **Storage** | | |
-| Object storage | £90 | Growing |
+| Object storage | ฿3,600 | Growing |
 | **Deployment** | | |
-| Travel, setup (5 prisons) | £3,000 | |
-| Training materials | £1,500 | |
-| Contingency (10%) | £2,000 | |
-| **Phase 3 Total** | **£25,320** | |
+| Travel, setup (5 prisons) | ฿120,000 | |
+| Training materials | ฿60,000 | |
+| Contingency (10%) | ฿80,000 | |
+| **Phase 3 Total** | **฿1,074,000** | |
 
 ---
 
@@ -287,18 +287,18 @@ Scale the family-facing application to support 50,000 registered users, with ful
 | Item | Cost | Notes |
 |------|------|-------|
 | **VMs (9 months)** | | |
-| LiveKit Server | £2,817 | £313 × 9 |
-| Agent VM | £5,643 | £627 × 9 |
+| LiveKit Server | ฿122,400 | ฿13,600 × 9 |
+| Agent VM | ฿244,800 | ฿27,200 × 9 |
 | **GPU (9 months)** | | |
-| Modal/Runpod | £900 | |
+| Modal/Runpod | ฿36,000 | |
 | **Egress (9 months)** | | |
-| International | £1,140 | |
+| International | ฿48,000 | |
 | **Storage** | | |
-| Object storage (growing) | £270 | 500GB target |
+| Object storage (growing) | ฿10,800 | 500GB target |
 | **Marketing/Launch** | | |
-| App store optimization, support | £1,000 | |
-| Contingency (10%) | £730 | |
-| **Phase 4 Total** | **£12,500** | |
+| App store optimization, support | ฿40,000 | |
+| Contingency (10%) | ฿29,000 | |
+| **Phase 4 Total** | **฿531,000** | |
 
 *Note: Overlaps with Phase 3 end and Phase 5 start*
 
@@ -370,20 +370,20 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 | Item | Annual Cost | 4 Years |
 |------|-------------|---------|
 | **VMs** | | |
-| LiveKit Server | £3,756/yr | £15,024 |
-| Agent VM | £7,524/yr | £30,096 |
+| LiveKit Server | ฿163,200/yr | ฿652,800 |
+| Agent VM | ฿326,400/yr | ฿1,305,600 |
 | **GPU** | | |
-| Modal/Runpod | £1,200/yr | £4,800 |
+| Modal/Runpod | ฿48,000/yr | ฿192,000 |
 | **Egress** | | |
-| International | £1,520/yr | £6,080 |
+| International | ฿64,000/yr | ฿256,000 |
 | **Storage** | | |
-| Object storage | £120/yr | £480 |
+| Object storage | ฿4,800/yr | ฿19,200 |
 | **Maintenance** | | |
-| Hardware replacements | £1,000/yr | £4,000 |
-| Software updates | £500/yr | £2,000 |
-| Support (part-time) | £1,000/yr | £4,000 |
-| **Contingency** | | £4,000 |
-| **Phase 5 Total** | | **£70,480** |
+| Hardware replacements | ฿40,000/yr | ฿160,000 |
+| Software updates | ฿20,000/yr | ฿80,000 |
+| Support (part-time) | ฿40,000/yr | ฿160,000 |
+| **Contingency** | | ฿160,000 |
+| **Phase 5 Total** | | **฿2,985,600** |
 
 ---
 
@@ -391,11 +391,11 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 
 | Phase | Months | Spend | Cumulative |
 |-------|--------|-------|------------|
-| **1. Pilot** | 1-3 | £8,000 | £8,000 |
-| **2. Validation** | 4-6 | £4,000 | £12,000 |
-| **3. Rollout** | 7-12 | £25,000 | £37,000 |
-| **4. Family Scale** | 10-18 | £12,500 | £49,500 |
-| **5. Operations** | Year 2-5 | £70,000 | £119,500 |
+| **1. Pilot** | 1-3 | ฿338,000 | ฿338,000 |
+| **2. Validation** | 4-6 | ฿187,000 | ฿525,000 |
+| **3. Rollout** | 7-12 | ฿1,074,000 | ฿1,599,000 |
+| **4. Family Scale** | 10-18 | ฿531,000 | ฿2,130,000 |
+| **5. Operations** | Year 2-5 | ฿2,986,000 | ฿5,116,000 |
 
 ---
 
@@ -403,12 +403,12 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 
 | Milestone | When | Amount Needed |
 |-----------|------|---------------|
-| Start Pilot | Day 1 | **£8,000** |
-| Start Validation | Month 4 | **£4,000** |
-| Buy Bulk Hardware | Month 7 | **£12,000** |
-| Complete Rollout | Month 7-12 | **£13,000** |
-| Year 2 Ops | Month 13 | **£13,000/yr** |
-| Years 3-5 | Ongoing | **£13,000/yr** |
+| Start Pilot | Day 1 | **฿338,000** |
+| Start Validation | Month 4 | **฿187,000** |
+| Buy Bulk Hardware | Month 7 | **฿510,000** |
+| Complete Rollout | Month 7-12 | **฿564,000** |
+| Year 2 Ops | Month 13 | **฿545,000/yr** |
+| Years 3-5 | Ongoing | **฿545,000/yr** |
 
 **Peak cash need:** Month 7-12 (buying all hardware + running full infra)
 
@@ -418,10 +418,10 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 
 ### NIPA Cloud VMs (Monthly)
 
-| Server | Spec | Monthly (THB) | Monthly (£) |
-|--------|------|---------------|-------------|
-| LiveKit Server | 32 vCPU, 64GB | ฿13,600 | £313 |
-| Agent VM | 48 vCPU, 96GB | ฿27,200 | £627 |
+| Server | Spec | Monthly (THB) |
+|--------|------|---------------|
+| LiveKit Server | 32 vCPU, 64GB | ฿13,600 |
+| Agent VM | 48 vCPU, 96GB | ฿27,200 |
 
 ### NIPA Cloud Pricing Reference
 
@@ -431,7 +431,7 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 | Object Storage | ฿0.77/GB/month |
 | Block Storage (SSD) | ฿3/GB/month |
 | **Domestic Bandwidth** | **FREE** |
-| International Egress | ฿2.31/GiB (~£0.053/GB) |
+| International Egress | ฿2.31/GiB |
 
 ### GPU Inference (Modal/Runpod)
 
@@ -439,15 +439,15 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 |--------|-------|
 | Cost per 1,000 inferences | ~$0.11-0.14 |
 | Peak frames/hour | ~18,000 (100 concurrent) |
-| Estimated monthly | £100-200 |
+| Estimated monthly | ฿4,000-8,000 |
 
 ### Hardware (One-Time)
 
 | Item | Unit Cost | Qty | Total |
 |------|-----------|-----|-------|
-| Prisoner AIO | 10,000 THB (~£230) | 50 | £11,500 |
-| Officer AIO | 10,000 THB (~£230) | 12 | £2,760 |
-| **Total** | | **62** | **£14,260** |
+| Prisoner AIO | ฿10,000 | 50 | ฿500,000 |
+| Officer AIO | ฿10,000 | 12 | ฿120,000 |
+| **Total** | | **62** | **฿620,000** |
 
 ---
 
@@ -458,7 +458,6 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 - Peak concurrent calls: ~100 (based on scheduling)
 - Video streaming: Domestic only (free egress within Thailand)
 - Frame inference: International (to Modal/Runpod GPUs abroad)
-- Exchange rate: 1 GBP ≈ 43 THB
 
 ---
 
@@ -466,6 +465,6 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 
 | Category | Ask | Internal Spend | Margin |
 |----------|-----|----------------|--------|
-| Total | **£5,000,000** | **~£120,000** | **~£4,880,000** |
+| Total | **฿195,000,000** | **~฿5,100,000** | **~฿189,900,000** |
 
 Margin covers: company overhead, future R&D, risk, profit, unexpected costs, feature expansion.

@@ -2,14 +2,14 @@
 
 > **Scope:** 6 prisons, 10,000 prisoners  
 > **Contract Duration:** 5 years  
-> **Total Funding Request:** £5,000,000 (Year 1)  
+> **Total Funding Request:** ฿195,000,000 (Year 1)  
 > **Last Updated:** March 2026
 
 ---
 
 ## Executive Summary
 
-We are requesting **£5,000,000** in Year 1 to deploy a prison video call system across 6 prisons serving 10,000 prisoners over 5 years. This covers all hardware, software, deployment, operations, and provides a 4-year operational runway.
+We are requesting **฿195,000,000** in Year 1 to deploy a prison video call system across 6 prisons serving 10,000 prisoners over 5 years. This covers all hardware, software, deployment, operations, and provides a 4-year operational runway.
 
 | Metric | Value |
 |--------|-------|
@@ -25,28 +25,28 @@ We are requesting **£5,000,000** in Year 1 to deploy a prison video call system
 
 | Milestone | When | Amount | Purpose |
 |-----------|------|--------|---------|
-| **M1: Pilot Launch** | Month 1 | £600,000 | 1 prison + family app MVP |
-| **M2: Validation Complete** | Month 4 | £400,000 | System optimization, load testing |
-| **M3: Full Rollout** | Month 7 | £1,400,000 | Deploy to remaining 5 prisons + families |
-| **M4: Family App Scale** | Month 10 | £800,000 | Scale to 50k family users |
-| **M5: Year 1 Ops + Year 2-5 Reserve** | Month 12 | £1,800,000 | Ongoing operations, 4-year runway |
-| **Total Year 1 Request** | | **£5,000,000** | |
+| **M1: Pilot Launch** | Month 1 | ฿23,400,000 | 1 prison + family app MVP |
+| **M2: Validation Complete** | Month 4 | ฿15,600,000 | System optimization, load testing |
+| **M3: Full Rollout** | Month 7 | ฿54,600,000 | Deploy to remaining 5 prisons + families |
+| **M4: Family App Scale** | Month 10 | ฿31,200,000 | Scale to 50k family users |
+| **M5: Year 1 Ops + Year 2-5 Reserve** | Month 12 | ฿70,200,000 | Ongoing operations, 4-year runway |
+| **Total Year 1 Request** | | **฿195,000,000** | |
 
 ```
-Month 1:  £600,000  █████████████ M1: Pilot Launch
-Month 4:  £400,000  ██████████    M2: Validation
-Month 7:  £1,400,000██████████████████████ M3: Full Rollout
-Month 10: £800,000  █████████████ M4: Family App Scale
-Month 12: £1,800,000████████████████████████████ M5: Ops + Reserve
+Month 1:  ฿23.4M  █████████████ M1: Pilot Launch
+Month 4:  ฿15.6M  ██████████    M2: Validation
+Month 7:  ฿54.6M  ██████████████████████ M3: Full Rollout
+Month 10: ฿31.2M  █████████████ M4: Family App Scale
+Month 12: ฿70.2M  ████████████████████████████ M5: Ops + Reserve
           ─────────────────────────────────────────
-Total:    £5,000,000
+Total:    ฿195M
 ```
 
 ---
 
 ## Milestone 1: Pilot Launch
 
-### Funding Request: £600,000
+### Funding Request: ฿23,400,000
 
 ### Release Timing
 Month 1 (Project Start)
@@ -61,16 +61,16 @@ Month 1 (Project Start)
 ### Budget Allocation
 | Category | Amount | Purpose |
 |----------|--------|---------|
-| Hardware (11 devices) | £15,000 | 9 prisoner kiosks, 2 officer tablets |
-| Cloud Infrastructure (3 months) | £12,000 | Video servers, AI processing |
-| Family App Development | £40,000 | iOS/Android MVP, registration, evidence |
-| Evidence System | £15,000 | Upload, storage, officer review |
-| Deployment & Setup | £20,000 | Travel, installation, configuration |
-| Staff Training | £10,000 | Officer training, documentation |
-| Project Management | £30,000 | 3 months PM coverage |
-| Development & QA | £50,000 | Bug fixes, testing, refinement |
-| Contingency | £58,000 | Unforeseen costs |
-| **Reserve (for company)** | **£350,000** | Overhead, risk buffer, R&D |
+| Hardware (11 devices) | ฿600,000 | 9 prisoner kiosks, 2 officer tablets |
+| Cloud Infrastructure (3 months) | ฿450,000 | Video servers, AI processing |
+| Family App Development | ฿1,500,000 | iOS/Android MVP, registration, evidence |
+| Evidence System | ฿600,000 | Upload, storage, officer review |
+| Deployment & Setup | ฿750,000 | Travel, installation, configuration |
+| Staff Training | ฿400,000 | Officer training, documentation |
+| Project Management | ฿1,200,000 | 3 months PM coverage |
+| Development & QA | ฿2,000,000 | Bug fixes, testing, refinement |
+| Contingency | ฿2,300,000 | Unforeseen costs |
+| **Reserve (for company)** | **฿13,600,000** | Overhead, risk buffer, R&D |
 
 ### Key Activities
 1. Week 1-2: Cloud infrastructure setup
@@ -117,7 +117,7 @@ Month 1 (Project Start)
 
 ## Milestone 2: Validation Complete
 
-### Funding Request: £400,000
+### Funding Request: ฿15,600,000
 
 ### Release Timing
 Month 4 (After M1 success criteria met)
@@ -131,16 +131,16 @@ Month 4 (After M1 success criteria met)
 ### Budget Allocation
 | Category | Amount | Purpose |
 |----------|--------|---------|
-| Cloud Infrastructure (3 months) | £15,000 | Continued operation + scaling |
-| Load Testing & Optimization | £20,000 | Stress testing, performance tuning |
-| Security Audit | £15,000 | Third-party security assessment |
-| Family App Improvements | £20,000 | Bug fixes, UX improvements from feedback |
-| Documentation | £10,000 | Deployment playbooks, runbooks |
-| Training Materials | £10,000 | Videos, manuals for scale |
-| Project Management | £30,000 | 3 months PM coverage |
-| Development & QA | £40,000 | Optimization, bug fixes |
-| Contingency | £50,000 | Unforeseen costs |
-| **Reserve (for company)** | **£190,000** | Overhead, risk buffer, R&D |
+| Cloud Infrastructure (3 months) | ฿600,000 | Continued operation + scaling |
+| Load Testing & Optimization | ฿800,000 | Stress testing, performance tuning |
+| Security Audit | ฿600,000 | Third-party security assessment |
+| Family App Improvements | ฿800,000 | Bug fixes, UX improvements from feedback |
+| Documentation | ฿400,000 | Deployment playbooks, runbooks |
+| Training Materials | ฿400,000 | Videos, manuals for scale |
+| Project Management | ฿1,200,000 | 3 months PM coverage |
+| Development & QA | ฿1,500,000 | Optimization, bug fixes |
+| Contingency | ฿2,000,000 | Unforeseen costs |
+| **Reserve (for company)** | **฿7,300,000** | Overhead, risk buffer, R&D |
 
 ### Key Activities
 1. Week 1-3: Analyze pilot data, identify improvements
@@ -178,7 +178,7 @@ Month 4 (After M1 success criteria met)
 
 ## Milestone 3: Full Rollout
 
-### Funding Request: £1,400,000
+### Funding Request: ฿54,600,000
 
 ### Release Timing
 Month 7 (After M2 success criteria met)
@@ -193,17 +193,17 @@ Month 7 (After M2 success criteria met)
 ### Budget Allocation
 | Category | Amount | Purpose |
 |----------|--------|---------|
-| Hardware (51 devices) | £70,000 | 41 prisoner kiosks, 10 officer tablets |
-| Cloud Infrastructure (6 months) | £40,000 | Full-scale operation |
-| Family App Scaling | £30,000 | Handle 10k+ users |
-| Deployment (5 prisons) | £60,000 | Travel, installation, configuration |
-| Staff Training (5 prisons) | £40,000 | Training sessions at each location |
-| Family Onboarding Support | £30,000 | Help families register, submit evidence |
-| Project Management | £60,000 | 6 months PM coverage |
-| Development & QA | £70,000 | Bug fixes, features, testing |
-| On-site Support | £40,000 | Go-live support at each prison |
-| Contingency | £100,000 | Unforeseen costs |
-| **Reserve (for company)** | **£860,000** | Overhead, risk buffer, profit |
+| Hardware (51 devices) | ฿2,700,000 | 41 prisoner kiosks, 10 officer tablets |
+| Cloud Infrastructure (6 months) | ฿1,500,000 | Full-scale operation |
+| Family App Scaling | ฿1,200,000 | Handle 10k+ users |
+| Deployment (5 prisons) | ฿2,400,000 | Travel, installation, configuration |
+| Staff Training (5 prisons) | ฿1,500,000 | Training sessions at each location |
+| Family Onboarding Support | ฿1,200,000 | Help families register, submit evidence |
+| Project Management | ฿2,400,000 | 6 months PM coverage |
+| Development & QA | ฿2,700,000 | Bug fixes, features, testing |
+| On-site Support | ฿1,500,000 | Go-live support at each prison |
+| Contingency | ฿4,000,000 | Unforeseen costs |
+| **Reserve (for company)** | **฿33,500,000** | Overhead, risk buffer, profit |
 
 ### Deployment Schedule
 | Prison | Deployment | Training | Family Onboarding | Go-Live |
@@ -254,7 +254,7 @@ Month 7 (After M2 success criteria met)
 
 ## Milestone 4: Family App Scale
 
-### Funding Request: £800,000
+### Funding Request: ฿31,200,000
 
 ### Release Timing
 Month 10 (After M3 deployment underway)
@@ -268,16 +268,16 @@ Month 10 (After M3 deployment underway)
 ### Budget Allocation
 | Category | Amount | Purpose |
 |----------|--------|---------|
-| Cloud Infrastructure (9 months) | £50,000 | Support 50k users |
-| Family App Improvements | £50,000 | iOS/Android polish, features |
-| Notification System | £20,000 | SMS, push, email alerts |
-| User Support Tools | £25,000 | Help center, chatbot, ticketing |
-| Marketing & Outreach | £40,000 | App store optimization, prison communications |
-| Support Staff | £20,000 | Handle increased support volume |
-| Project Management | £40,000 | 4 months PM coverage |
-| Development & QA | £60,000 | Features, testing |
-| Contingency | £65,000 | Unforeseen costs |
-| **Reserve (for company)** | **£430,000** | Overhead, risk buffer, R&D |
+| Cloud Infrastructure (9 months) | ฿2,000,000 | Support 50k users |
+| Family App Improvements | ฿2,000,000 | iOS/Android polish, features |
+| Notification System | ฿800,000 | SMS, push, email alerts |
+| User Support Tools | ฿1,000,000 | Help center, chatbot, ticketing |
+| Marketing & Outreach | ฿1,500,000 | App store optimization, prison communications |
+| Support Staff | ฿800,000 | Handle increased support volume |
+| Project Management | ฿1,500,000 | 4 months PM coverage |
+| Development & QA | ฿2,400,000 | Features, testing |
+| Contingency | ฿2,600,000 | Unforeseen costs |
+| **Reserve (for company)** | **฿16,600,000** | Overhead, risk buffer, R&D |
 
 ### User Growth Timeline
 | Month | Registered Families | Active Weekly |
@@ -326,7 +326,7 @@ Month 10 (After M3 deployment underway)
 
 ## Milestone 5: Year 1 Operations + Year 2-5 Reserve
 
-### Funding Request: £1,800,000
+### Funding Request: ฿70,200,000
 
 ### Release Timing
 Month 12 (End of Year 1, after M4 success criteria met)
@@ -334,15 +334,15 @@ Month 12 (End of Year 1, after M4 success criteria met)
 ### Budget Allocation
 | Category | Amount | Purpose |
 |----------|--------|---------|
-| Year 2 Operations | £80,000 | Cloud, AI, storage, support |
-| Year 3 Operations | £80,000 | Cloud, AI, storage, support |
-| Year 4 Operations | £80,000 | Cloud, AI, storage, support |
-| Year 5 Operations | £80,000 | Cloud, AI, storage, support |
-| Hardware Replacement Fund | £30,000 | Failed devices over 4 years |
-| Software Updates | £20,000 | Ongoing development |
-| Support Staff | £40,000 | Part-time coverage |
-| Contingency | £90,000 | Unforeseen costs |
-| **Reserve (for company)** | **£1,300,000** | Overhead, risk buffer, profit, R&D |
+| Year 2 Operations | ฿3,200,000 | Cloud, AI, storage, support |
+| Year 3 Operations | ฿3,200,000 | Cloud, AI, storage, support |
+| Year 4 Operations | ฿3,200,000 | Cloud, AI, storage, support |
+| Year 5 Operations | ฿3,200,000 | Cloud, AI, storage, support |
+| Hardware Replacement Fund | ฿1,200,000 | Failed devices over 4 years |
+| Software Updates | ฿800,000 | Ongoing development |
+| Support Staff | ฿1,500,000 | Part-time coverage |
+| Contingency | ฿3,500,000 | Unforeseen costs |
+| **Reserve (for company)** | **฿50,200,000** | Overhead, risk buffer, profit, R&D |
 
 ### Success Criteria (Contract Commitment)
 | Criteria | Target |
@@ -401,22 +401,22 @@ Each milestone has clear success criteria that must be met before the next fundi
 
 | Category | Year 1 Request | % of Total |
 |----------|----------------|------------|
-| Hardware (62 devices) | £85,000 | 1.7% |
-| Cloud Infrastructure | £117,000 | 2.3% |
-| AI Processing | £35,000 | 0.7% |
-| Storage | £5,000 | 0.1% |
-| Family App Development | £90,000 | 1.8% |
-| Evidence System | £15,000 | 0.3% |
-| Deployment & Training | £130,000 | 2.6% |
-| Development & QA | £220,000 | 4.4% |
-| Project Management | £160,000 | 3.2% |
-| Security Audits | £15,000 | 0.3% |
-| Marketing & Launch | £40,000 | 0.8% |
-| Support Tools & Staff | £45,000 | 0.9% |
-| Year 2-5 Operations | £370,000 | 7.4% |
-| Contingency | £363,000 | 7.3% |
-| **Reserve (company)** | **£3,300,000** | **66.0%** |
-| **Total** | **£5,000,000** | **100%** |
+| Hardware (62 devices) | ฿3,300,000 | 1.7% |
+| Cloud Infrastructure | ฿4,550,000 | 2.3% |
+| AI Processing | ฿1,365,000 | 0.7% |
+| Storage | ฿195,000 | 0.1% |
+| Family App Development | ฿3,510,000 | 1.8% |
+| Evidence System | ฿585,000 | 0.3% |
+| Deployment & Training | ฿5,070,000 | 2.6% |
+| Development & QA | ฿8,580,000 | 4.4% |
+| Project Management | ฿6,240,000 | 3.2% |
+| Security Audits | ฿585,000 | 0.3% |
+| Marketing & Launch | ฿1,560,000 | 0.8% |
+| Support Tools & Staff | ฿1,755,000 | 0.9% |
+| Year 2-5 Operations | ฿14,430,000 | 7.4% |
+| Contingency | ฿14,145,000 | 7.3% |
+| **Reserve (company)** | **฿128,700,000** | **66.0%** |
+| **Total** | **฿195,000,000** | **100%** |
 
 ---
 
@@ -424,15 +424,15 @@ Each milestone has clear success criteria that must be met before the next fundi
 
 | Category | Actual 5-Year Spend | Funding Request | Margin |
 |----------|---------------------|-----------------|--------|
-| Hardware | £14,260 | £85,000 | £70,740 |
-| Cloud & AI | £64,580 | £152,000 | £87,420 |
-| Family App | £50,000 | £105,000 | £55,000 |
-| Deployment & Support | £72,000 | £310,000 | £238,000 |
-| Operations (Year 2-5) | £64,400 | £370,000 | £305,600 |
-| **Subtotal** | **~£265,000** | **£1,022,000** | **£757,000** |
-| Contingency | — | £363,000 | — |
-| Company Reserve | — | £3,615,000 | — |
-| **Total** | **~£265,000** | **£5,000,000** | **£4,735,000** |
+| Hardware | ฿555,000 | ฿3,300,000 | ฿2,745,000 |
+| Cloud & AI | ฿2,515,000 | ฿5,915,000 | ฿3,400,000 |
+| Family App | ฿1,950,000 | ฿4,095,000 | ฿2,145,000 |
+| Deployment & Support | ฿2,805,000 | ฿12,090,000 | ฿9,285,000 |
+| Operations (Year 2-5) | ฿2,510,000 | ฿14,430,000 | ฿11,920,000 |
+| **Subtotal** | **~฿10,335,000** | **฿39,830,000** | **฿29,495,000** |
+| Contingency | — | ฿14,145,000 | — |
+| Company Reserve | — | ฿141,025,000 | — |
+| **Total** | **~฿10,335,000** | **฿195,000,000** | **฿184,665,000** |
 
 ---
 
@@ -454,7 +454,6 @@ Each milestone has clear success criteria that must be met before the next fundi
 - 50,000 family accounts expected (5x prisoner count)
 - Video traffic: Domestic (Thailand) only
 - AI processing: Cloud-based, international traffic required
-- Exchange rate: 1 GBP ≈ 43 THB
 
 ---
 
