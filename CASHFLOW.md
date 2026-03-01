@@ -6,424 +6,162 @@
 
 ---
 
-## Overview
+## Strategy Overview
 
-| Metric | Value |
-|--------|-------|
-| Total Prisoners | 10,000 |
-| Number of Prisons | 6 |
-| Prisoner AIOs | 50 (200:1 ratio) |
-| Officer AIOs | 12 (2 per prison) |
-| Total AIOs | 62 |
-| Family Accounts (est.) | 50,000 |
-| Peak Concurrent Calls | ~100 |
-| **Total 5-Year Spend** | **~฿4,700,000** |
+**Year 1:** Lean deployment using cloud infrastructure. Minimal team, maximum margin.  
+**Years 2-5:** Heavy investment in Thai sovereignty, owned infrastructure, full-time team.
+
+| Phase | Spend | Approach |
+|-------|-------|----------|
+| Year 1 | ~฿35M | Cloud-only, contractors, validate |
+| Years 2-5 | ~฿135M | Own GPUs, full-time team, compliance |
 
 ---
 
-## Phase 1: Pilot (Months 1-3)
+## Year 1: Lean Deployment (~฿35M)
 
-### Objective
-Deploy and validate the complete Oboon system in a single prison to prove technical feasibility and identify operational issues before full rollout.
+### Infrastructure (Cloud-Only)
 
-### Scope
-- **1 Prison** (~1,667 prisoners)
-- **9 Prisoner AIOs** (video call kiosks)
-- **2 Officer AIOs** (approval & scheduling management)
+| Service | Provider | Monthly | Year 1 |
+|---------|----------|---------|--------|
+| LiveKit Server (32 vCPU) | NIPA Cloud | ฿13,600 | ฿163,200 |
+| Agent VM (48 vCPU) | NIPA Cloud | ฿27,200 | ฿326,400 |
+| GPU Inference | Modal/Runpod | ฿125,000 | ฿1,500,000 |
+| Object Storage | NIPA Cloud | ฿15,000 | ฿180,000 |
+| **Total Infrastructure** | | | **฿2,169,600** |
 
-### Deliverables
-| Deliverable | Description |
-|-------------|-------------|
-| LiveKit Server | Deployed on NIPA Cloud, fully configured |
-| Agent VM | Video processing workers operational |
-| GPU Inference | Modal/Runpod integration tested |
-| AIO Hardware | 11 units installed and configured |
-| Prisoner App | Working video calls from AIOs |
-| Officer App | Relationship approval, scheduling |
-| Basic Monitoring | System health dashboards |
+### Hardware (One-Time)
 
-### Key Activities
-1. **Week 1-2:** Infrastructure setup (VMs, LiveKit, GPU integration)
-2. **Week 3-4:** Hardware procurement and OS configuration
-3. **Week 5-6:** On-site deployment at pilot prison
-4. **Week 7-8:** Staff training and user testing
-5. **Week 9-12:** Live operation, bug fixes, performance tuning
+| Item | Unit Cost | Qty | Total |
+|------|-----------|-----|-------|
+| Prisoner AIO | ฿10,000 | 50 | ฿500,000 |
+| Officer AIO | ฿10,000 | 12 | ฿120,000 |
+| **Total Hardware** | | | **฿620,000** |
 
-### Success Criteria
-- [ ] 100+ successful video calls completed
-- [ ] Average latency < 1 second
-- [ ] Zero dropped calls during testing
-- [ ] Officer approval workflow functional
-- [ ] NSFW moderation working correctly
+### Year 1 Budget Breakdown
 
-### Risk Mitigation
-| Risk | Mitigation |
-|------|------------|
-| Network issues at prison | Test bandwidth before deployment |
-| Hardware failures | Keep 1-2 spare AIOs on-site |
-| Staff resistance | Hands-on training sessions |
+| Category | Amount | Notes |
+|----------|--------|-------|
+| Hardware (62 AIOs) | ฿620,000 | Prison kiosks + tablets |
+| Cloud Infrastructure | ฿2,200,000 | NIPA VMs + storage |
+| GPU Inference | ฿1,500,000 | Modal/Runpod (US/EU) |
+| Deployment & Training | ฿5,000,000 | Travel, setup, training at 6 prisons |
+| Development (contractors) | ฿8,000,000 | Bug fixes, features, testing |
+| Project Management | ฿6,000,000 | 12 months PM |
+| Security Audit (basic) | ฿500,000 | Third-party review |
+| Marketing & Launch | ฿2,000,000 | App store, family outreach |
+| Support (part-time) | ฿1,500,000 | Basic coverage |
+| Contingency | ฿7,000,000 | Buffer |
+| **Year 1 Total** | **฿34,320,000** | |
 
-### Costs
+### Year 1 Team (Contractors)
 
-| Item | Cost | Notes |
-|------|------|-------|
-| **Hardware** | | |
-| Prisoner AIOs (9 units) | ฿90,000 | 9 × ฿10,000 |
-| Officer AIOs (2 units) | ฿20,000 | 2 × ฿10,000 |
-| **VMs (3 months)** | | |
-| LiveKit Server (32 vCPU) | ฿40,800 | ฿13,600 × 3 |
-| Agent VM (48 vCPU) | ฿81,600 | ฿27,200 × 3 |
-| **GPU (3 months)** | | |
-| Modal/Runpod inference | ฿6,000 | Light testing |
-| **Egress (3 months)** | | |
-| International (to GPU) | ฿8,000 | Light load |
-| **Storage** | | |
-| Object storage | ฿600 | Minimal |
-| **Setup/Misc** | | |
-| Travel, deployment, testing | ฿60,000 | |
-| Contingency (10%) | ฿31,000 | |
-| **Phase 1 Total** | **฿338,000** | |
+| Role | Type | Monthly | Year 1 |
+|------|------|---------|--------|
+| Lead Developer | Contractor | ฿150,000 | ฿1,800,000 |
+| Backend Developer | Contractor | ฿120,000 | ฿1,440,000 |
+| DevOps (part-time) | Contractor | ฿80,000 | ฿960,000 |
+| PM/Operations | Full-time | ฿100,000 | ฿1,200,000 |
+| Support x2 | Part-time | ฿60,000 | ฿720,000 |
+| **Team Total** | | | **฿6,120,000** |
 
 ---
 
-## Phase 2: Validation (Months 4-6)
+## Years 2-5: Thai Sovereignty Investment (~฿135M)
 
-### Objective
-Refine the system based on pilot feedback, optimize performance, and prepare infrastructure for full-scale deployment across all 6 prisons.
+### GPU Infrastructure (Owned)
 
-### Scope
-- Continue pilot prison operation
-- Load testing and optimization
-- Backend hardening
-- Documentation and runbooks
+| Item | Qty | Unit Cost | Total |
+|------|-----|-----------|-------|
+| **GPU Server** | | | |
+| NVIDIA B200 GPU | 16 | ฿1,000,000 | ฿16,000,000 |
+| Server Chassis + CPU + RAM | 2 | ฿2,000,000 | ฿4,000,000 |
+| NVMe Storage | 2 | ฿500,000 | ฿1,000,000 |
+| **Storage Server** | | | |
+| Storage Server (100TB) | 2 | ฿2,000,000 | ฿4,000,000 |
+| **Network** | | | |
+| 100Gbps Switch | 2 | ฿500,000 | ฿1,000,000 |
+| Cabling + Accessories | 1 | ฿500,000 | ฿500,000 |
+| **Datacenter** | | | |
+| Rack Space (2 racks) | 2 | ฿1,500,000 | ฿3,000,000 |
+| **Setup & Installation** | | ฿2,000,000 | ฿2,000,000 |
+| **GPU Infrastructure Total** | | | **฿31,500,000** |
 
-### Deliverables
-| Deliverable | Description |
-|-------------|-------------|
-| Performance Report | Benchmark results, bottlenecks identified |
-| Optimized Backend | Tuned for 200+ concurrent calls |
-| Deployment Playbook | Step-by-step rollout guide |
-| Monitoring Alerts | Automated incident detection |
-| Staff Training Materials | Videos, manuals, quick-start guides |
-| Security Audit | Vulnerability assessment passed |
+*Note: B200 ~$30k each. We need 16 for redundancy and peak load.*
 
-### Key Activities
-1. **Week 1-3:** Analyze pilot data, identify improvements
-2. **Week 4-6:** Backend optimization (caching, connection pooling)
-3. **Week 7-9:** Load testing (simulate 200+ concurrent calls)
-4. **Week 10-12:** Documentation and training material creation
-5. **Ongoing:** Security hardening, compliance review
+### Engineering Team (Full-Time, Thai)
 
-### Success Criteria
-- [ ] System handles 200 concurrent calls
-- [ ] Average latency < 800ms under load
-- [ ] 99.9% uptime during testing period
-- [ ] All critical bugs from pilot resolved
-- [ ] Deployment playbook approved
+| Role | Count | Monthly | Annual | 4 Years |
+|------|-------|---------|--------|---------|
+| Senior Software Engineer | 3 | ฿120,000 | ฿4,320,000 | ฿17,280,000 |
+| DevOps Engineer | 2 | ฿100,000 | ฿2,400,000 | ฿9,600,000 |
+| AI/ML Engineer | 2 | ฿150,000 | ฿3,600,000 | ฿14,400,000 |
+| QA Engineer | 1 | ฿80,000 | ฿960,000 | ฿3,840,000 |
+| Operations Manager | 1 | ฿100,000 | ฿1,200,000 | ฿4,800,000 |
+| Support Specialist | 3 | ฿50,000 | ฿1,800,000 | ฿7,200,000 |
+| Office Manager | 1 | ฿40,000 | ฿480,000 | ฿1,920,000 |
+| **Team Total** | **13** | | **฿14,760,000** | **฿59,040,000** |
 
-### Risk Mitigation
-| Risk | Mitigation |
-|------|------------|
-| Scaling bottlenecks | Load test early, identify limits |
-| Security vulnerabilities | Third-party audit |
-| Feature creep | Lock scope, defer to later phases |
+### Compliance & Certifications
 
-### Costs
+| Item | Cost | When |
+|------|------|------|
+| ISO27001 Consulting | ฿800,000 | Year 2 |
+| ISO27001 Audit & Certification | ฿1,200,000 | Year 2-3 |
+| PDPA Compliance (DPO + Legal) | ฿1,000,000 | Year 2 |
+| Annual Penetration Testing | ฿500,000/year | Years 2-5 |
+| Legal Counsel (retainer) | ฿300,000/year | Years 2-5 |
+| **Compliance Total** | **฿5,500,000** | |
 
-| Item | Cost | Notes |
-|------|------|-------|
-| **VMs (3 months)** | | |
-| LiveKit Server | ฿40,800 | ฿13,600 × 3 |
-| Agent VM | ฿81,600 | ฿27,200 × 3 |
-| **GPU (3 months)** | | |
-| Modal/Runpod | ฿12,000 | More testing |
-| **Egress (3 months)** | | |
-| International | ฿16,000 | Increased load |
-| **Storage** | | |
-| Object storage | ฿1,200 | Growing |
-| **Optimization/Testing** | | |
-| Load testing, tuning | ฿20,000 | |
-| Contingency (10%) | ฿15,000 | |
-| **Phase 2 Total** | **฿187,000** | |
+### Office & Operations
 
----
+| Item | Monthly | 4 Years |
+|------|---------|---------|
+| Office (Bangkok, 100sqm) | ฿150,000 | ฿7,200,000 |
+| Utilities & Internet | ฿30,000 | ฿1,440,000 |
+| Equipment (laptops, monitors) | - | ฿2,000,000 |
+| Software Licenses | ฿50,000 | ฿2,400,000 |
+| Travel & Expenses | ฿100,000 | ฿4,800,000 |
+| **Operations Total** | | **฿17,840,000** |
 
-## Phase 3: Full Rollout (Months 7-12)
+### Ongoing Infrastructure
 
-### Objective
-Deploy Oboon to all 6 prisons, train staff at each location, and achieve full operational capacity for 10,000 prisoners.
+| Item | Annual | 4 Years |
+|------|--------|---------|
+| NIPA Cloud (backup/failover) | ฿1,000,000 | ฿4,000,000 |
+| Colocation Fees | ฿1,200,000 | ฿4,800,000 |
+| Bandwidth (1Gbps dedicated) | ฿800,000 | ฿3,200,000 |
+| Maintenance & Spares | ฿1,000,000 | ฿4,000,000 |
+| **Infrastructure Total** | | **฿16,000,000** |
 
-### Scope
-- **5 Remaining Prisons** (~8,333 prisoners)
-- **41 Prisoner AIOs**
-- **10 Officer AIOs**
-- Full production deployment
+### Years 2-5 Summary
 
-### Deliverables
-| Deliverable | Description |
-|-------------|-------------|
-| 6 Live Prisons | All locations operational |
-| 52 AIOs Deployed | All hardware installed and working |
-| Trained Staff | Officers at all prisons trained |
-| Production Monitoring | 24/7 system visibility |
-| Incident Response Plan | Escalation procedures |
-| User Guides | Prisoner and officer documentation |
-
-### Key Activities
-1. **Week 1-2:** Bulk hardware procurement (51 AIOs)
-2. **Week 3-4:** Pre-deployment configuration (OS, apps, network)
-3. **Week 5-8:** Prison 2 deployment + training
-4. **Week 9-12:** Prison 3 deployment + training
-5. **Week 13-16:** Prison 4 deployment + training
-6. **Week 17-20:** Prison 5 deployment + training
-7. **Week 21-24:** Prison 6 deployment + training
-8. **Ongoing:** Support, bug fixes, optimization
-
-### Deployment Schedule
-| Prison | Deployment | Training | Go-Live |
-|--------|------------|----------|---------|
-| Prison 2 | Week 5-6 | Week 7 | Week 8 |
-| Prison 3 | Week 9-10 | Week 11 | Week 12 |
-| Prison 4 | Week 13-14 | Week 15 | Week 16 |
-| Prison 5 | Week 17-18 | Week 19 | Week 20 |
-| Prison 6 | Week 21-22 | Week 23 | Week 24 |
-
-### Success Criteria
-- [ ] All 6 prisons operational
-- [ ] 500+ successful calls per week across all prisons
-- [ ] Staff satisfaction > 80%
-- [ ] System uptime > 99.5%
-- [ ] Zero critical security incidents
-
-### Risk Mitigation
-| Risk | Mitigation |
-|------|------------|
-| Hardware delays | Order early, buffer stock |
-| Prison network issues | Pre-deployment site survey |
-| Staff turnover | Record training videos |
-| Budget overrun | Phased deployment, pause if needed |
-
-### Costs
-
-| Item | Cost | Notes |
-|------|------|-------|
-| **Hardware** | | |
-| Prisoner AIOs (41 units) | ฿410,000 | 41 × ฿10,000 |
-| Officer AIOs (10 units) | ฿100,000 | 10 × ฿10,000 |
-| **VMs (6 months)** | | |
-| LiveKit Server | ฿81,600 | ฿13,600 × 6 |
-| Agent VM | ฿163,200 | ฿27,200 × 6 |
-| **GPU (6 months)** | | |
-| Modal/Runpod | ฿24,000 | Production load |
-| **Egress (6 months)** | | |
-| International | ฿32,000 | Full scale |
-| **Storage** | | |
-| Object storage | ฿3,600 | Growing |
-| **Deployment** | | |
-| Travel, setup (5 prisons) | ฿120,000 | |
-| Training materials | ฿60,000 | |
-| Contingency (10%) | ฿80,000 | |
-| **Phase 3 Total** | **฿1,074,000** | |
+| Category | Amount |
+|----------|--------|
+| GPU Infrastructure | ฿31,500,000 |
+| Engineering Team | ฿59,040,000 |
+| Compliance | ฿5,500,000 |
+| Office & Operations | ฿17,840,000 |
+| Ongoing Infrastructure | ฿16,000,000 |
+| Contingency | ฿5,120,000 |
+| **Years 2-5 Total** | **฿135,000,000** |
 
 ---
 
-## Phase 4: Family App Scale (Months 10-18)
+## 5-Year Cash Flow
 
-### Objective
-Scale the family-facing application to support 50,000 registered users, with full evidence submission, approval workflows, and self-service scheduling.
-
-### Scope
-- **50,000 Family Accounts** (5x prisoner count)
-- **Evidence Upload System** (ID docs, relationship proof)
-- **Approval Workflow** (officers review submissions)
-- **Self-Service Scheduling** (families book time slots)
-- **Mobile Apps** (iOS/Android polished releases)
-
-### Deliverables
-| Deliverable | Description |
-|-------------|-------------|
-| Family App v1.0 | iOS & Android production release |
-| User Registration | Google OAuth, profile creation |
-| Evidence System | Upload, storage, officer review |
-| Notification System | Call reminders, approval status |
-| Scheduling Portal | Families book available slots |
-| Help Center | FAQs, video tutorials, support chat |
-
-### Key Activities
-1. **Week 1-4:** User registration + OAuth integration
-2. **Week 5-8:** Evidence upload + storage system
-3. **Week 9-12:** Officer approval workflow enhancements
-4. **Week 13-16:** Self-service scheduling for families
-5. **Week 17-20:** Mobile app polish + app store optimization
-6. **Week 21-28:** Gradual user onboarding (10k → 50k users)
-7. **Week 29-36:** Support scaling, feedback iteration
-
-### User Growth Timeline
-| Month | Registered Families | Active Weekly |
-|-------|---------------------|---------------|
-| Month 10 | 5,000 | 1,000 |
-| Month 12 | 15,000 | 5,000 |
-| Month 14 | 30,000 | 12,000 |
-| Month 16 | 45,000 | 20,000 |
-| Month 18 | 50,000 | 25,000 |
-
-### Success Criteria
-- [ ] 50,000 family accounts registered
-- [ ] 90%+ evidence approval within 48 hours
-- [ ] App store rating > 4.0 stars
-- [ ] < 5% support ticket rate
-- [ ] Scheduling system used by 80% of families
-
-### Risk Mitigation
-| Risk | Mitigation |
-|------|------------|
-| Slow adoption | Marketing campaign, prison outreach |
-| Support overload | In-app help, chatbot |
-| Evidence fraud | Manual review, ID verification |
-| App store rejection | Follow guidelines, test thoroughly |
-
-### Costs
-
-| Item | Cost | Notes |
-|------|------|-------|
-| **VMs (9 months)** | | |
-| LiveKit Server | ฿122,400 | ฿13,600 × 9 |
-| Agent VM | ฿244,800 | ฿27,200 × 9 |
-| **GPU (9 months)** | | |
-| Modal/Runpod | ฿36,000 | |
-| **Egress (9 months)** | | |
-| International | ฿48,000 | |
-| **Storage** | | |
-| Object storage (growing) | ฿10,800 | 500GB target |
-| **Marketing/Launch** | | |
-| App store optimization, support | ฿40,000 | |
-| Contingency (10%) | ฿29,000 | |
-| **Phase 4 Total** | **฿531,000** | |
-
-*Note: Overlaps with Phase 3 end and Phase 5 start*
+| Year | Spend | Cumulative | Key Activities |
+|------|-------|------------|----------------|
+| Year 1 | ฿34M | ฿34M | Deploy 6 prisons, cloud-only |
+| Year 2 | ฿48M | ฿82M | Buy GPUs, hire team, start ISO |
+| Year 3 | ฿35M | ฿117M | Full team, ISO27001, PDPA |
+| Year 4 | ฿26M | ฿143M | Stable operations |
+| Year 5 | ฿26M | ฿169M | Expansion ready |
+| **Total** | **฿169M** | | |
 
 ---
 
-## Phase 5: Operations (Years 2-5)
-
-### Objective
-Maintain reliable service, handle ongoing support, perform regular updates, and ensure system health across all 6 prisons for the contract duration.
-
-### Scope
-- **24/7 System Monitoring**
-- **Regular Software Updates**
-- **Hardware Replacement**
-- **User Support**
-- **Performance Optimization**
-- **Security Patches**
-
-### Deliverables (Annual)
-| Deliverable | Frequency |
-|-------------|-----------|
-| System Uptime Report | Monthly |
-| Security Audit | Quarterly |
-| Software Updates | As needed |
-| Hardware Health Check | Quarterly |
-| User Satisfaction Survey | Bi-annually |
-| Performance Optimization | Ongoing |
-
-### Operational Activities
-| Activity | Frequency | Owner |
-|----------|-----------|-------|
-| Monitor system health | 24/7 | Automated + on-call |
-| Respond to incidents | As needed | Support team |
-| Deploy security patches | Monthly | Dev team |
-| Hardware inspections | Quarterly | On-site team |
-| User training refresh | Bi-annually | Training team |
-| Database backups | Daily | Automated |
-| Cost optimization review | Quarterly | Finance |
-
-### Support Structure
-| Level | Response Time | Issues |
-|-------|---------------|--------|
-| L1 (Helpdesk) | < 4 hours | User questions, password resets |
-| L2 (Technical) | < 8 hours | Bugs, configuration issues |
-| L3 (Engineering) | < 24 hours | Critical bugs, infrastructure |
-
-### Maintenance Windows
-- **Planned:** Sundays 2-4 AM (low usage)
-- **Emergency:** As needed with 2-hour notice
-- **Target Downtime:** < 4 hours/month
-
-### Success Criteria
-- [ ] 99.9% uptime annually
-- [ ] < 2 critical incidents per year
-- [ ] User satisfaction > 85%
-- [ ] All security patches applied within 30 days
-- [ ] Hardware replacement < 5% annually
-
-### Risk Mitigation
-| Risk | Mitigation |
-|------|------------|
-| Staff availability | Cross-training, documentation |
-| Hardware failures | Spare stock, rapid replacement |
-| Security threats | Regular audits, monitoring |
-| Budget overruns | Quarterly reviews, contingency fund |
-
-### Costs
-
-| Item | Annual Cost | 4 Years |
-|------|-------------|---------|
-| **VMs** | | |
-| LiveKit Server | ฿163,200/yr | ฿652,800 |
-| Agent VM | ฿326,400/yr | ฿1,305,600 |
-| **GPU** | | |
-| Modal/Runpod | ฿48,000/yr | ฿192,000 |
-| **Egress** | | |
-| International | ฿64,000/yr | ฿256,000 |
-| **Storage** | | |
-| Object storage | ฿4,800/yr | ฿19,200 |
-| **Maintenance** | | |
-| Hardware replacements | ฿40,000/yr | ฿160,000 |
-| Software updates | ฿20,000/yr | ฿80,000 |
-| Support (part-time) | ฿40,000/yr | ฿160,000 |
-| **Contingency** | | ฿160,000 |
-| **Phase 5 Total** | | **฿2,985,600** |
-
----
-
-## Cash Flow Timeline
-
-| Phase | Months | Spend | Cumulative |
-|-------|--------|-------|------------|
-| **1. Pilot** | 1-3 | ฿338,000 | ฿338,000 |
-| **2. Validation** | 4-6 | ฿187,000 | ฿525,000 |
-| **3. Rollout** | 7-12 | ฿1,074,000 | ฿1,599,000 |
-| **4. Family Scale** | 10-18 | ฿531,000 | ฿2,130,000 |
-| **5. Operations** | Year 2-5 | ฿2,986,000 | ฿5,116,000 |
-
----
-
-## When Money Is Needed
-
-| Milestone | When | Amount Needed |
-|-----------|------|---------------|
-| Start Pilot | Day 1 | **฿338,000** |
-| Start Validation | Month 4 | **฿187,000** |
-| Buy Bulk Hardware | Month 7 | **฿510,000** |
-| Complete Rollout | Month 7-12 | **฿564,000** |
-| Year 2 Ops | Month 13 | **฿545,000/yr** |
-| Years 3-5 | Ongoing | **฿545,000/yr** |
-
-**Peak cash need:** Month 7-12 (buying all hardware + running full infra)
-
----
-
-## Infrastructure Cost Details
-
-### NIPA Cloud VMs (Monthly)
-
-| Server | Spec | Monthly (THB) |
-|--------|------|---------------|
-| LiveKit Server | 32 vCPU, 64GB | ฿13,600 |
-| Agent VM | 48 vCPU, 96GB | ฿27,200 |
-
-### NIPA Cloud Pricing Reference
+## NIPA Cloud Pricing Reference
 
 | Service | Price |
 |---------|-------|
@@ -433,38 +171,72 @@ Maintain reliable service, handle ongoing support, perform regular updates, and 
 | **Domestic Bandwidth** | **FREE** |
 | International Egress | ฿2.31/GiB |
 
-### GPU Inference (Modal/Runpod)
+---
 
-| Metric | Value |
-|--------|-------|
-| Cost per 1,000 inferences | ~$0.11-0.14 |
-| Peak frames/hour | ~18,000 (100 concurrent) |
-| Estimated monthly | ฿4,000-8,000 |
+## GPU Cost Comparison
 
-### Hardware (One-Time)
+| Option | Year 1 | Years 2-5 | Total | Notes |
+|--------|--------|-----------|-------|-------|
+| Cloud (Modal/Runpod) | ฿1.5M | ฿6M | ฿7.5M | Data leaves Thailand |
+| Owned (B200 in TH) | ฿0 | ฿31.5M | ฿31.5M | Full sovereignty |
 
-| Item | Unit Cost | Qty | Total |
-|------|-----------|-----|-------|
-| Prisoner AIO | ฿10,000 | 50 | ฿500,000 |
-| Officer AIO | ฿10,000 | 12 | ฿120,000 |
-| **Total** | | **62** | **฿620,000** |
+**Trade-off:** Owning costs 4x more but achieves:
+- Thai data sovereignty
+- PDPA compliance
+- Lower latency
+- No vendor lock-in
+- Government trust
+
+---
+
+## Team Growth
+
+| Phase | Team Size | Composition |
+|-------|-----------|-------------|
+| Year 1 | 5-7 | Contractors + 1 PM |
+| Year 2 | 10-13 | Start hiring full-time |
+| Year 3 | 13-15 | Full team |
+| Year 4-5 | 15-18 | Stable + growth |
+
+---
+
+## Compliance Timeline
+
+| Milestone | When | Cost |
+|-----------|------|------|
+| Basic Security Audit | Year 1 | ฿500k |
+| ISO27001 Start | Year 2 Q1 | ฿800k |
+| ISO27001 Certified | Year 3 Q1 | ฿1.2M |
+| PDPA Compliant | Year 2 Q2 | ฿1M |
+| Annual Pen Test | Year 2-5 | ฿2M |
 
 ---
 
 ## Assumptions
 
-- Operating hours: 9am-4pm (6 hours/day), lunch break excluded
+- Operating hours: 9am-4pm, 6 hours/day
 - Call frequency: 2 meetings/month per prisoner, 20 min each
-- Peak concurrent calls: ~100 (based on scheduling)
-- Video streaming: Domestic only (free egress within Thailand)
-- Frame inference: International (to Modal/Runpod GPUs abroad)
+- Peak concurrent calls: ~100
+- B200 GPU: ~$30,000 (~฿1,000,000)
+- Thai senior engineer: ฿100k-150k/month
+- Bangkok colocation: ~฿100k/rack/month
 
 ---
 
 ## Budget vs Spend
 
-| Category | Ask | Internal Spend | Margin |
-|----------|-----|----------------|--------|
-| Total | **฿195,000,000** | **~฿5,100,000** | **~฿189,900,000** |
+| Period | Ask | Spend | Margin |
+|--------|-----|-------|--------|
+| Year 1 | ฿195M | ฿34M | ฿161M (82%) |
+| Years 2-5 | - | ฿135M | - |
+| **5-Year Total** | **฿195M** | **฿169M** | **฿26M (13%)** |
 
-Margin covers: company overhead, future R&D, risk, profit, unexpected costs, feature expansion.
+---
+
+## Why This Structure
+
+1. **Year 1 = Proof** - Show we can deliver with minimal spend
+2. **Years 2-5 = Scale** - Invest in Thai team and infrastructure
+3. **Compliance** - ISO27001 + PDPA for government contracts
+4. **Sovereignty** - All data in Thailand after Year 2
+5. **Team** - Build world-class Thai engineering team
