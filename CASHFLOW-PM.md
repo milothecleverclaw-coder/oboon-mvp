@@ -175,7 +175,7 @@ Phase 4: [████████████████████] 6/6 pris
 
 | Strategy | Details | Pros | Cons (Compliance Impact) |
 |----------|---------|------|--------------------------|
-| **Low-Spec Cloud** | Use minimal cloud resources vs over-provisioned | Save ฿500k+ on cloud costs | ⚠️ **User experience:** May affect uptime (95% vs 99.9%), slower loading times, lower satisfaction |
+| **Low-Spec Cloud** | Use minimal cloud resources vs over-provisioned | Lower cloud costs | ⚠️ **User experience:** May affect uptime, slower loading times, lower satisfaction |
 | **AI Sampling Mode** | 1 frame/30sec vs 30fps real-time | 98% GPU cost savings | ❌ **PDPA violation:** Insufficient monitoring may miss data breaches |
 | **Cloud Infrastructure** | Rent VMs vs buy servers | No capex, flexible scaling | ❌ **PDPA violation:** Data may leave Thailand without proper safeguards |
 | **Cloud GPU** | Cloud GPU vs owned hardware | No GPU purchase needed | ❌ **Cybersecurity Act violation:** Third-party processing without Thai compliance |
@@ -200,13 +200,13 @@ Phase 4: [████████████████████] 6/6 pris
 
 | Strategy | Year 1 Savings | Compliance Risk |
 |----------|----------------|-----------------|
-| Low-Spec Cloud | ฿500k+ | Low (user experience) |
+| Low-Spec Cloud | Lower cost | Low (user experience) |
 | AI Sampling | ฿1.5M+ | Medium |
 | Cloud vs Owned | ฿30M+ | High |
 | Contractors vs Full-time | ฿5M+ | Medium |
 | No Office | ฿1.2M+ | None |
 | Deferred Compliance | ฿5M+ | High |
-| **Total Year 1 Savings** | **฿42M+** | |
+| **Total Year 1 Savings** | **฿40M+** | |
 
 ### What We're NOT Cutting
 
