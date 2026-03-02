@@ -63,152 +63,94 @@ Total:   ฿195M                     ฿94.3M                     +฿100.7M
 
 ## Year 1 Funding Request Breakdown
 
-| Phase | When | Ask from ฿195M | Actual Cost | Deliverables |
-|-------|------|----------------|-------------|--------------|
-| **Phase 1: Pilot** | Month 1-3 | ฿40,000,000 | ฿800,000 | 1 prison live |
-| **Phase 2: Validate** | Month 4-6 | ฿30,000,000 | ฿600,000 | System tested |
-| **Phase 3: Rollout** | Month 7-12 | ฿80,000,000 | ฿1,220,000 | 6 prisons live |
-| **Year 1 Reserve** | Month 12 | ฿45,000,000 | - | Future investment |
-| **Year 1 Total** | | **฿195,000,000** | **฿2,620,000** | |
+| Phase | When | Prisons | Ask | Cost | Deliverables |
+|-------|------|---------|-----|------|--------------|
+| **Phase 1: Pilot** | Month 1-3 | 1 | ฿40M | ฿0.8M | 1 prison live |
+| **Phase 2: Expand** | Month 4-6 | +2 | ฿30M | ฿0.97M | 3 prisons live |
+| **Phase 3: Complete** | Month 7-12 | +3 | ฿80M | ฿0.85M | 6 prisons live |
+| **Year 1 Reserve** | Month 12 | - | ฿45M | - | Future investment |
+| **Year 1 Total** | | **6** | **฿195M** | **฿2.62M** | |
 
 **Year 1 Efficiency:** ฿2.62M spent / ฿195M received = **98.7% preserved**
 
 ---
 
-## Phase 1: Pilot (Month 1-3)
+## Year 1: Phased Deployment
 
-### Activities
+### Phase 1: Pilot (Month 1-3)
 
-Deploy the video call system to 1 pilot prison to validate the technology, train staff, and gather real-world usage data before scaling to more prisons.
+**Goal:** Deploy to 1 prison, validate technology, train staff
 
-### Funding Ask: ฿40,000,000
+**Ask:** ฿40M | **Cost:** ฿800,000
 
-### Actual Cost: ฿800,000
+| Item | Cost |
+|------|------|
+| 11 PCs (1 prison) | ฿110,000 |
+| Cloud (3 months) | ฿450,000 |
+| Deploy + Train | ฿150,000 |
+| Contractor | ฿90,000 |
 
-| Category | Cost |
-|----------|------|
-| Hardware (11 PCs for 1 prison) | ฿110,000 |
-| Cloud Infrastructure (3 months) | ฿300,000 |
-| GPU Inference (3 months) | ฿150,000 |
-| Deployment & Training | ฿150,000 |
-| Contractor (1 dev, 3 months) | ฿90,000 |
-| **Phase 1 Total** | **฿800,000** |
+**Deliverables:** 1 prison live, 11 PCs, video calls working, AI moderation, staff trained
 
-### What We Deliver
-
-| Deliverable | Details |
-|-------------|---------|
-| 1 Prison Live | Full deployment at pilot prison |
-| 11 PCs Installed | 9 prisoner kiosks + 2 officer tablets |
-| Video Calls Working | End-to-end video call system |
-| AI Moderation Active | Real-time content scanning |
-| Officer Training | Staff trained on system use |
-| Basic Monitoring | System health dashboards |
-
-### Success Criteria
-
-| Criteria | Target |
-|----------|--------|
-| Prisons Deployed | 1 |
-| Devices Installed | 11 |
-| Successful Calls | 100+ |
-| System Uptime | 99%+ |
-| Staff Trained | 100% |
+**Success:** 100+ calls, 99%+ uptime
 
 ---
 
-## Phase 2: Validate (Month 4-6)
+### Phase 2: Expand (Month 4-6)
 
-### Activities
+**Goal:** Deploy to 2 more prisons, load test, security audit
 
-Conduct load testing to simulate 200+ concurrent calls, perform third-party security audit, optimize system performance, and create deployment playbook for scaling to remaining prisons.
+**Ask:** ฿30M | **Cost:** ฿970,000
 
-### Funding Ask: ฿30,000,000
-
-### Actual Cost: ฿600,000
-
-| Category | Cost |
-|----------|------|
-| Cloud Infrastructure (3 months) | ฿300,000 |
-| GPU Inference (3 months) | ฿150,000 |
+| Item | Cost |
+|------|------|
+| 22 PCs (2 prisons) | ฿220,000 |
+| Cloud (3 months) | ฿450,000 |
 | Load Testing | ฿50,000 |
 | Security Audit | ฿100,000 |
-| **Phase 2 Total** | **฿600,000** |
+| Deploy + Train | ฿150,000 |
 
-### What We Deliver
+**Deliverables:** 3 prisons live (cumulative), 33 PCs, load tested at 200+ concurrent, security audit passed
 
-| Deliverable | Details |
-|-------------|---------|
-| Performance Report | Benchmark results documented |
-| System Optimized | Tuned for 200+ concurrent calls |
-| Security Audit | Third-party vulnerability assessment |
-| Deployment Playbook | Step-by-step rollout guide |
-| Training Materials | Videos and manuals created |
-
-### Success Criteria
-
-| Criteria | Target |
-|----------|--------|
-| Concurrent Calls | 200+ |
-| System Uptime | 99.9% |
-| Latency Under Load | < 800ms |
-| Security Audit | Passed |
-| Critical Bugs | 0 |
+**Success:** 200+ concurrent calls, 99.9% uptime, 0 critical bugs
 
 ---
 
-## Phase 3: Full Rollout (Month 7-12)
+### Phase 3: Complete (Month 7-12)
 
-### Activities
+**Goal:** Deploy to remaining 3 prisons, full production
 
-Deploy the video call system to the remaining 5 prisons using the validated deployment playbook, install all remaining hardware, train all prison staff, and transition to full production operations.
+**Ask:** ฿80M | **Cost:** ฿850,000
 
-### Funding Ask: ฿80,000,000
+| Item | Cost |
+|------|------|
+| 29 PCs (3 prisons) | ฿290,000 |
+| Cloud (6 months) | ฿300,000 |
+| GPU Inference | ฿200,000 |
+| Deploy + Train | ฿60,000 |
 
-### Actual Cost: ฿1,220,000
+**Deliverables:** 6 prisons live (all), 62 PCs, 500+ calls/week, 24/7 monitoring
 
-| Category | Cost |
-|----------|------|
-| Hardware (51 PCs for 5 prisons) | ฿510,000 |
-| Cloud Infrastructure (6 months) | ฿350,000 |
-| GPU Inference (6 months) | ฿200,000 |
-| Deployment & Training (5 prisons) | ฿160,000 |
-| **Phase 3 Total** | **฿1,220,000** |
-
-### What We Deliver
-
-| Deliverable | Details |
-|-------------|---------|
-| 6 Prisons Live | All locations operational |
-| 62 PCs Total | All hardware installed |
-| 500+ Calls/Week | Full system utilization |
-| Staff Trained | Officers at all 6 prisons |
-| Production Monitoring | 24/7 system visibility |
-| User Guides | Prisoner and officer docs |
-
-### Success Criteria
-
-| Criteria | Target |
-|----------|--------|
-| Prisons Deployed | 6 (all) |
-| Devices Installed | 62 (all) |
-| Weekly Calls | 500+ |
-| System Uptime | 99.5%+ |
-| Staff Satisfaction | > 80% |
+**Success:** 99.5%+ uptime, 80%+ staff satisfaction
 
 ---
 
-## Year 1 Summary
+### Year 1 Summary
 
-### Funding vs Spend
+| Phase | Prisons | PCs | Ask | Cost |
+|-------|---------|-----|-----|------|
+| Phase 1 | 1 | 11 | ฿40M | ฿0.8M |
+| Phase 2 | +2 (3 total) | +22 (33 total) | ฿30M | ฿0.97M |
+| Phase 3 | +3 (6 total) | +29 (62 total) | ฿80M | ฿0.85M |
+| Reserve | - | - | ฿45M | - |
+| **Total** | **6** | **62** | **฿195M** | **฿2.62M** |
 
-| Phase | Ask | Actual Spend | Margin |
-|-------|-----|--------------|--------|
-| Phase 1: Pilot | ฿40M | ฿0.8M | ฿39.2M |
-| Phase 2: Validate | ฿30M | ฿0.6M | ฿29.4M |
-| Phase 3: Rollout | ฿80M | ฿1.2M | ฿78.8M |
-| Year 1 Reserve | ฿45M | ฿0M | ฿45M |
-| **Total** | **฿195M** | **฿2.62M** | **฿192.38M** |
+**Deployment Progress:**
+```
+Phase 1: [██░░░░░░░░░░░░░░░░] 1/6 prisons (17%)
+Phase 2: [█████░░░░░░░░░░░░░░] 3/6 prisons (50%)
+Phase 3: [████████████████████] 6/6 prisons (100%)
+```
 
 ---
 
