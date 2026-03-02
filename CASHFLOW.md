@@ -2,19 +2,21 @@
 
 > **Based on:** 6 prisons, 10,000 prisoners  
 > **Currency:** Thai Baht (฿)  
-> **Total Project Cost:** ~฿90M over 5 years  
+> **Total Project Cost:** ~฿94.3M over 5 years  
 > **Last Updated:** March 2026
 
 ---
 
 ## Thai Compliance Requirements
 
-| Law/Standard | Full Name | Key Requirements |
-|--------------|-----------|------------------|
-| **PDPA** | Personal Data Protection Act B.E. 2562 | Consent, data minimization, DPO required, cross-border transfer restrictions |
-| **ISO27001** | Information Security Management | Security controls, risk assessment, continuous improvement |
-| **Cybersecurity Act** | Cybersecurity Act B.E. 2562 | Security measures, incident reporting, risk assessment |
-| **ETDA** | Electronic Transactions Development Agency B.E. 2563 | E-transaction standards, digital signature requirements |
+| Law/Standard | Full Name | Key Requirements | Deadline |
+|--------------|-----------|------------------|----------|
+| **PDPA** | Personal Data Protection Act B.E. 2562 | Consent, data minimization, DPO required, cross-border transfer restrictions | **Day 1** (deferred to Year 2) |
+| **ISO27001** | Information Security Management | Security controls, risk assessment, continuous improvement | **Day 1** (deferred to Year 3) |
+| **Cybersecurity Act** | Cybersecurity Act B.E. 2562 | Security measures, incident reporting, risk assessment | **Day 1** (deferred to Year 2) |
+| **ETDA** | Electronic Transactions Development Agency B.E. 2563 | E-transaction standards, digital signature requirements | **Day 1** (deferred to Year 2) |
+
+> ⚠️ **Risk:** All laws technically require compliance from Day 1. We defer to Years 2-3 to keep Year 1 ultra-lean.
 
 ### Compliance Timeline
 
@@ -23,8 +25,8 @@
 | Year 1 | Basic security practices | ฿100k |
 | Year 2 | PDPA + Cybersecurity Act + ETDA | ฿3.5M |
 | Year 2-3 | ISO27001 certification | ฿3M |
-| Years 2-5 | Annual security audits | ฿2M |
-| **Total** | | **฿8.6M** |
+| Years 2-5 | Annual security audits | ฿6M (฿1.5M/year) |
+| **Total** | | **฿12.6M** |
 
 ---
 
@@ -33,31 +35,31 @@
 | Year | Income | Spending | Cumulative |
 |------|--------|----------|------------|
 | Year 1 | ฿195M | ฿3M | ฿3M |
-| Year 2 | - | ฿42M | ฿45M |
-| Year 3 | - | ฿15M | ฿60M |
-| Year 4 | - | ฿15M | ฿75M |
-| Year 5 | - | ฿15M | ฿90M |
+| Year 2 | - | ฿43M | ฿46M |
+| Year 3 | - | ฿16.1M | ฿62.1M |
+| Year 4 | - | ฿16.1M | ฿78.2M |
+| Year 5 | - | ฿16.1M | ฿94.3M |
 
-**Total Spend:** ~฿90M  
-**Margin:** ฿195M - ฿90M = ฿105M (54%)
+**Total Spend:** ~฿94.3M  
+**Margin:** ฿195M - ฿94.3M = ฿100.7M (52%)
 
 ---
 
 ## Year 1 Cost-Saving Strategies
 
-| Strategy | Details | Pros | Cons |
-|----------|---------|------|------|
-| **AI Sampling Mode** | 1 frame/30sec vs 30fps real-time | 98% GPU savings | May miss brief violations |
-| **Cloud Infrastructure** | Rent VMs vs buy servers | No capex, flexible | Higher 5-year cost |
-| **Cloud GPU** | Modal/Runpod vs owned | No GPU purchase | Data abroad, per-use cost |
-| **Contractors** | vs full-time employees | No benefits, flexible | Less stability |
-| **No Office** | Remote work only | Save ฿1.2M+ setup | Collaboration harder |
-| **Deferred ISO27001** | Start Year 2 | Save ฿3M+ Year 1 | Limits enterprise sales |
-| **Deferred PDPA** | Start Year 2 | Focus on deployment | Regulatory risk |
+| Strategy | Details | Pros | Cons (Compliance Impact) |
+|----------|---------|------|--------------------------|
+| **AI Sampling Mode** | 1 frame/30sec vs 30fps real-time | 98% GPU savings | ❌ PDPA: May miss data breaches |
+| **Cloud Infrastructure** | Rent VMs vs buy servers | No capex, flexible | ❌ PDPA: Data leaves Thailand |
+| **Cloud GPU** | Cloud vs owned | No GPU purchase | ❌ Cybersecurity Act: Non-Thai processing |
+| **Contractors** | vs full-time employees | No benefits, flexible | ⚠️ PDPA: No dedicated DPO |
+| **No Office** | Remote work only | Save ฿1.2M+ setup | No direct compliance impact |
+| **Deferred ISO27001** | Start Year 2 | Save ฿3M+ Year 1 | ❌ Cannot prove security to government |
+| **Deferred PDPA** | Start Year 2 | Focus on deployment | ❌ No consent management, no DPO |
 
 ### What We're NOT Cutting
 
-- Hardware quality (reliable AIOs)
+- Hardware quality (reliable PCs)
 - Basic security practices
 - Staff training
 - 24/7 system monitoring
@@ -71,9 +73,9 @@
 
 | Category | Cost |
 |----------|------|
-| Hardware (11 AIOs) | ฿110,000 |
+| Hardware (11 PCs) | ฿110,000 |
 | Cloud VMs (3 months) | ฿300,000 |
-| GPU Inference (Modal) | ฿150,000 |
+| GPU Inference (Cloud) | ฿150,000 |
 | Deployment & Training | ฿150,000 |
 | Contractor (1 dev) | ฿90,000 |
 | **Phase 1 Total** | **฿800,000** |
@@ -92,7 +94,7 @@
 
 | Category | Cost |
 |----------|------|
-| Hardware (51 AIOs) | ฿510,000 |
+| Hardware (51 PCs) | ฿510,000 |
 | Cloud VMs (6 months) | ฿350,000 |
 | GPU Inference | ฿200,000 |
 | Deployment & Training | ฿160,000 |
@@ -122,7 +124,7 @@
 
 ## Year 1 Infrastructure (Cloud)
 
-### NIPA Cloud VMs
+### Thai Cloud VMs
 
 | Server | Spec | Monthly | Year 1 |
 |--------|------|---------|--------|
@@ -130,7 +132,7 @@
 | Agent VM | 48 vCPU, 96GB | ฿108,800 | ฿350,000 |
 | **Total** | | **฿163,200** | **฿1,000,000** |
 
-### GPU Inference (Modal/Runpod)
+### GPU Inference (Cloud)
 
 | Phase | Duration | Cost |
 |-------|----------|------|
@@ -164,11 +166,8 @@
 
 | Item | Qty | Unit | Total |
 |------|-----|------|-------|
-| NVIDIA B200 | 8 | ฿2.2M | ฿17,600,000 |
-| 4U GPU Server (4x B200) | 2 | ฿800k | ฿1,600,000 |
-| CPU (AMD EPYC 9654) | 2 | ฿300k | ฿600,000 |
-| RAM (512GB DDR5) | 2 | ฿200k | ฿400,000 |
-| **GPU Total** | | | **฿20,200,000** |
+| GPU Stack (4x high-end GPUs) | 2 | ฿10M | ฿20,000,000 |
+| **GPU Total** | | | **฿20,000,000** |
 
 ### Storage (Year 2)
 
