@@ -66,9 +66,9 @@ Total:   ฿195M                     ฿94.3M                     +฿100.7M
 | Phase | When | Prisons | Ask | Cost | Deliverables |
 |-------|------|---------|-----|------|--------------|
 | **Phase 1: Pilot** | Month 1-3 | 1 | ฿40M | ฿0.8M | 1 prison live |
-| **Phase 2: Expand** | Month 4-6 | +2 | ฿30M | ฿0.97M | 3 prisons live |
-| **Phase 3: Complete** | Month 7-12 | +3 | ฿80M | ฿0.85M | 6 prisons live |
-| **Year 1 Reserve** | Month 12 | - | ฿45M | - | Future investment |
+| **Phase 2: Expand** | Month 4-6 | +1 | ฿40M | ฿0.6M | 2 prisons live |
+| **Phase 3: Scale** | Month 7-9 | +2 | ฿60M | ฿0.7M | 4 prisons live |
+| **Phase 4: Complete** | Month 10-12 | +2 | ฿55M | ฿0.52M | 6 prisons live |
 | **Year 1 Total** | | **6** | **฿195M** | **฿2.62M** | |
 
 **Year 1 Efficiency:** ฿2.62M spent / ฿195M received = **98.7% preserved**
@@ -98,36 +98,52 @@ Total:   ฿195M                     ฿94.3M                     +฿100.7M
 
 ### Phase 2: Expand (Month 4-6)
 
-**Goal:** Deploy to 2 more prisons, load test, security audit
+**Goal:** Deploy to 1 more prison, load test, security audit
 
-**Ask:** ฿30M | **Cost:** ฿970,000
+**Ask:** ฿40M | **Cost:** ฿600,000
 
 | Item | Cost |
 |------|------|
-| 22 PCs (2 prisons) | ฿220,000 |
-| Cloud (3 months) | ฿450,000 |
+| 11 PCs (1 prison) | ฿110,000 |
+| Cloud (3 months) | ฿340,000 |
 | Load Testing | ฿50,000 |
 | Security Audit | ฿100,000 |
-| Deploy + Train | ฿150,000 |
 
-**Deliverables:** 3 prisons live (cumulative), 33 PCs, load tested at 200+ concurrent, security audit passed
+**Deliverables:** 2 prisons live (cumulative), 22 PCs, load tested at 200+ concurrent, security audit passed
 
 **Success:** 200+ concurrent calls, 99.9% uptime, 0 critical bugs
 
 ---
 
-### Phase 3: Complete (Month 7-12)
+### Phase 3: Scale (Month 7-9)
 
-**Goal:** Deploy to remaining 3 prisons, full production
+**Goal:** Deploy to 2 more prisons, optimize performance
 
-**Ask:** ฿80M | **Cost:** ฿850,000
+**Ask:** ฿60M | **Cost:** ฿700,000
 
 | Item | Cost |
 |------|------|
-| 29 PCs (3 prisons) | ฿290,000 |
-| Cloud (6 months) | ฿300,000 |
-| GPU Inference | ฿200,000 |
-| Deploy + Train | ฿60,000 |
+| 22 PCs (2 prisons) | ฿220,000 |
+| Cloud (3 months) | ฿400,000 |
+| Deploy + Train | ฿80,000 |
+
+**Deliverables:** 4 prisons live (cumulative), 44 PCs, optimized system
+
+**Success:** 300+ weekly calls, 99.5%+ uptime
+
+---
+
+### Phase 4: Complete (Month 10-12)
+
+**Goal:** Deploy to remaining 2 prisons, full production
+
+**Ask:** ฿55M | **Cost:** ฿520,000
+
+| Item | Cost |
+|------|------|
+| 18 PCs (2 prisons) | ฿180,000 |
+| Cloud (3 months) | ฿250,000 |
+| GPU Inference | ฿90,000 |
 
 **Deliverables:** 6 prisons live (all), 62 PCs, 500+ calls/week, 24/7 monitoring
 
@@ -140,16 +156,17 @@ Total:   ฿195M                     ฿94.3M                     +฿100.7M
 | Phase | Prisons | PCs | Ask | Cost |
 |-------|---------|-----|-----|------|
 | Phase 1 | 1 | 11 | ฿40M | ฿0.8M |
-| Phase 2 | +2 (3 total) | +22 (33 total) | ฿30M | ฿0.97M |
-| Phase 3 | +3 (6 total) | +29 (62 total) | ฿80M | ฿0.85M |
-| Reserve | - | - | ฿45M | - |
+| Phase 2 | +1 (2 total) | +11 (22 total) | ฿40M | ฿0.6M |
+| Phase 3 | +2 (4 total) | +22 (44 total) | ฿60M | ฿0.7M |
+| Phase 4 | +2 (6 total) | +18 (62 total) | ฿55M | ฿0.52M |
 | **Total** | **6** | **62** | **฿195M** | **฿2.62M** |
 
 **Deployment Progress:**
 ```
 Phase 1: [██░░░░░░░░░░░░░░░░] 1/6 prisons (17%)
-Phase 2: [█████░░░░░░░░░░░░░░] 3/6 prisons (50%)
-Phase 3: [████████████████████] 6/6 prisons (100%)
+Phase 2: [████░░░░░░░░░░░░░░░] 2/6 prisons (33%)
+Phase 3: [████████░░░░░░░░░░░] 4/6 prisons (67%)
+Phase 4: [████████████████████] 6/6 prisons (100%)
 ```
 
 ---
