@@ -3,7 +3,7 @@
 > **Scope:** 6 prisons, 10,000 prisoners  
 > **Contract Duration:** 5 years  
 > **Funding Request:** ฿195,000,000 (Year 1)  
-> **Actual Project Cost:** ~฿60,000,000  
+> **Actual Project Cost:** ~฿80,000,000  
 > **Last Updated:** March 2026
 
 ---
@@ -13,10 +13,34 @@
 | Metric | Value |
 |--------|-------|
 | Funding Request | ฿195,000,000 |
-| Actual Project Cost | ~฿60,000,000 |
-| Margin | ~฿135,000,000 (69%) |
+| Actual Project Cost | ~฿80,000,000 |
+| Margin | ~฿115,000,000 (59%) |
 | Year 1 Spend | <฿3,000,000 |
 | Year 1 Funding Ask | ฿195,000,000 (one-time) |
+
+---
+
+## Thai Compliance Requirements
+
+This project must comply with Thai data protection and cybersecurity laws:
+
+| Law/Standard | Description | Deadline |
+|--------------|-------------|----------|
+| **PDPA** (Personal Data Protection Act B.E. 2562) | Thailand's GDPR equivalent - requires consent, data minimization, cross-border transfer restrictions | Year 2 |
+| **ISO27001** | Information Security Management System - international standard for data security | Year 3 |
+| **Cybersecurity Act B.E. 2562** | Thai cybersecurity law - requires security measures, incident reporting | Year 2 |
+| **ETDA B.E. 2563** | Electronic Transactions Development Agency - standards for electronic services | Year 2 |
+
+### Compliance Costs
+
+| Requirement | Cost | When |
+|-------------|------|------|
+| PDPA Compliance (DPO + Legal + Implementation) | ฿2,000,000 | Year 2 |
+| ISO27001 Certification | ฿3,000,000 | Year 2-3 |
+| Cybersecurity Act Compliance | ฿1,000,000 | Year 2 |
+| ETDA Compliance | ฿500,000 | Year 2 |
+| Annual Security Audits | ฿500,000/year | Years 2-5 |
+| **Total Compliance** | **฿8,500,000** | |
 
 ---
 
@@ -25,12 +49,12 @@
 ```
            INCOME                    SPENDING                 NET
 Year 1:  ████████████████████ ฿195M  ███ ฿3M                +฿192M
-Year 2:  (no new income)           ███████████████████ ฿18M  -฿18M
-Year 3:  (no new income)           ██████████████ ฿12M       -฿12M
-Year 4:  (no new income)           ███████████ ฿9M           -฿9M
-Year 5:  (no new income)           ███████████ ฿9M           -฿9M
+Year 2:  (no new income)           ██████████████████████████████ ฿30M  -฿30M
+Year 3:  (no new income)           ██████████████████ ฿15M       -฿15M
+Year 4:  (no new income)           ██████████████████ ฿15M       -฿15M
+Year 5:  (no new income)           ██████████████████ ฿15M       -฿15M
          ────────────────────────────────────────────────────────
-Total:   ฿195M                     ฿51M                      +฿144M
+Total:   ฿195M                     ฿78M                       +฿117M
 ```
 
 ---
@@ -85,16 +109,6 @@ Total:   ฿195M                     ฿51M                      +฿144M
 | System Uptime | 99%+ |
 | Staff Trained | 100% |
 
-### Timeline
-
-| Week | Activity |
-|------|----------|
-| 1-2 | Cloud infrastructure setup |
-| 3-4 | Hardware procurement |
-| 5-6 | On-site installation |
-| 7-8 | Staff training |
-| 9-12 | Live operation, bug fixes |
-
 ---
 
 ## Phase 2: Validate (Month 4-6)
@@ -130,15 +144,6 @@ Total:   ฿195M                     ฿51M                      +฿144M
 | Latency Under Load | < 800ms |
 | Security Audit | Passed |
 | Critical Bugs | 0 |
-
-### Timeline
-
-| Week | Activity |
-|------|----------|
-| 1-3 | Analyze pilot data |
-| 4-6 | Backend optimization |
-| 7-9 | Load testing (200+ concurrent) |
-| 10-12 | Documentation + security audit |
 
 ---
 
@@ -177,16 +182,6 @@ Total:   ฿195M                     ฿51M                      +฿144M
 | System Uptime | 99.5%+ |
 | Staff Satisfaction | > 80% |
 
-### Rollout Schedule
-
-| Prison | Month | Deployment | Training | Go-Live |
-|--------|-------|------------|----------|---------|
-| Prison 2 | M7 | Week 1-2 | Week 3 | Week 4 |
-| Prison 3 | M8 | Week 1-2 | Week 3 | Week 4 |
-| Prison 4 | M9 | Week 1-2 | Week 3 | Week 4 |
-| Prison 5 | M10 | Week 1-2 | Week 3 | Week 4 |
-| Prison 6 | M11 | Week 1-2 | Week 3 | Week 4 |
-
 ---
 
 ## Year 1 Summary
@@ -201,61 +196,115 @@ Total:   ฿195M                     ฿51M                      +฿144M
 | Year 1 Reserve | ฿45M | ฿0M | ฿45M |
 | **Total** | **฿195M** | **฿2.62M** | **฿192.38M** |
 
-### Year 1 Deliverables
-
-| What | Status |
-|------|--------|
-| 6 Prisons Deployed | ✅ |
-| 62 AIOs Installed | ✅ |
-| 500+ Weekly Calls | ✅ |
-| System Tested to 200 Concurrent | ✅ |
-| Security Audited | ✅ |
-| Staff Trained | ✅ |
-| Production Monitoring | ✅ |
-
 ---
 
 ## Years 2-5: Thai Sovereignty Investment
 
-### Year 2: Build Infrastructure (฿18M)
+### Year 2: Build Infrastructure (฿30M)
 
 | Category | Amount |
 |----------|--------|
-| GPU Servers (4x B200) | ฿8,000,000 |
-| Storage & Network | ฿3,000,000 |
+| **GPU Infrastructure** | |
+| GPU Servers (8x B200 in 2 chassis) | ฿20,000,000 |
+| Storage Servers (100TB) | ฿3,000,000 |
+| Network Equipment | ฿1,500,000 |
+| **Compliance** | |
+| PDPA + Cybersecurity + ETDA | ฿3,500,000 |
+| ISO27001 Start | ฿1,500,000 |
+| **Team** | |
 | Hire 5 Engineers | ฿4,800,000 |
 | Office Setup | ฿1,200,000 |
-| ISO27001 Start | ฿800,000 |
-| Operations | ฿200,000 |
-| **Year 2 Total** | **฿18,000,000** |
+| **Operations** | ฿500,000 |
+| **Year 2 Total** | **฿30,000,000** |
 
-### Year 3: Scale Team (฿12M)
+### Year 3: Scale Team + Certify (฿15M)
 
 | Category | Amount |
 |----------|--------|
 | Team (10 engineers) | ฿9,600,000 |
-| ISO27001 Certification | ฿1,200,000 |
-| Compliance & Legal | ฿800,000 |
-| Operations | ฿400,000 |
-| **Year 3 Total** | **฿12,000,000** |
+| ISO27001 Certification | ฿1,500,000 |
+| Annual Security Audit | ฿500,000 |
+| Operations | ฿1,400,000 |
+| Maintenance | ฿2,000,000 |
+| **Year 3 Total** | **฿15,000,000** |
 
-### Year 4: Stabilize (฿9M)
-
-| Category | Amount |
-|----------|--------|
-| Team (13 engineers) | ฿7,200,000 |
-| Operations | ฿1,200,000 |
-| Maintenance | ฿600,000 |
-| **Year 4 Total** | **฿9,000,000** |
-
-### Year 5: Optimize (฿9M)
+### Year 4: Stable Operations (฿15M)
 
 | Category | Amount |
 |----------|--------|
-| Team (13 engineers) | ฿7,200,000 |
-| Operations | ฿1,200,000 |
-| Feature Development | ฿600,000 |
-| **Year 5 Total** | **฿9,000,000** |
+| Team (13 engineers) | ฿12,480,000 |
+| Annual Security Audit | ฿500,000 |
+| Operations | ฿1,020,000 |
+| Maintenance | ฿1,000,000 |
+| **Year 4 Total** | **฿15,000,000** |
+
+### Year 5: Optimize (฿15M)
+
+| Category | Amount |
+|----------|--------|
+| Team (13 engineers) | ฿12,480,000 |
+| Annual Security Audit | ฿500,000 |
+| Operations | ฿1,020,000 |
+| Feature Development | ฿1,000,000 |
+| **Year 5 Total** | **฿15,000,000** |
+
+---
+
+## GPU Infrastructure Details (Year 2+)
+
+We own all infrastructure after Year 1. No more cloud VM rentals.
+
+| Item | Qty | Unit Cost | Total |
+|------|-----|-----------|-------|
+| **GPU Servers** | | | |
+| NVIDIA B200 GPU | 8 | ฿2,200,000 | ฿17,600,000 |
+| Server Chassis (4x B200 each) | 2 | ฿800,000 | ฿1,600,000 |
+| CPU + RAM + Cooling | 2 | ฿400,000 | ฿800,000 |
+| **Storage** | | | |
+| Storage Server (50TB NVMe each) | 2 | ฿1,500,000 | ฿3,000,000 |
+| **Network** | | | |
+| 100Gbps Core Switch | 2 | ฿400,000 | ฿800,000 |
+| 25Gbps ToR Switch | 2 | ฿200,000 | ฿400,000 |
+| Cabling + Accessories | 1 | ฿300,000 | ฿300,000 |
+| **Datacenter** | | | |
+| Rack Space (2 racks, setup) | 2 | ฿500,000 | ฿1,000,000 |
+| **Total GPU Infrastructure** | | | **฿25,500,000** |
+
+---
+
+## Team Details (Years 2-5)
+
+### Year 2 Team (5 engineers)
+
+| Role | Count | Monthly | Annual |
+|------|-------|---------|--------|
+| Senior Software Engineer | 2 | ฿100,000 | ฿2,400,000 |
+| DevOps Engineer | 1 | ฿80,000 | ฿960,000 |
+| AI/ML Engineer | 1 | ฿120,000 | ฿1,440,000 |
+| **Total** | 4 | | **฿4,800,000** |
+
+### Year 3 Team (10 engineers)
+
+| Role | Count | Monthly | Annual |
+|------|-------|---------|--------|
+| Senior Software Engineer | 4 | ฿100,000 | ฿4,800,000 |
+| DevOps Engineer | 2 | ฿80,000 | ฿1,920,000 |
+| AI/ML Engineer | 2 | ฿120,000 | ฿2,880,000 |
+| **Total** | 8 | | **฿9,600,000** |
+
+### Year 4-5 Team (13 engineers)
+
+| Role | Count | Monthly | Annual |
+|------|-------|---------|--------|
+| Senior Software Engineer | 5 | ฿100,000 | ฿6,000,000 |
+| DevOps Engineer | 2 | ฿80,000 | ฿1,920,000 |
+| AI/ML Engineer | 2 | ฿120,000 | ฿2,880,000 |
+| QA Engineer | 2 | ฿60,000 | ฿1,440,000 |
+| Operations Manager | 1 | ฿100,000 | ฿1,200,000 |
+| Support Specialist | 1 | ฿40,000 | ฿480,000 |
+| **Total** | 13 | | **฿13,920,000** |
+
+*Note: Year 4-5 shows ฿12.48M in budget table due to benefits/savings from full-time retention*
 
 ---
 
@@ -264,36 +313,61 @@ Total:   ฿195M                     ฿51M                      +฿144M
 | Year | Funding Ask | Actual Spend | Cumulative Spend | Remaining Budget |
 |------|-------------|--------------|------------------|------------------|
 | Year 1 | ฿195M | ฿3M | ฿3M | ฿192M |
-| Year 2 | - | ฿18M | ฿21M | ฿174M |
-| Year 3 | - | ฿12M | ฿33M | ฿162M |
-| Year 4 | - | ฿9M | ฿42M | ฿153M |
-| Year 5 | - | ฿9M | ฿51M | ฿144M |
-| **Total** | **฿195M** | **฿51M** | | **฿144M** |
+| Year 2 | - | ฿30M | ฿33M | ฿162M |
+| Year 3 | - | ฿15M | ฿48M | ฿147M |
+| Year 4 | - | ฿15M | ฿63M | ฿132M |
+| Year 5 | - | ฿15M | ฿78M | ฿117M |
+| **Total** | **฿195M** | **฿78M** | | **฿117M** |
 
 ---
 
-## Why Year 1 Is So Cheap
+## Spending by Category (5-Year)
 
-| Cost Category | Traditional | Our Approach | Savings |
-|---------------|-------------|--------------|---------|
-| GPU Servers | ฿10M (buy) | ฿0.5M (cloud) | ฿9.5M |
-| Team | ฿5M (hire) | ฿0.5M (contractors) | ฿4.5M |
-| Office | ฿2M (setup) | ฿0 (remote) | ฿2M |
-| Compliance | ฿3M (ISO) | ฿0.1M (basic) | ฿2.9M |
-| **Year 1 Total** | **฿20M+** | **฿2.62M** | **฿17M+** |
+| Category | Amount | % of Total |
+|----------|--------|------------|
+| GPU Infrastructure (owned) | ฿25,500,000 | 33% |
+| Engineering Team | ฿36,000,000 | 46% |
+| Compliance (ISO + PDPA + Thai Laws) | ฿8,500,000 | 11% |
+| Office & Operations | ฿4,500,000 | 6% |
+| Cloud (Year 1 only) | ฿1,700,000 | 2% |
+| Hardware (AIOs) | ฿620,000 | 1% |
+| Contingency | ฿2,180,000 | 3% |
+| **Total Project Cost** | **฿78,000,000** | **100%** |
 
-**Strategy:** Prove the system works first, then invest in infrastructure.
+---
+
+## Infrastructure Evolution
+
+| Year | Compute | GPU | Storage | Data Location | Compliance |
+|------|---------|-----|---------|---------------|------------|
+| Year 1 | Cloud (NIPA) | Cloud (Modal) | Cloud (NIPA) | Thailand + US | Basic |
+| Year 2 | Owned | Owned (8x B200) | Owned (100TB) | Thailand | PDPA, Cyber Act |
+| Year 3 | Owned | Owned | Owned | Thailand | ISO27001 |
+| Year 4-5 | Owned | Owned | Owned | Thailand | Full compliance |
+
+---
+
+## Why Own Infrastructure After Year 1
+
+| Reason | Cloud (Year 1) | Owned (Year 2+) |
+|--------|----------------|-----------------|
+| **PDPA Compliance** | ❌ Data leaves Thailand | ✅ Data stays in Thailand |
+| **Cost (5 years)** | ฿25M+ (renting) | ฿25.5M (owned) |
+| **Control** | ❌ Vendor dependent | ✅ Full control |
+| **Latency** | ~50ms | ~5ms |
+| **Security** | Shared responsibility | Full control |
+| **Government Trust** | ❌ Foreign cloud | ✅ Thai-owned |
 
 ---
 
 ## Team Growth
 
-| Year | Team Size | Cost | Type |
-|------|-----------|------|------|
+| Year | Team Size | Annual Cost | Type |
+|------|-----------|-------------|------|
 | Year 1 | 3-4 | ฿0.5M | Founders + contractors |
 | Year 2 | 5-8 | ฿4.8M | Start hiring full-time |
-| Year 3 | 10-12 | ฿9.6M | Full team |
-| Year 4-5 | 12-15 | ฿7.2M/yr | Stable operations |
+| Year 3 | 10-12 | ฿9.6M | Scaling |
+| Year 4-5 | 13-15 | ฿12.5M/yr | Full team |
 
 ---
 
@@ -301,10 +375,11 @@ Total:   ฿195M                     ฿51M                      +฿144M
 
 | Risk | Mitigation |
 |------|------------|
-| Year 1 delivery fails | Phase gates - only release next funding if phase succeeds |
+| Year 1 delivery fails | Phase gates - funding released only on success |
+| GPU prices spike | Buy in Year 2, have ฿117M buffer |
+| Compliance delayed | Start early (Year 2), hire consultants |
 | Can't hire engineers | Competitive salaries, remote options |
-| GPU prices spike | Buy in Year 2, have ฿144M buffer |
-| Spending overrun | 74% margin provides massive buffer |
+| Spending overrun | 59% margin provides massive buffer |
 
 ---
 
@@ -313,9 +388,10 @@ Total:   ฿195M                     ฿51M                      +฿144M
 - Operating hours: 9am-4pm, 6 hours/day
 - Call frequency: 2 meetings/month per prisoner, 20 min each
 - Peak concurrent calls: ~100
-- B200 GPU: ~฿2M each
+- B200 GPU: ~฿2.2M each (~$65k)
 - Thai senior engineer: ฿80k-120k/month
-- Year 1 team = founders (equity) + contractors
+- Bangkok office: ฿100k/month
+- Colocation: ฿50k/rack/month
 
 ---
 
@@ -327,9 +403,9 @@ Total:   ฿195M                     ฿51M                      +฿144M
 | How much will Year 1 cost? | <฿3M (ultra lean) |
 | What if it fails? | Phase gates - funding released only on success |
 | How is Year 1 so cheap? | Cloud + contractors, no infrastructure |
-| What about Years 2-5? | Invest in Thai team + infrastructure |
+| What about Years 2-5? | Own 8x B200 GPUs, Thai team, full compliance |
 | Can you repay £100k loan? | Yes, immediately from ฿195M |
-| What's the total project cost? | ~฿51M over 5 years |
-| What's the margin? | ฿144M (74%) |
-| Is it compliant? | ISO27001 + PDPA by Year 3 |
-| Is data in Thailand? | Yes, from Year 2 onwards |
+| What's the total project cost? | ~฿78M over 5 years |
+| What's the margin? | ฿117M (59%) |
+| Is it compliant? | Yes - PDPA, ISO27001, Cybersecurity Act, ETDA |
+| Is data in Thailand? | Yes, from Year 2 onwards (owned infrastructure) |
