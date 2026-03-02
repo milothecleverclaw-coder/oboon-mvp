@@ -13,8 +13,8 @@
 | Metric | Value |
 |--------|-------|
 | Funding Request | ฿195,000,000 |
-| Actual Project Cost | ~฿80,000,000 |
-| Margin | ~฿115,000,000 (59%) |
+| Actual Project Cost | ~฿86,000,000 |
+| Margin | ~฿109,000,000 (56%) |
 | Year 1 Spend | <฿3,000,000 |
 | Year 1 Funding Ask | ฿195,000,000 (one-time) |
 
@@ -49,12 +49,12 @@ This project must comply with Thai data protection and cybersecurity laws:
 ```
            INCOME                    SPENDING                 NET
 Year 1:  ████████████████████ ฿195M  ███ ฿3M                +฿192M
-Year 2:  (no new income)           ██████████████████████████████ ฿30M  -฿30M
+Year 2:  (no new income)           ████████████████████████████████████ ฿38M  -฿38M
 Year 3:  (no new income)           ██████████████████ ฿15M       -฿15M
 Year 4:  (no new income)           ██████████████████ ฿15M       -฿15M
 Year 5:  (no new income)           ██████████████████ ฿15M       -฿15M
          ────────────────────────────────────────────────────────
-Total:   ฿195M                     ฿78M                       +฿117M
+Total:   ฿195M                     ฿86M                       +฿109M
 ```
 
 ---
@@ -200,10 +200,13 @@ Total:   ฿195M                     ฿78M                       +฿117M
 
 ## Years 2-5: Thai Sovereignty Investment
 
-### Year 2: Build Infrastructure (฿30M)
+### Year 2: Build Infrastructure (฿38M)
 
 | Category | Amount |
 |----------|--------|
+| **Compute Infrastructure** | |
+| Compute Servers (LiveKit + Agents) | ฿3,200,000 |
+| Database Servers (PostgreSQL + Redis) | ฿1,600,000 |
 | **GPU Infrastructure** | |
 | GPU Servers (8x B200 in 2 chassis) | ฿20,000,000 |
 | Storage Servers (100TB) | ฿3,000,000 |
@@ -215,7 +218,7 @@ Total:   ฿195M                     ฿78M                       +฿117M
 | Hire 5 Engineers | ฿4,800,000 |
 | Office Setup | ฿1,200,000 |
 | **Operations** | ฿500,000 |
-| **Year 2 Total** | **฿30,000,000** |
+| **Year 2 Total** | **฿38,000,000** |
 
 ### Year 3: Scale Team + Certify (฿15M)
 
@@ -250,25 +253,63 @@ Total:   ฿195M                     ฿78M                       +฿117M
 
 ---
 
-## GPU Infrastructure Details (Year 2+)
+## Infrastructure Details (Year 2+)
 
 We own all infrastructure after Year 1. No more cloud VM rentals.
 
+### Compute Servers
+
+| Item | Qty | Unit Cost | Total | Purpose |
+|------|-----|-----------|-------|---------|
+| **LiveKit Servers** | | | | |
+| 2U Server (64-core AMD EPYC, 256GB RAM) | 2 | ฿800,000 | ฿1,600,000 | Video routing, 200+ concurrent calls |
+| **Application Servers** | | | | |
+| 2U Server (32-core, 128GB RAM) | 2 | ฿500,000 | ฿1,000,000 | Agent workers, API services |
+| **Database Servers** | | | | |
+| 2U Server (16-core, 64GB RAM, 4TB NVMe) | 2 | ฿400,000 | ฿800,000 | PostgreSQL primary + replica |
+| 1U Server (8-core, 32GB RAM) | 2 | ฿200,000 | ฿400,000 | Redis cache cluster |
+| **Compute Total** | | | **฿3,800,000** | |
+
+### GPU Servers
+
 | Item | Qty | Unit Cost | Total |
 |------|-----|-----------|-------|
-| **GPU Servers** | | | |
 | NVIDIA B200 GPU | 8 | ฿2,200,000 | ฿17,600,000 |
 | Server Chassis (4x B200 each) | 2 | ฿800,000 | ฿1,600,000 |
 | CPU + RAM + Cooling | 2 | ฿400,000 | ฿800,000 |
-| **Storage** | | | |
+| **GPU Total** | | | **฿20,000,000** |
+
+### Storage
+
+| Item | Qty | Unit Cost | Total |
+|------|-----|-----------|-------|
 | Storage Server (50TB NVMe each) | 2 | ฿1,500,000 | ฿3,000,000 |
-| **Network** | | | |
+
+### Network
+
+| Item | Qty | Unit Cost | Total |
+|------|-----|-----------|-------|
 | 100Gbps Core Switch | 2 | ฿400,000 | ฿800,000 |
 | 25Gbps ToR Switch | 2 | ฿200,000 | ฿400,000 |
-| Cabling + Accessories | 1 | ฿300,000 | ฿300,000 |
-| **Datacenter** | | | |
+| Cabling + SFP | 1 | ฿300,000 | ฿300,000 |
+| **Network Total** | | | **฿1,500,000** |
+
+### Datacenter
+
+| Item | Qty | Unit Cost | Total |
+|------|-----|-----------|-------|
 | Rack Space (2 racks, setup) | 2 | ฿500,000 | ฿1,000,000 |
-| **Total GPU Infrastructure** | | | **฿25,500,000** |
+
+### Total Infrastructure (Year 2)
+
+| Category | Amount |
+|----------|--------|
+| Compute Servers | ฿3,800,000 |
+| GPU Servers | ฿20,000,000 |
+| Storage | ฿3,000,000 |
+| Network | ฿1,500,000 |
+| Datacenter Setup | ฿1,000,000 |
+| **Total** | **฿29,300,000** |
 
 ---
 
@@ -313,11 +354,11 @@ We own all infrastructure after Year 1. No more cloud VM rentals.
 | Year | Funding Ask | Actual Spend | Cumulative Spend | Remaining Budget |
 |------|-------------|--------------|------------------|------------------|
 | Year 1 | ฿195M | ฿3M | ฿3M | ฿192M |
-| Year 2 | - | ฿30M | ฿33M | ฿162M |
-| Year 3 | - | ฿15M | ฿48M | ฿147M |
-| Year 4 | - | ฿15M | ฿63M | ฿132M |
-| Year 5 | - | ฿15M | ฿78M | ฿117M |
-| **Total** | **฿195M** | **฿78M** | | **฿117M** |
+| Year 2 | - | ฿38M | ฿41M | ฿154M |
+| Year 3 | - | ฿15M | ฿56M | ฿139M |
+| Year 4 | - | ฿15M | ฿71M | ฿124M |
+| Year 5 | - | ฿15M | ฿86M | ฿109M |
+| **Total** | **฿195M** | **฿86M** | | **฿109M** |
 
 ---
 
@@ -325,14 +366,14 @@ We own all infrastructure after Year 1. No more cloud VM rentals.
 
 | Category | Amount | % of Total |
 |----------|--------|------------|
-| GPU Infrastructure (owned) | ฿25,500,000 | 33% |
-| Engineering Team | ฿36,000,000 | 46% |
-| Compliance (ISO + PDPA + Thai Laws) | ฿8,500,000 | 11% |
-| Office & Operations | ฿4,500,000 | 6% |
+| Infrastructure (Compute + GPU + Storage + Network) | ฿29,300,000 | 34% |
+| Engineering Team | ฿36,000,000 | 42% |
+| Compliance (ISO + PDPA + Thai Laws) | ฿8,500,000 | 10% |
+| Office & Operations | ฿4,500,000 | 5% |
 | Cloud (Year 1 only) | ฿1,700,000 | 2% |
 | Hardware (AIOs) | ฿620,000 | 1% |
-| Contingency | ฿2,180,000 | 3% |
-| **Total Project Cost** | **฿78,000,000** | **100%** |
+| Contingency | ฿5,380,000 | 6% |
+| **Total Project Cost** | **฿86,000,000** | **100%** |
 
 ---
 
@@ -376,10 +417,10 @@ We own all infrastructure after Year 1. No more cloud VM rentals.
 | Risk | Mitigation |
 |------|------------|
 | Year 1 delivery fails | Phase gates - funding released only on success |
-| GPU prices spike | Buy in Year 2, have ฿117M buffer |
+| GPU prices spike | Buy in Year 2, have ฿109M buffer |
 | Compliance delayed | Start early (Year 2), hire consultants |
 | Can't hire engineers | Competitive salaries, remote options |
-| Spending overrun | 59% margin provides massive buffer |
+| Spending overrun | 56% margin provides massive buffer |
 
 ---
 
@@ -403,9 +444,12 @@ We own all infrastructure after Year 1. No more cloud VM rentals.
 | How much will Year 1 cost? | <฿3M (ultra lean) |
 | What if it fails? | Phase gates - funding released only on success |
 | How is Year 1 so cheap? | Cloud + contractors, no infrastructure |
-| What about Years 2-5? | Own 8x B200 GPUs, Thai team, full compliance |
+| What about Years 2-5? | Own compute + 8x B200 GPUs, Thai team, full compliance |
 | Can you repay £100k loan? | Yes, immediately from ฿195M |
-| What's the total project cost? | ~฿78M over 5 years |
+| What's the total project cost? | ~฿86M over 5 years |
+| What's the margin? | ฿109M (56%) |
+| Is it compliant? | Yes - PDPA, ISO27001, Cybersecurity Act, ETDA |
+| Is data in Thailand? | Yes, from Year 2 onwards (owned infrastructure) |
 | What's the margin? | ฿117M (59%) |
 | Is it compliant? | Yes - PDPA, ISO27001, Cybersecurity Act, ETDA |
 | Is data in Thailand? | Yes, from Year 2 onwards (owned infrastructure) |

@@ -2,7 +2,7 @@
 
 > **Based on:** 6 prisons, 10,000 prisoners  
 > **Currency:** Thai Baht (฿)  
-> **Total Project Cost:** ~฿78M over 5 years  
+> **Total Project Cost:** ~฿86M over 5 years  
 > **Last Updated:** March 2026
 
 ---
@@ -33,13 +33,13 @@
 | Year | Income | Spending | Cumulative |
 |------|--------|----------|------------|
 | Year 1 | ฿195M | ฿3M | ฿3M |
-| Year 2 | - | ฿30M | ฿33M |
-| Year 3 | - | ฿15M | ฿48M |
-| Year 4 | - | ฿15M | ฿63M |
-| Year 5 | - | ฿15M | ฿78M |
+| Year 2 | - | ฿38M | ฿41M |
+| Year 3 | - | ฿15M | ฿56M |
+| Year 4 | - | ฿15M | ฿71M |
+| Year 5 | - | ฿15M | ฿86M |
 
-**Total Spend:** ~฿78M  
-**Margin:** ฿195M - ฿78M = ฿117M (59%)
+**Total Spend:** ~฿86M  
+**Margin:** ฿195M - ฿86M = ฿109M (56%)
 
 ---
 
@@ -110,35 +110,73 @@
 
 ## Years 2-5: Owned Infrastructure
 
-### GPU Server Build (Year 2)
+### Compute Servers (Year 2)
+
+| Item | Qty | Unit | Total | Purpose |
+|------|-----|------|-------|---------|
+| **LiveKit Servers** | | | | |
+| 2U Server (64-core AMD EPYC, 256GB RAM) | 2 | ฿800k | ฿1,600,000 | Video routing, 200+ concurrent |
+| **Application Servers** | | | | |
+| 2U Server (32-core, 128GB RAM) | 2 | ฿500k | ฿1,000,000 | Agent workers, API |
+| **Database Servers** | | | | |
+| 2U Server (16-core, 64GB RAM, 4TB NVMe) | 2 | ฿400k | ฿800,000 | PostgreSQL primary + replica |
+| 1U Server (8-core, 32GB RAM) | 2 | ฿200k | ฿400,000 | Redis cache cluster |
+| **Compute Total** | | | **฿3,800,000** | |
+
+### GPU Servers (Year 2)
 
 | Item | Qty | Unit | Total |
 |------|-----|------|-------|
-| **GPU** | | | |
 | NVIDIA B200 | 8 | ฿2.2M | ฿17,600,000 |
-| **Server Chassis** | | | |
 | 4U GPU Server (4x B200) | 2 | ฿800k | ฿1,600,000 |
 | CPU (AMD EPYC 9654) | 2 | ฿300k | ฿600,000 |
 | RAM (512GB DDR5) | 2 | ฿200k | ฿400,000 |
-| **Storage** | | | |
+| **GPU Total** | | | **฿20,200,000** |
+
+### Storage (Year 2)
+
+| Item | Qty | Unit | Total |
+|------|-----|------|-------|
 | NVMe Storage Server (50TB) | 2 | ฿1.5M | ฿3,000,000 |
-| **Network** | | | |
+
+### Network (Year 2)
+
+| Item | Qty | Unit | Total |
+|------|-----|------|-------|
 | 100G Core Switch | 2 | ฿400k | ฿800,000 |
 | 25G ToR Switch | 2 | ฿200k | ฿400,000 |
 | Cabling + SFP | 1 | ฿300k | ฿300,000 |
-| **Datacenter** | | | |
+| **Network Total** | | | **฿1,500,000** |
+
+### Datacenter Setup (Year 2)
+
+| Item | Qty | Unit | Total |
+|------|-----|------|-------|
 | Rack + Power + Setup | 2 | ฿500k | ฿1,000,000 |
-| **Total** | | | **฿25,500,000** |
 
-### Why 8x B200?
+### Total Infrastructure (Year 2)
 
-| Requirement | Justification |
-|-------------|---------------|
-| Peak Concurrent Calls | 100 calls = 100 video streams |
-| AI Moderation | ~3,000 frames/minute peak |
-| Redundancy | 2 servers = no single point of failure |
-| Future Growth | Room for 2x capacity increase |
-| Thai Sovereignty | All processing in Thailand |
+| Category | Amount |
+|----------|--------|
+| Compute Servers | ฿3,800,000 |
+| GPU Servers | ฿20,200,000 |
+| Storage | ฿3,000,000 |
+| Network | ฿1,500,000 |
+| Datacenter Setup | ฿1,000,000 |
+| **Total** | **฿29,500,000** |
+
+---
+
+## Why Own All Infrastructure?
+
+| Reason | Cloud (Year 1) | Owned (Year 2+) |
+|--------|----------------|-----------------|
+| PDPA Compliance | ❌ Data may leave Thailand | ✅ Data stays in Thailand |
+| Cost (5 years) | ฿25M+ (renting) | ฿29.5M (owned, 1-time) |
+| Control | ❌ Vendor dependent | ✅ Full control |
+| Latency | ~50ms | ~5ms |
+| Security | Shared responsibility | Full control |
+| Government Trust | ❌ Foreign cloud | ✅ Thai-owned |
 
 ---
 
@@ -181,13 +219,13 @@
 ## Spending by Category
 
 ```
-GPU/Infra:   ███████████████████████████████████ 33% (฿25.5M)
-Team:        ████████████████████████████████████████████ 46% (฿36M)
-Compliance:  ███████████ 11% (฿8.5M)
-Operations:  ██████ 6% (฿4.5M)
-Cloud Y1:    ██ 2% (฿1.7M)
-Hardware:    █ 1% (฿0.6M)
-Contingency: ███ 3% (฿2.2M)
+Infrastructure: ███████████████████████████████████ 34% (฿29.5M)
+Team:           ████████████████████████████████████████ 42% (฿36M)
+Compliance:     ██████████ 10% (฿8.5M)
+Operations:     █████ 5% (฿4.5M)
+Cloud Y1:       ██ 2% (฿1.7M)
+Hardware:       █ 1% (฿0.6M)
+Contingency:    ██████ 6% (฿5.2M)
 ```
 
 ---
@@ -217,9 +255,10 @@ Contingency: ███ 3% (฿2.2M)
 ## Assumptions
 
 - B200 GPU: ~฿2.2M each (~$65k USD)
+- AMD EPYC server: ~฿800k for 64-core
 - Thai senior engineer: ฿80k-120k/month
 - Bangkok office: ฿100k/month
 - Colocation: ฿50k/rack/month
 - 6 prisons, 10,000 prisoners
 - Peak: 100 concurrent calls
-- 8x B200 for redundancy + growth
+- 8x B200 + 8 compute servers for full Thai sovereignty
