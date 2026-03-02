@@ -2,7 +2,7 @@
 
 > **Based on:** 6 prisons, 10,000 prisoners  
 > **Currency:** Thai Baht (฿)  
-> **Total Project Cost:** ~฿86M over 5 years  
+> **Total Project Cost:** ~฿90M over 5 years  
 > **Last Updated:** March 2026
 
 ---
@@ -33,13 +33,13 @@
 | Year | Income | Spending | Cumulative |
 |------|--------|----------|------------|
 | Year 1 | ฿195M | ฿3M | ฿3M |
-| Year 2 | - | ฿38M | ฿41M |
-| Year 3 | - | ฿15M | ฿56M |
-| Year 4 | - | ฿15M | ฿71M |
-| Year 5 | - | ฿15M | ฿86M |
+| Year 2 | - | ฿42M | ฿45M |
+| Year 3 | - | ฿15M | ฿60M |
+| Year 4 | - | ฿15M | ฿75M |
+| Year 5 | - | ฿15M | ฿90M |
 
-**Total Spend:** ~฿86M  
-**Margin:** ฿195M - ฿86M = ฿109M (56%)
+**Total Spend:** ~฿90M  
+**Margin:** ฿195M - ฿90M = ฿105M (54%)
 
 ---
 
@@ -87,6 +87,17 @@
 
 ---
 
+## Year 1 AI Moderation Strategy
+
+| Metric | Year 1 (Cloud) | Year 2+ (Owned) |
+|--------|----------------|-----------------|
+| Scan Frequency | 1 frame every 5 seconds | Real-time (30 fps) |
+| Coverage | ~20% of frames | 100% of frames |
+| GPU Cost | ฿500,000/year | ฿0 (owned) |
+| Detection Rate | Good (sampling) | Excellent (full) |
+
+---
+
 ## Year 1 Infrastructure (Cloud)
 
 ### NIPA Cloud VMs
@@ -115,13 +126,17 @@
 | Item | Qty | Unit | Total | Purpose |
 |------|-----|------|-------|---------|
 | **LiveKit Servers** | | | | |
-| 2U Server (64-core AMD EPYC, 256GB RAM) | 2 | ฿800k | ฿1,600,000 | Video routing, 200+ concurrent |
+| 2U Server (64-core AMD EPYC, 256GB RAM) | 4 | ฿800k | ฿3,200,000 | Video routing, HA |
 | **Application Servers** | | | | |
-| 2U Server (32-core, 128GB RAM) | 2 | ฿500k | ฿1,000,000 | Agent workers, API |
+| 2U Server (32-core, 128GB RAM) | 4 | ฿500k | ฿2,000,000 | Agent workers, API, HA |
 | **Database Servers** | | | | |
 | 2U Server (16-core, 64GB RAM, 4TB NVMe) | 2 | ฿400k | ฿800,000 | PostgreSQL primary + replica |
 | 1U Server (8-core, 32GB RAM) | 2 | ฿200k | ฿400,000 | Redis cache cluster |
-| **Compute Total** | | | **฿3,800,000** | |
+| **Support Servers** | | | | |
+| 1U Server (Load Balancer) | 2 | ฿150k | ฿300,000 | HAProxy |
+| 2U Server (Monitoring + Logging) | 2 | ฿250k | ฿500,000 | Prometheus, Loki |
+| 1U Server (Backup) | 2 | ฿100k | ฿200,000 | Backup storage |
+| **Compute Total** | | | **฿7,400,000** | |
 
 ### GPU Servers (Year 2)
 
@@ -158,12 +173,12 @@
 
 | Category | Amount |
 |----------|--------|
-| Compute Servers | ฿3,800,000 |
+| Compute Servers | ฿7,400,000 |
 | GPU Servers | ฿20,200,000 |
 | Storage | ฿3,000,000 |
 | Network | ฿1,500,000 |
 | Datacenter Setup | ฿1,000,000 |
-| **Total** | **฿29,500,000** |
+| **Total** | **฿33,100,000** |
 
 ---
 
@@ -172,11 +187,12 @@
 | Reason | Cloud (Year 1) | Owned (Year 2+) |
 |--------|----------------|-----------------|
 | PDPA Compliance | ❌ Data may leave Thailand | ✅ Data stays in Thailand |
-| Cost (5 years) | ฿25M+ (renting) | ฿29.5M (owned, 1-time) |
+| Cost (5 years) | ฿25M+ (renting) | ฿33.1M (owned, 1-time) |
 | Control | ❌ Vendor dependent | ✅ Full control |
 | Latency | ~50ms | ~5ms |
 | Security | Shared responsibility | Full control |
 | Government Trust | ❌ Foreign cloud | ✅ Thai-owned |
+| AI Moderation | ⚠️ Sampling only | ✅ Full real-time |
 
 ---
 
@@ -219,13 +235,13 @@
 ## Spending by Category
 
 ```
-Infrastructure: ███████████████████████████████████ 34% (฿29.5M)
-Team:           ████████████████████████████████████████ 42% (฿36M)
-Compliance:     ██████████ 10% (฿8.5M)
+Infrastructure: ███████████████████████████████████████ 37% (฿33.1M)
+Team:           ████████████████████████████████████ 40% (฿36M)
+Compliance:     ██████████ 9% (฿8.5M)
 Operations:     █████ 5% (฿4.5M)
 Cloud Y1:       ██ 2% (฿1.7M)
 Hardware:       █ 1% (฿0.6M)
-Contingency:    ██████ 6% (฿5.2M)
+Contingency:    ██████ 6% (฿5.6M)
 ```
 
 ---
@@ -252,6 +268,23 @@ Contingency:    ██████ 6% (฿5.2M)
 
 ---
 
+## Server Summary (Year 2)
+
+| Type | Count | Purpose |
+|------|-------|---------|
+| LiveKit Video Servers | 4 | Video routing, 400+ concurrent |
+| Application Servers | 4 | Agent workers, API |
+| Database Servers | 2 | PostgreSQL |
+| Cache Servers | 2 | Redis |
+| Load Balancers | 2 | HAProxy |
+| Monitoring Servers | 2 | Prometheus, Loki |
+| Backup Servers | 2 | Backup storage |
+| GPU Servers | 2 | 8x B200 |
+| Storage Servers | 2 | 100TB total |
+| **Total** | **22** | |
+
+---
+
 ## Assumptions
 
 - B200 GPU: ~฿2.2M each (~$65k USD)
@@ -260,5 +293,6 @@ Contingency:    ██████ 6% (฿5.2M)
 - Bangkok office: ฿100k/month
 - Colocation: ฿50k/rack/month
 - 6 prisons, 10,000 prisoners
-- Peak: 100 concurrent calls
-- 8x B200 + 8 compute servers for full Thai sovereignty
+- Peak: 100 concurrent calls (infrastructure supports 400+)
+- Year 1 AI: sampling mode (1 frame/5sec)
+- Year 2+: full real-time AI (30 fps)
