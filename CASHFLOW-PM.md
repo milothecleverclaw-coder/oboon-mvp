@@ -452,7 +452,6 @@ To keep Year 1 costs ultra-low while using cloud GPU:
 - Operating hours: 9am-4pm, 6 hours/day
 - Call frequency: 2 meetings/month per prisoner, 20 min each
 - Peak concurrent calls: ~100
-- B200 GPU: ~฿2.2M each (~$65k)
 - Thai senior engineer: ฿80k-120k/month
 - Bangkok office: ฿100k/month
 - Colocation: ฿50k/rack/month

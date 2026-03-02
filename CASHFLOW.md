@@ -287,8 +287,6 @@ Contingency:    ██████ 6% (฿5.6M)
 
 ## Assumptions
 
-- B200 GPU: ~฿2.2M each (~$65k USD)
-- AMD EPYC server: ~฿800k for 64-core
 - Thai senior engineer: ฿80k-120k/month
 - Bangkok office: ฿100k/month
 - Colocation: ฿50k/rack/month
