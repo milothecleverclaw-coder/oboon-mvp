@@ -329,7 +329,7 @@ Contingency:    █████ 6% (฿6.1M)
 
 ---
 
-## Summary for Investors
+## Summary
 
 | Question | Answer |
 |----------|--------|
