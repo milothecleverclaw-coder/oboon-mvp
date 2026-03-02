@@ -198,6 +198,44 @@ Total:   ฿195M                     ฿90M                       +฿105M
 
 ---
 
+## Year 1 Cost-Saving Strategies
+
+| Strategy | Details | Pros | Cons |
+|----------|---------|------|------|
+| **AI Sampling Mode** | Scan 1 frame every 30 seconds instead of real-time (30 fps) | 98% GPU cost savings, still catches major violations | May miss brief violations, less comprehensive |
+| **Cloud Infrastructure** | Rent VMs from NIPA Cloud instead of buying servers | No upfront capital, flexible scaling, pay-as-you-go | Higher long-term cost, vendor dependency, data leaves Thailand |
+| **Cloud GPU** | Use Modal/Runpod cloud GPU instead of owning | No GPU purchase needed, flexible capacity | Data processed abroad, per-inference cost, latency |
+| **Minimal Team** | Use contractors + founders instead of full-time hires | No benefits/overhead, flexible scaling, lower commitment | Less institutional knowledge, availability risks, harder to build culture |
+| **No Office** | Remote work, no physical office | Save ฿1.2M+ on setup, lower overhead | Harder collaboration, may need office later |
+| **Basic Security** | Basic security practices, defer ISO27001 to Year 2 | Save ฿3M+ on certification costs | May limit enterprise/government contracts |
+| **Deferred Compliance** | Start PDPA/Cybersecurity compliance in Year 2 | Focus budget on deployment, reduce Year 1 spend | Operating in grey area, some risk |
+| **AIO Bulk Purchase** | Buy 62 AIOs at once, negotiate bulk discount | Lower unit cost, simple logistics | Large upfront purchase, storage needs |
+| **Domestic Cloud** | Use NIPA Cloud (free domestic bandwidth) | Video traffic is free, low latency in Thailand | GPU inference still requires international egress |
+| **Phased Rollout** | Deploy 1 prison at a time, learn and iterate | Lower risk, can fix issues before scaling | Slower deployment, delayed full revenue |
+
+### Cost Impact Summary
+
+| Strategy | Year 1 Savings | Trade-off |
+|----------|----------------|-----------|
+| AI Sampling | ฿1.5M+ | Less comprehensive moderation |
+| Cloud vs Owned | ฿30M+ | No asset ownership, higher 5-year cost |
+| Contractors vs Full-time | ฿5M+ | Less team stability |
+| No Office | ฿1.2M+ | Remote work challenges |
+| Deferred Compliance | ฿5M+ | Regulatory risk |
+| **Total Year 1 Savings** | **฿40M+** | |
+
+### What We're NOT Cutting
+
+| Area | Why Not Cut |
+|------|-------------|
+| Hardware Quality | AIOs must be reliable for prison environment |
+| Security Basics | Basic security practices still required |
+| Staff Training | Officers must be properly trained |
+| System Monitoring | 24/7 monitoring essential for operations |
+| Call Recording | Required for compliance and review |
+
+---
+
 ## Years 2-5: Thai Sovereignty Investment
 
 ### Year 2: Build Infrastructure (฿42M)

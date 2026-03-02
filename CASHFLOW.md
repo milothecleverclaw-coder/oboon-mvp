@@ -43,6 +43,28 @@
 
 ---
 
+## Year 1 Cost-Saving Strategies
+
+| Strategy | Details | Pros | Cons |
+|----------|---------|------|------|
+| **AI Sampling Mode** | 1 frame/30sec vs 30fps real-time | 98% GPU savings | May miss brief violations |
+| **Cloud Infrastructure** | Rent VMs vs buy servers | No capex, flexible | Higher 5-year cost |
+| **Cloud GPU** | Modal/Runpod vs owned | No GPU purchase | Data abroad, per-use cost |
+| **Contractors** | vs full-time employees | No benefits, flexible | Less stability |
+| **No Office** | Remote work only | Save ฿1.2M+ setup | Collaboration harder |
+| **Deferred ISO27001** | Start Year 2 | Save ฿3M+ Year 1 | Limits enterprise sales |
+| **Deferred PDPA** | Start Year 2 | Focus on deployment | Regulatory risk |
+
+### What We're NOT Cutting
+
+- Hardware quality (reliable AIOs)
+- Basic security practices
+- Staff training
+- 24/7 system monitoring
+- Call recording (compliance)
+
+---
+
 ## Year 1 Phase Breakdown
 
 ### Phase 1: Pilot (Month 1-3)
