@@ -91,10 +91,10 @@
 
 | Metric | Year 1 (Cloud) | Year 2+ (Owned) |
 |--------|----------------|-----------------|
-| Scan Frequency | 1 frame every 5 seconds | Real-time (30 fps) |
-| Coverage | ~20% of frames | 100% of frames |
+| Scan Frequency | 1 frame every 30 seconds | Real-time (30 fps) |
+| Coverage | ~3% of frames | 100% of frames |
 | GPU Cost | ฿500,000/year | ฿0 (owned) |
-| Detection Rate | Good (sampling) | Excellent (full) |
+| Detection Rate | Basic (sampling) | Excellent (full) |
 
 ---
 
@@ -292,5 +292,5 @@ Contingency:    ██████ 6% (฿5.6M)
 - Colocation: ฿50k/rack/month
 - 6 prisons, 10,000 prisoners
 - Peak: 100 concurrent calls (infrastructure supports 400+)
-- Year 1 AI: sampling mode (1 frame/5sec)
+- Year 1 AI: sampling mode (1 frame/30sec)
 - Year 2+: full real-time AI (30 fps)

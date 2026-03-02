@@ -410,13 +410,13 @@ To keep Year 1 costs ultra-low while using cloud GPU:
 
 | Metric | Year 1 (Cloud) | Year 2+ (Owned) |
 |--------|----------------|-----------------|
-| **Scan Frequency** | 1 frame every 5 seconds | Real-time (30 fps) |
-| **Coverage** | ~20% of frames | 100% of frames |
+| **Scan Frequency** | 1 frame every 30 seconds | Real-time (30 fps) |
+| **Coverage** | ~3% of frames | 100% of frames |
 | **GPU Cost** | ฿500,000/year | ฿0 (owned hardware) |
-| **Detection Rate** | Good (sampling) | Excellent (full scan) |
+| **Detection Rate** | Basic (sampling) | Excellent (full scan) |
 
 **Why this works:**
-- Year 1: Sample-based moderation catches most violations with 96% cost savings
+- Year 1: Sampling-based moderation catches major violations with 98% cost savings
 - Year 2+: Full real-time moderation with owned GPUs, no per-frame cost
 - Officers can still flag/review any suspicious calls manually
 - System logs all calls for post-call review if needed
